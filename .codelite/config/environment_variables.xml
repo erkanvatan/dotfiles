@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EnvironmentVariables>
+  <ArchiveObject Name="Variables">
+    <std_string_map Name="m_envVarSets">
+      <MapEntry Key="Default">CodeLiteDir=/usr/share/codelite</MapEntry>
+    </std_string_map>
+    <wxString Value="Default" Name="m_activeSet"/>
+  </ArchiveObject>
+</EnvironmentVariables>

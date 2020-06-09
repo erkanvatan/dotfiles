@@ -46,33 +46,6 @@
     <int Value="0" Name="m_buildpaneScrollTo"/>
     <wxString Value="" Name="m_buildFont"/>
   </ArchiveObject>
-  <ArchiveObject Name="EditorTrimEmptyLines">
-    <long Value="0" Name="m_value"/>
-  </ArchiveObject>
-  <ArchiveObject Name="EditorAppendLf">
-    <long Value="0" Name="m_value"/>
-  </ArchiveObject>
-  <ArchiveObject Name="DontTrimCaretLine">
-    <long Value="0" Name="m_value"/>
-  </ArchiveObject>
-  <ArchiveObject Name="CommentConfigData">
-    <bool Value="1" Name="m_addStarOnCComment"/>
-    <bool Value="0" Name="m_continueCppComment"/>
-    <bool Value="1" Name="m_autoInsert"/>
-    <bool Value="0" Name="m_useQtStyle"/>
-    <wxString Value=" * @class $(Name)| * @author $(User)| * @date $(Date)| * @file $(CurrentFileName).$(CurrentFileExt)| * @brief |" Name="m_classPattern"/>
-    <wxString Value=" * @brief |" Name="m_functionPattern"/>
-  </ArchiveObject>
-  <ArchiveObject Name="WordHighlightColour">
-    <wxString Value="yellow" Name="m_value"/>
-  </ArchiveObject>
-  <ArchiveObject Name="WordHighlightAlpha">
-    <long Value="128" Name="m_value"/>
-  </ArchiveObject>
-  <ArchiveObject Name="LoadSavedPrespective">
-    <long Value="1" Name="m_value"/>
-  </ArchiveObject>
-  <Options DisplayFoldMargin="yes" UnderlineFoldedLine="yes" FoldStyle="Arrows" DisplayBookmarkMargin="yes" BookmarkShape="Small Arrow" BookmarkBgColours="#FF0080;#0000FF;#FF0000;#00FF00;#FFFF00;" BookmarkFgColours="#FF0080;#0000FF;#FF0000;#00FF00;#FFFF00;" BookmarkLabels=";;;;Find" ClearHighlitWordsOnFind="yes" HighlightCaretLine="no" ShowLineNumber="yes" RelativeLineNumber="no" HighlightCurLineNumber="yes" IndentationGuides="yes" CaretLineColour="#BFD8D8" IndentUsesTabs="no" FoldCompact="no" FoldAtElse="no" FoldPreprocessor="no" HighlightMatchedBraces="yes" FoldBgColour="#F0F0F0" AutoAdjustHScrollBarWidth="yes" HideChangeMarkerMargin="no" ScrollBeyondLastLine="yes" HideOutputPaneOnUserClick="no" HideOutputPaneNotIfBuild="no" HideOutputPaneNotIfSearch="no" HideOutputPaneNotIfReplace="no" HideOutputPaneNotIfReferences="no" HideOutputPaneNotIfOutput="no" HideOutputPaneNotIfTrace="no" HideOutputPaneNotIfTasks="no" HideOutputPaneNotIfBuildQ="no" HideOutputPaneNotIfCppCheck="no" HideOutputPaneNotIfSvn="no" HideOutputPaneNotIfCscope="no" HideOutputPaneNotIfGit="no" HideOutputPaneNotIfDebug="no" HideOutputPaneNotIfMemCheck="no" FindBarAtBottom="yes" ShowReplaceBar="yes" DisableSmartIndent="no" DisableSemicolonShift="no" DontAutoFoldResults="yes" DontOverrideSearchStringWithSelection="no" ShowDebugOnRun="yes" ConsoleCommand="/usr/bin/codelite_xterm '$(TITLE)' '$(CMD)'" EOLMode="Default" m_caretUseCamelCase="yes" m_wordWrap="no" m_dockingStyle="0" m_nbTabHeight="4" m_mswTheme="no" m_preferredLocale="en_US" m_useLocale="no" m_trimOnlyModifiedLines="no" m_debuggerMarkerLine="#D5F5D5" OutputTabsDirection="64" WorkspaceTabsDirection="64" IndentedComments="no" CopyLineEmptySelection="yes" SmartParen="yes" IndentWidth="4" TabWidth="4" ToolbarIconSize="16" ShowWhitespaces="0" EdgeMode="0" EdgeColumn="120" EdgeColour="#D3D3D3" CaretWidth="2" CaretBlinkPeriod="500" CaretLineAlpha="15" FileFontEncoding="UTF-8" m_options="1140857624" m_options2="0" m_webSearchPrefix="https://www.google.com/search?q="/>
   <ArchiveObject Name="FormatterOptions">
     <long Value="65672" Name="m_options"/>
     <wxString Value="" Name="m_customFlags"/>
@@ -108,6 +81,33 @@
     <int Value="-1" Name="m_commitDlgSashPos"/>
     <int Value="-1" Name="m_commitDlgHSashPos"/>
   </ArchiveObject>
+  <ArchiveObject Name="EditorTrimEmptyLines">
+    <long Value="0" Name="m_value"/>
+  </ArchiveObject>
+  <ArchiveObject Name="EditorAppendLf">
+    <long Value="0" Name="m_value"/>
+  </ArchiveObject>
+  <ArchiveObject Name="DontTrimCaretLine">
+    <long Value="0" Name="m_value"/>
+  </ArchiveObject>
+  <ArchiveObject Name="CommentConfigData">
+    <bool Value="1" Name="m_addStarOnCComment"/>
+    <bool Value="0" Name="m_continueCppComment"/>
+    <bool Value="1" Name="m_autoInsert"/>
+    <bool Value="0" Name="m_useQtStyle"/>
+    <wxString Value=" * @class $(Name)| * @author $(User)| * @date $(Date)| * @file $(CurrentFileName).$(CurrentFileExt)| * @brief |" Name="m_classPattern"/>
+    <wxString Value=" * @brief |" Name="m_functionPattern"/>
+  </ArchiveObject>
+  <ArchiveObject Name="WordHighlightColour">
+    <wxString Value="yellow" Name="m_value"/>
+  </ArchiveObject>
+  <ArchiveObject Name="WordHighlightAlpha">
+    <long Value="128" Name="m_value"/>
+  </ArchiveObject>
+  <ArchiveObject Name="LoadSavedPrespective">
+    <long Value="1" Name="m_value"/>
+  </ArchiveObject>
+  <Options DisplayFoldMargin="yes" UnderlineFoldedLine="yes" FoldStyle="Arrows" DisplayBookmarkMargin="yes" BookmarkShape="Small Arrow" BookmarkBgColours="#FF0080;#0000FF;#FF0000;#00FF00;#FFFF00;" BookmarkFgColours="#FF0080;#0000FF;#FF0000;#00FF00;#FFFF00;" BookmarkLabels=";;;;Find" ClearHighlitWordsOnFind="yes" HighlightCaretLine="no" ShowLineNumber="yes" RelativeLineNumber="yes" HighlightCurLineNumber="yes" IndentationGuides="yes" CaretLineColour="#BFD8D8" IndentUsesTabs="no" FoldCompact="no" FoldAtElse="no" FoldPreprocessor="no" HighlightMatchedBraces="yes" FoldBgColour="#F0F0F0" AutoAdjustHScrollBarWidth="yes" HideChangeMarkerMargin="no" ScrollBeyondLastLine="yes" HideOutputPaneOnUserClick="no" HideOutputPaneNotIfBuild="no" HideOutputPaneNotIfSearch="no" HideOutputPaneNotIfReplace="no" HideOutputPaneNotIfReferences="no" HideOutputPaneNotIfOutput="no" HideOutputPaneNotIfTrace="no" HideOutputPaneNotIfTasks="no" HideOutputPaneNotIfBuildQ="no" HideOutputPaneNotIfCppCheck="no" HideOutputPaneNotIfSvn="no" HideOutputPaneNotIfCscope="no" HideOutputPaneNotIfGit="no" HideOutputPaneNotIfDebug="no" HideOutputPaneNotIfMemCheck="no" FindBarAtBottom="yes" ShowReplaceBar="yes" DisableSmartIndent="no" DisableSemicolonShift="no" DontAutoFoldResults="yes" DontOverrideSearchStringWithSelection="no" ShowDebugOnRun="yes" ConsoleCommand="/usr/bin/codelite_xterm '$(TITLE)' '$(CMD)'" EOLMode="Default" m_caretUseCamelCase="yes" m_wordWrap="no" m_dockingStyle="0" m_nbTabHeight="4" m_mswTheme="no" m_preferredLocale="en_US" m_useLocale="no" m_trimOnlyModifiedLines="no" m_debuggerMarkerLine="#D5F5D5" OutputTabsDirection="64" WorkspaceTabsDirection="64" IndentedComments="no" CopyLineEmptySelection="yes" SmartParen="yes" IndentWidth="4" TabWidth="4" ToolbarIconSize="16" ShowWhitespaces="0" EdgeMode="0" EdgeColumn="120" EdgeColour="#D3D3D3" CaretWidth="2" CaretBlinkPeriod="500" CaretLineAlpha="15" FileFontEncoding="UTF-8" m_options="1140857624" m_options2="0" m_webSearchPrefix="https://www.google.com/search?q="/>
   <ArchiveObject Name="ShowNavBar">
     <long Value="0" Name="m_value"/>
   </ArchiveObject>

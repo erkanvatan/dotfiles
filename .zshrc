@@ -33,6 +33,7 @@ fi
 ### Source external plugins
 
 . "$HOME/.zprezto/external-modules/k/k.sh"
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 ### Module initialization
@@ -50,7 +51,7 @@ alias transd="trans :tr"
 alias tureng="trans tr:en"
 
 # fzf
-alias fzfp="fzf --preview 'bat --style=numbers --color=always {} | head -500'"
+alias fzfp="fzf --preview 'batcat --style=numbers --color=always {} | head -500'"
 
 # Make history command show all history
 alias history="fc -l 1"
@@ -60,6 +61,12 @@ alias config='/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME'
 
 # Neovim
 alias vim="nvim"
+
+# fd-find (fd)
+alias fd="fdfind"
+
+# batcat (bat)
+alias bat="batcat"
 
 ### Script aliases
 

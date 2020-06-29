@@ -9,8 +9,10 @@ source $HOME/.config/nvim/bindings.vim
 " Colors
 syntax on   " Enable syntax highlighting
 set termguicolors
-let g:dracula_colorterm = 0
-colorscheme dracula
+"let g:dracula_colorterm = 0
+"colorscheme dracula
+let g:gruvbox_colorterm = 0
+colorscheme gruvbox
 
 set hidden
 set showtabline=2

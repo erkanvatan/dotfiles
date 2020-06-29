@@ -52,6 +52,9 @@ nmap fb :Buffers<cr>
 nmap fc :BCommits<cr>
 nmap fC :Commits<cr>
 
+" clear previous search highlight
+nnoremap <leader>h :noh<CR><esc>
+
 " :term puts you in terminal-job mode, pressing <ESC> will put you in Terminal-Normal mode with this keybind
 " my terminal already has vim modes so i don't need this
 

@@ -44,33 +44,39 @@ eval "$(fasd --init auto)"	# fasd
 ### Program aliases
 
 # k plugin
-alias l="k -h"
+alias l='k -h'
 
 # translate-shell
-alias transd="trans :tr"
-alias tureng="trans tr:en"
+alias td='trans :tr'
+alias tureng='trans tr:en'
 
 # fzf
 alias fzfp="fzf --preview 'batcat --style=numbers --color=always {} | head -500'"
 
 # Make history command show all history
-alias history="fc -l 1"
+alias history='fc -l 1'
 
 # Alias for config --bare git repository
 alias config='/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME'
 
+# Git aliases
+alias gs='git status'
+alias gc='git commit'
+alias gl='git log --oneline'
+alias ga='git add'
+
 # Neovim
-alias vim="nvim"
+alias vim='nvim'
 
 # fd-find (fd)
-alias fd="fdfind"
+alias fd='fdfind'
 
 # batcat (bat)
-alias bat="batcat"
+alias bat='batcat'
 
 ### Script aliases
 
-alias weather="weather.sh"
+alias weather='weather.sh'
 
 
 # Disable autocorrect in zsh  (nyae prompt)

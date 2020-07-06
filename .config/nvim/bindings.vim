@@ -39,7 +39,7 @@ nmap <silent> gr <Plug>(coc-references)
 let g:floaterm_keymap_toggle = '<F7>'
 let g:floaterm_keymap_next   = '<F9>'
 let g:floaterm_keymap_prev   = '<F8>'
-let g:floaterm_keymap_new    = '<F12>'
+let g:floaterm_keymap_new    = '<F10>'
 
 " fzf find bindings
 nmap ff :Files<cr>

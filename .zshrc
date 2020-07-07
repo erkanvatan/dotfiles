@@ -21,9 +21,9 @@ fi
 ### Terminal start
 
 # Weather
-if [[ -x $(which ansiweather) ]]; then
-	ansiweather -u metric  -l $LOCATION -s true -w true -h false -p false -d true
-fi
+#if [[ -x $(which ansiweather) ]]; then
+#	ansiweather -u metric  -l $LOCATION -s true -w true -h false -p false -d true
+#fi
 
 # Quotes
 if [[ -x $(which motivate) ]]; then

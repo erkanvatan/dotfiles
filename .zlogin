@@ -6,7 +6,7 @@
 #
 
 # Run these at the login
-$HOME/bin/onedrive_sync.sh
+# $HOME/bin/onedrive_sync.sh
 
 # Execute code that does not affect the current session in the background.
 {

@@ -1,24 +1,14 @@
 {
-  "statusline": "%{coc#status()}",
-  "prettier.requireConfig": true,
-
   "suggest.completionItemKindLabels": {
     "text": "t",
     "method": "m",
     "function": "f"
   },
-
-  "tslint.enable": true,
-  "tslint.autoFixOnSave": true,
-
-  "xml.java.home": "/usr/lib/jvm/java-8-openjdk/jre",
-
-  "cSpellExt.enableDictionaries": ["turkish"],
-  "cSpell.language": "en,tr",
+  "suggest.autoTrigger": "trigger",
 
   "coc.preferences.hoverTarget": "float",
+  "coc.preferences.colorSupport": true,
 
-  "python.setLinter": "flake8",
   "python.linting.flake8Path": "/usr/bin/flake8",
   "python.linting.pylintPath": "/usr/bin/pylint",
   "python.linting.pylintEnabled": false,
@@ -31,36 +21,9 @@
       "python": ["django"]
   },
 
-  "emmet.includeLanguages": {
-    "vue-html": "html",
-    "html.handlebars": "html",
-    "htmldjango": "html",
-    "javascript": "javascriptreact"
-  },
-
-  "explorer.width": 30,
-  "explorer.icon.enableNerdfont": true,
-  "explorer.previewAction.onHover": false,
-  "explorer.icon.enableVimDevicons": false,
-  "explorer.keyMappings": {
-    "<cr>": ["expandable?", "expand", "open"],
-    "v": "open:vsplit"
-  },
-
   "snippets.userSnippetsDirectory": "~/.config/nvim/snippets",
   "snippets.ultisnips.directories": [
     "UltiSnips",
     "gosnippets/UltiSnips"
-  ],
-
-  "coc.preferences.colorSupport": true,
-
-  "languageserver": {
-    "bash": {
-      "command": "bash-language-server",
-      "args": ["start"],
-      "filetypes": ["sh"],
-      "ignoredRootPaths": ["~"]
-    }
-  }
+  ]
 }

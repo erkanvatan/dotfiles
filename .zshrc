@@ -75,9 +75,10 @@ alias fd='fdfind'
 alias bat='batcat'
 
 ### Script aliases
-
 alias weather='weather.sh'
 
+### Reminder/corrector aliases
+alias rm='echo "Use trash instead of rm (use \\\\rm -i if you want to skip this warning.)"'
 
 # Disable autocorrect in zsh  (nyae prompt)
 unsetopt correct
@@ -91,4 +92,6 @@ setopt CLOBBER
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-
+# Load nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"

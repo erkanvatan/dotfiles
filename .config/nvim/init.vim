@@ -4,22 +4,26 @@ set encoding=UTF-8
 " Importing other configs
 source $HOME/.config/nvim/plugins.vim
 source $HOME/.config/nvim/lightline.vim
-source $HOME/.config/nvim/bindings.vim
-
+source $HOME/.config/nvim/bindings.vim 
 " Colors
 syntax on   " Enable syntax highlighting
-set termguicolors
-"let g:dracula_colorterm = 0
-"colorscheme dracula
-let g:gruvbox_colorterm = 0
+set t_8f=^[[38;2;%lu;%lu;%lum        " set foreground color
+set t_8b=^[[48;2;%lu;%lu;%lum        " set background color
+set background=dark
 colorscheme gruvbox
+set t_Co=256                         " Enable 256 colors
+set termguicolors                    " Enable GUI colors for the terminal to get truecolor
 
+" Recommended by CoC
 set hidden
-set showtabline=2
+set updatetime=300 
+set nobackup    " Disables backup files
+set nowritebackup   " Disables backup files
+set cmdheight=2
+set shortmess+=c
+set signcolumn=yes "always show sign column, otherwise it will shift text
 
-" Python paths, for some stuff
-let g:python3_host_prog='/usr/bin/python'
-let g:python_host_prog='/usr/bin/python2'
+set showtabline=2
 
 " Show line numbers and make current line bold
 " Don't wrap lines
@@ -29,16 +33,18 @@ highlight CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
 highlight CursorLineNR cterm=bold
 set nowrap
 
+" Disable newline continution of comments
+set formatoptions-=cro
+
+let g:python3_host_prog='/usr/bin/python3' "set python3 path
+
 set ignorecase
 set smartcase
 set mouse=a
 
-set nobackup    " Disables backup files - recommanded by Coc
-set nowritebackup   " Disables backup files - recommanded by Coc
 set undofile
 set undodir=~/.config/nvim/undodir
 
-set clipboard=unnamedplus   " Connect vim clipboard with the system clipboard
 set inccommand=nosplit
 set splitright
 set splitbelow
@@ -52,10 +58,6 @@ set shiftwidth=4
 set expandtab
 set smarttab
 set smartindent
-
-
-
-
 
 " Language-specific
 "augroup langindentation

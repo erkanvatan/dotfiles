@@ -4,7 +4,7 @@
     "method": "m",
     "function": "f"
   },
-  "suggest.autoTrigger": "trigger",
+  "suggest.autoTrigger": "always",
 
   "coc.preferences.hoverTarget": "float",
   "coc.preferences.colorSupport": true,

@@ -10,10 +10,9 @@ call plug#begin('~/.config/nvim/plugged')
 
 Plug 'mhinz/vim-startify' "changes default vim starting screen
 
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeTabsToggle' }
-Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeTabsToggle' }
-Plug 'jistr/vim-nerdtree-tabs', { 'on': 'NERDTreeTabsToggle' }
-Plug 'ryanoasis/vim-devicons', { 'on': 'NERDTreeTabsToggle' }
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
+Plug 'ryanoasis/vim-devicons', { 'on': 'NERDTreeToggle' }
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -30,9 +29,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 
 Plug 'tpope/vim-surround' "change surroundings like single or double quotes to different things (cs) or delete them (ds) easily
-Plug 'scrooloose/nerdcommenter' "comment/decomment lines easily
-" [count]<leader>cc     |nerd commenter|
-" [count]<leader>c<space>   |toggle comments (commented/uncommented)|
+Plug 'scrooloose/nerdcommenter'
 
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'junegunn/rainbow_parentheses.vim'
@@ -45,15 +42,15 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 
 Plug 'dense-analysis/ale', { 'tag': 'v2.5.0'}
 
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-Plug 'jiangmiao/auto-pairs' "toggle with <M-p>
+Plug 'jiangmiao/auto-pairs'
 
 Plug 'honza/vim-snippets'
 Plug 'voldikss/vim-floaterm' "floating terminal for vim
-Plug 'alvan/vim-closetag'
+"Plug 'alvan/vim-closetag'  " auto close HTML tags
 
 Plug 'morhetz/gruvbox', { 'as': 'gruvbox' } "vim theme
 
-Plug 'liuchengxu/vim-which-key'
+"Plug 'liuchengxu/vim-which-key'
 Plug 'jeffkreeftmeijer/vim-numbertoggle' "automatically toggles between hybrid and absolute line numbers
 
 call plug#end()
@@ -99,6 +96,10 @@ let g:NERDTreeIndicatorMapCustom = {
     \ 'Ignored'   : '&',
     \ "Unknown"   : "?"
     \ }
+" " automatically close nerdtree if it's the last buffer open
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" nerdcommenter config
 " " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
 
@@ -108,6 +109,9 @@ let g:vim_markdown_conceal = 0
 let g:vim_markdown_conceal_code_blocks = 0
 
 " ALE (Asynchronous Lint Engine)
+" " auto close error-list when it's the last buffer open
+autocmd QuitPre * if empty(&bt) | lclose | endif
+
 let g:ale_sign_error = '❌'
 let g:ale_sign_warning = '⚠️'
 let g:ale_fix_on_save = 1

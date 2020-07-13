@@ -4,7 +4,7 @@ set encoding=UTF-8
 " Importing other configs
 source $HOME/.config/nvim/plugins.vim
 source $HOME/.config/nvim/lightline.vim
-source $HOME/.config/nvim/bindings.vim 
+source $HOME/.config/nvim/bindings.vim
 " Colors
 syntax on   " Enable syntax highlighting
 set t_8f=^[[38;2;%lu;%lu;%lum        " set foreground color
@@ -16,10 +16,10 @@ set termguicolors                    " Enable GUI colors for the terminal to get
 
 " Recommended by CoC
 set hidden
-set updatetime=300 
+set updatetime=300
 set nobackup    " Disables backup files
 set nowritebackup   " Disables backup files
-set cmdheight=2
+set cmdheight=2 " height of command-line at the bottom
 set shortmess+=c
 set signcolumn=yes "always show sign column, otherwise it will shift text
 
@@ -75,4 +75,3 @@ set smartindent
 "	autocmd Filetype xml setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 "	autocmd Filetype lua setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 "augroup END
-

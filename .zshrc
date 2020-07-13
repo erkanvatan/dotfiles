@@ -38,7 +38,7 @@ fi
 
 ### Module initialization
 
-eval "$(fasd --init auto)"	# fasd 
+eval "$(fasd --init auto)"	# fasd
 
 
 ### Program aliases
@@ -65,8 +65,8 @@ alias gc='git commit'
 alias gl='git log --oneline'
 alias ga='git add'
 
-# Neovim
-alias vim='nvim'
+# neovim
+alias vim="stty stop '' -ixoff; nvim" # disable Ctrl + S mapping of the terminal before running nvim
 
 # fd-find (fd)
 alias fd='fdfind'

@@ -2,20 +2,24 @@
 
 let mapleader = "\<Space>"
 
+" quit without saving
 nnoremap qq :q!<CR>
+" quit after saving
 nnoremap qw :wq<CR>
-nnoremap ww :w<CR>
+" save with Ctrl + S (might cause problems in some terminals, check my vim alias in .zshrc also)
+noremap <C-s> :w<CR>
+inoremap <C-s> <ESC>:w<CR>a
 
-" NERDTree
-nnoremap <silent> <C-c> :NERDTreeTabsToggle<CR>
+" NERDTree bindings
+nnoremap <silent> <C-c> :NERDTreeToggle<CR>
 " " Map to open current file in NERDTree and set size
 nnoremap <leader>pv :NERDTreeFind<bar> :vertical resize 45<CR>
 
 nnoremap <Leader>v :Vista!!<CR>
 
 " Copy-paste bindings for system clipboard (+)
-nnoremap <Leader>y "+y
-nnoremap <Leader>p "+p
+nnoremap <Leader>yy "+y
+nnoremap <Leader>pp "+p
 
 " Change vim window focus
 map <C-h> <C-w>h
@@ -28,10 +32,11 @@ map <C-k> <C-w>k
 map <C-Up> <C-w>k
 
 " Move between tabs
-map <C-s><up> :tabr<cr>
-map <C-s><down> :tabl<cr>
-map <C-s><left> :tabp<cr>
-map <C-s><right> :tabn<cr>
+map <silent> <C-S><up> :tabp<cr>
+map <silent> <C-S><down> :tabn<cr>
+
+nnoremap <silent> <TAB> :tabn<cr>
+nnoremap <silent> <s-TAB> :tabp<cr>
 
 " Resize vim windows
 nnoremap <silent> <C-M-j> :resize -2<CR>
@@ -42,7 +47,7 @@ nnoremap <silent> <C-M-l> :vertical resize +2<CR>
 " COC (language server) bindings
 imap <C-k> <Plug>(coc-snippets-expand-jump)
 vmap <C-j> <Plug>(coc-snippets-select)
-" " To go back to previous state use Ctrl+O
+" " Jump bindings, to go back to previous location use Ctrl+O
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
@@ -77,10 +82,21 @@ nmap <leader>qf  <Plug>(coc-fix-current)
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 " " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
-" Use `[g` and `]g` to navigate diagnostics
+" Use `[c` and `]c` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+" ALE bindings (Asynchronous Lint Engine)
+nmap <silent> [a <Plug>(ale_previous_wrap)
+nmap <silent> ]a <Plug>(ale_next_wrap)
+
+" vim-gitgutter bindings
+nmap [h <Plug>(GitGutterPrevHunk)
+nmap ]h <Plug>(GitGutterNextHunk)
+" " Stage the hunk with <Leader>hs
+" " Undo the hunk with <Leader>hu
+" " Preview the hunk with <Leader>hp
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -90,7 +106,7 @@ function! s:show_documentation()
   endif
 endfunction
 
-" Floating nvim terminal
+" floaterm bindings
 let g:floaterm_keymap_toggle = '<F7>'
 let g:floaterm_keymap_next   = '<F9>'
 let g:floaterm_keymap_prev   = '<F8>'
@@ -114,14 +130,26 @@ nnoremap <leader>h :noh<CR><esc>
 nnoremap <leader>g :Goyo<CR><esc>
 
 " markdown-preview
-nmap <leader>m <Plug>MarkdownPreviewToggle
+nmap <leader>tm <Plug>MarkdownPreviewToggle
 
 " Better multiple lines tabbing with < and >
 vnoremap < <gv
 vnoremap > >gv
 
 " rainbow_parantheses
-nnoremap <leader>rp :RainbowParentheses!!<CR>
+nnoremap <leader>tr :RainbowParentheses!!<CR>
 
 " nvim-colorizer
-nnoremap <leader>cr :ColorizerToggle<CR>
+nnoremap <leader>tc :ColorizerToggle<CR>
+
+" auto-pairs
+" " Toggle with <M-p>
+
+" nerdcommenter
+" " [count]<leader>cc     |make lines commented|
+" " [count]<leader>c<space>   |toggle line's comment status (commented/uncommented)|
+
+" vim-surround
+" " Works with parentheses(), brackets [], quotes (double or single), XML tags <q> </q>  and more
+" " To change 'Hello' to <q>Hello</q> : cs'<q>
+" " To remove delimiters from 'Hello' : ds'

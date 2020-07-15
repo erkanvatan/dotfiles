@@ -10,6 +10,10 @@ nnoremap qw :wq<CR>
 noremap <C-s> :w<CR>
 inoremap <C-s> <ESC>:w<CR>a
 
+" vim-auto-save
+noremap <M-s> :AutoSaveToggle<CR>
+inoremap <M-s> <ESC>:AutoSaveToggle<CR>a
+
 " NERDTree bindings
 nnoremap <silent> <C-c> :NERDTreeToggle<CR>
 " " Map to open current file in NERDTree and set size
@@ -143,13 +147,15 @@ nnoremap <leader>tr :RainbowParentheses!!<CR>
 nnoremap <leader>tc :ColorizerToggle<CR>
 
 " auto-pairs
-" " Toggle with <M-p>
+" " <M-p> : Toggle auto-pairs
+" " <M-e> : Insert () or {} or [] before something then hit <M-e> to fast wrap
+" " <M-n> : Jump to next closed pair
 
 " nerdcommenter
-" " [count]<leader>cc     |make lines commented|
-" " [count]<leader>c<space>   |toggle line's comment status (commented/uncommented)|
+" " [count]<leader>cc          : make lines commented
+" " [count]<leader>c<space>    : toggle line's comment status (commented/uncommented)
 
 " vim-surround
 " " Works with parentheses(), brackets [], quotes (double or single), XML tags <q> </q>  and more
-" " To change 'Hello' to <q>Hello</q> : cs'<q>
-" " To remove delimiters from 'Hello' : ds'
+" " cs'<q>     : To change 'Hello' to <q>Hello</q>
+" " ds'        : To remove delimiters from 'Hello'

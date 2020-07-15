@@ -1,4 +1,4 @@
-"If plugin manager vim-plug isn't installed, install automatically
+"If plugin manager vim-plug isn't installed, install it automatically
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
     echo "Downloading junegunn/vim-plug to manage plugins..."
     silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
@@ -8,10 +8,11 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 
+Plug '907th/vim-auto-save'
 Plug 'mhinz/vim-startify' "changes default vim starting screen
 
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
+" Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
 Plug 'ryanoasis/vim-devicons', { 'on': 'NERDTreeToggle' }
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -147,6 +148,8 @@ autocmd FileType json let g:indentLine_conceallevel = 0
 let g:coc_user_config = {}
 let g:coc_global_extensions = [
     \ 'coc-json',
+    \ 'coc-yank',
+    \ 'coc-marketplace',
     \ 'coc-git',
     \ 'coc-vimlsp',
     \ 'coc-tsserver',
@@ -186,3 +189,11 @@ let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
 let g:floaterm_gitcommit='floaterm'
 let g:floaterm_width=0.8
 let g:floaterm_height=0.8
+
+" vim-auto-save config
+let g:auto_save_silent = 1  " do not display the auto-save notification
+let g:auto_save = 0 " auto-save off by default
+" FileTypes to enable auto_save
+"autocmd FileType python let b:auto_save = 1
+
+let g:auto_save_events = ["InsertLeave", "TextChanged"] " set events to trigger auto-save

@@ -27,7 +27,7 @@ fi
 
 # Quotes
 if [[ -x $(which motivate) ]]; then
-	motivate
+    motivate
 fi
 
 ### Source external plugins

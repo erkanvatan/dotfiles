@@ -111,7 +111,7 @@ function! s:show_documentation()
 endfunction
 
 " floaterm bindings
-let g:floaterm_keymap_toggle = '<F7>'
+let g:floaterm_keymap_toggle = '<C-f>'
 let g:floaterm_keymap_next   = '<F9>'
 let g:floaterm_keymap_prev   = '<F8>'
 let g:floaterm_keymap_new    = '<F10>'

@@ -16,8 +16,8 @@ inoremap <M-s> <ESC>:AutoSaveToggle<CR>a
 
 " NERDTree bindings
 nnoremap <silent> <C-c> :NERDTreeToggle<CR>
-" " Map to open current file in NERDTree and set size
-nnoremap <leader>pv :NERDTreeFind<bar> :vertical resize 45<CR>
+" " Map to open current file in NERDTree
+nnoremap <leader>pv :NERDTreeFind<bar><CR>
 
 nnoremap <Leader>v :Vista!!<CR>
 

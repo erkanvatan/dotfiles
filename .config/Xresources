@@ -1,8 +1,8 @@
 !! Transparency (0-1)
-*.alpha: 1
+*.alpha: 0.9
 
 !! Set a default font and font size as below
-*.font:MesloLGS NF:size=11
+*.font:MesloLGS NF:size=14
 
 ! Base16 Gruvbox dark, hard
 ! Scheme: Dawid Kurek (dawikur@gmail.com), morhetz (https://github.com/morhetz/gruvbox)

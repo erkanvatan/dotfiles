@@ -80,7 +80,7 @@ alias bat='batcat'
 alias weather='weather.sh'
 
 ### Reminder/corrector aliases
-alias rm='echo "Use trash instead of rm (use \\\\rm -i if you want to skip this warning.)"'
+# alias rm='echo "Use trash instead of rm (use \\\\rm -i if you want to skip this warning.)"'
 
 # Disable autocorrect in zsh  (nyae prompt)
 unsetopt correct

@@ -12,7 +12,7 @@ Plug '907th/vim-auto-save'
 Plug 'mhinz/vim-startify' "changes default vim starting screen
 
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-" Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
+Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
 Plug 'ryanoasis/vim-devicons', { 'on': 'NERDTreeToggle' }
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }

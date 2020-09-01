@@ -27,26 +27,19 @@ nnoremap <Leader>pp "+p
 
 " Change vim window focus
 map <C-h> <C-w>h
-map <C-Left> <C-w>h
 map <C-l> <C-w>l
-map <C-Right> <C-w>l
 map <C-j> <C-w>j
-map <C-Down> <C-w>j
 map <C-k> <C-w>k
-map <C-Up> <C-w>k
 
 " Move between tabs
-map <silent> <C-S><up> :tabp<cr>
-map <silent> <C-S><down> :tabn<cr>
-
-nnoremap <silent> <TAB> :tabn<cr>
-nnoremap <silent> <s-TAB> :tabp<cr>
+nnoremap <silent> <C-M-l> :tabn<cr>
+nnoremap <silent> <C-M-h> :tabp<cr>
 
 " Resize vim windows
-nnoremap <silent> <C-M-j> :resize -2<CR>
-nnoremap <silent> <C-M-k> :resize +2<CR>
-nnoremap <silent> <C-M-h> :vertical resize -2<CR>
-nnoremap <silent> <C-M-l> :vertical resize +2<CR>
+nnoremap <silent> <C-Down> :resize -2<CR>
+nnoremap <silent> <C-Up> :resize +2<CR>
+nnoremap <silent> <C-Left> :vertical resize -2<CR>
+nnoremap <silent> <C-Right> :vertical resize +2<CR>
 
 " COC (language server) bindings
 imap <C-k> <Plug>(coc-snippets-expand-jump)
@@ -117,15 +110,15 @@ let g:floaterm_keymap_prev   = '<F8>'
 let g:floaterm_keymap_new    = '<F10>'
 
 " fzf find bindings
-nmap ff :Files<cr>
-nmap ft :BTags<cr>
-nmap fT :Tags<cr>
-nmap fl :BLines<cr>
-nmap fL :Lines<cr>
-nmap fg :GFiles?<cr>
-nmap fb :Buffers<cr>
-nmap fc :BCommits<cr>
-nmap fC :Commits<cr>
+nmap <leader>ff :Files<cr>
+nmap <leader>ft :BTags<cr>
+nmap <leader>fT :Tags<cr>
+nmap <leader>fl :BLines<cr>
+nmap <leader>fL :Lines<cr>
+nmap <leader>fg :GFiles?<cr>
+nmap <leader>fb :Buffers<cr>
+nmap <leader>fc :BCommits<cr>
+nmap <leader>fC :Commits<cr>
 
 " Clear previous search highlight
 nnoremap <leader>h :noh<CR><esc>

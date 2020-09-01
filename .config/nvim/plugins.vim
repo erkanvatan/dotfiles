@@ -54,6 +54,9 @@ Plug 'morhetz/gruvbox', { 'as': 'gruvbox' } "vim theme
 "Plug 'liuchengxu/vim-which-key'
 Plug 'jeffkreeftmeijer/vim-numbertoggle' "automatically toggles between hybrid and absolute line numbers
 
+" Vim game to practice some movements
+Plug 'ThePrimeagen/vim-be-good', {'do': './install.sh'}
+
 call plug#end()
 
 function! SetupCommandAbbrs(from, to)
@@ -197,3 +200,6 @@ let g:auto_save = 0 " auto-save off by default
 "autocmd FileType python let b:auto_save = 1
 
 let g:auto_save_events = ["InsertLeave", "TextChanged"] " set events to trigger auto-save
+
+" vim-be-good config
+let g:vim_be_good_floating = 0

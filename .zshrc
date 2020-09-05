@@ -32,8 +32,6 @@ fi
 
 ### Source external plugins
 
-. "$HOME/.zprezto/external-modules/k/k.sh"
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 ### Module initialization
@@ -75,6 +73,9 @@ alias fd='fdfind'
 
 # batcat (bat)
 alias bat='batcat'
+
+# pip3
+alias pip='pip3'
 
 ### Script aliases
 alias weather='weather.sh'

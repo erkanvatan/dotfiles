@@ -17,6 +17,8 @@ Plug 'ryanoasis/vim-devicons', { 'on': 'NERDTreeToggle' }
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'stsewd/fzf-checkout.vim'
+
 
 Plug 'liuchengxu/vista.vim' "viewer and finder for LSP symbols and tags
 Plug 'junegunn/goyo.vim' "distraction-free writing
@@ -51,11 +53,11 @@ Plug 'voldikss/vim-floaterm' "floating terminal for vim
 
 Plug 'morhetz/gruvbox', { 'as': 'gruvbox' } "vim theme
 
-"Plug 'liuchengxu/vim-which-key'
+" Plug 'liuchengxu/vim-which-key'
 Plug 'jeffkreeftmeijer/vim-numbertoggle' "automatically toggles between hybrid and absolute line numbers
 
 " Vim game to practice some movements
-Plug 'ThePrimeagen/vim-be-good', {'do': './install.sh'}
+" Plug 'ThePrimeagen/vim-be-good'
 
 call plug#end()
 

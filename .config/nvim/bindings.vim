@@ -2,6 +2,12 @@
 
 let mapleader = "\<Space>"
 
+" open bindings.vim buffer in new tab
+nnoremap <silent> <leader>bb :tabnew ~/.config/nvim/bindings.vim<CR>
+
+" source $MYVIMRC
+nnoremap <leader>ss :source $MYVIMRC<CR>
+
 " quit without saving
 nnoremap qq :q!<CR>
 " quit after saving
@@ -19,11 +25,14 @@ nnoremap <silent> <C-c> :NERDTreeToggle<CR>
 " " Map to open current file in NERDTree
 nnoremap <leader>pv :NERDTreeFind<bar><CR>
 
-nnoremap <Leader>v :Vista!!<CR>
+nnoremap <Leader>tv :Vista!!<CR>
 
 " Copy-paste bindings for system clipboard (+)
 nnoremap <Leader>yy "+y
+vnoremap <Leader>yy "+y
+
 nnoremap <Leader>pp "+p
+vnoremap <Leader>pp "+p
 
 " Change vim window focus
 map <C-h> <C-w>h
@@ -77,7 +86,7 @@ nmap <leader>a  <Plug>(coc-codeaction-selected)
 nmap <leader>qf  <Plug>(coc-fix-current)
 " " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
-" " Symbol renaming.
+"v" Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
 " Use `[c` and `]c` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
@@ -119,12 +128,20 @@ nmap <leader>fg :GFiles?<cr>
 nmap <leader>fb :Buffers<cr>
 nmap <leader>fc :BCommits<cr>
 nmap <leader>fC :Commits<cr>
+" " Select multiple things with Shift + TAB
+" " Open entries in split panes with TAB
+" " Open entries in different tabs with Ctrl + T
+
+" fzf-checkout bindings
+nnoremap <leader>gc :GBranches<CR>
+" " ctrl + d to delete the branch under cursor
+" " alt + enter to track a remote branch locally
 
 " Clear previous search highlight
 nnoremap <leader>h :noh<CR><esc>
 
 " goyo
-nnoremap <leader>g :Goyo<CR><esc>
+nnoremap <leader>tg :Goyo<CR><esc>
 
 " markdown-preview
 nmap <leader>tm <Plug>MarkdownPreviewToggle
@@ -138,6 +155,17 @@ nnoremap <leader>tr :RainbowParentheses!!<CR>
 
 " nvim-colorizer
 nnoremap <leader>tc :ColorizerToggle<CR>
+
+" vim-fugitive
+" " Enter :Git and then do g? to checkout all hotkeys
+" " After :Git use cc to enter commit buffer
+" " to add the file under cursor to .gitignore use {anynumber}gI
+" " git status
+nnoremap <leader>gs :G<CR>
+" " solving merge conflicts
+nnoremap <leader>gj :diffget //3<CR>
+nnoremap <leader>gf :diffget //2<CR>
+
 
 " auto-pairs
 " " <M-p> : Toggle auto-pairs

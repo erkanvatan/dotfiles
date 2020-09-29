@@ -6,7 +6,7 @@
   },
   "suggest.autoTrigger": "always",
 
-  "diagnostic.displayByAle": true,
+  "diagnostic.displayByAle": false,
 
   "coc.preferences.hoverTarget": "float",
   "coc.preferences.colorSupport": true,

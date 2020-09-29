@@ -6,15 +6,24 @@
   },
   "suggest.autoTrigger": "always",
 
+  "diagnostic.displayByAle": true,
+
   "coc.preferences.hoverTarget": "float",
   "coc.preferences.colorSupport": true,
 
-  "python.linting.flake8Path": "/usr/bin/flake8",
-  "python.linting.pylintPath": "/usr/bin/pylint",
+  "python.linting.flake8Path": "~/.local/bin/flake8",
+  "python.linting.pylintPath": "~/.local/bin/pylint",
   "python.linting.pylintEnabled": false,
+  "python.linting.enabled": false,
+  "python.linting.flake8Enabled": false,
+  "python.linting.flake8Args": ["--ignore=E501"],
   "python.jediEnabled": true,
   "python.jediPath": "/usr/lib/python3.8/site-packages/",
   "python.formatting.autopep8Path": "/usr/bin/autopep8",
+  "python.formatting.autopep8Args": [
+    "--max-line-length=120"
+  ],
+
 
   "suggest.noselect": false,
   "snippets.extends": {

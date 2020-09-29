@@ -6,6 +6,12 @@ if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+" vim-polyglot config
+" let g:polyglot_disabled = ['python']
+
+" Disable ALE lsp for specific files
+"autocmd FileType python let b:ale_disable_lsp = 1
+
 call plug#begin('~/.config/nvim/plugged')
 
 Plug '907th/vim-auto-save'
@@ -36,13 +42,14 @@ Plug 'scrooloose/nerdcommenter'
 
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'Yggdroot/indentLine'
 
 " Syntax highlighting
 Plug 'sheerun/vim-polyglot' "language pack for vim
 Plug 'vim-python/python-syntax', { 'for': 'python' }
 Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] }
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
-Plug 'dense-analysis/ale', { 'tag': 'v2.5.0'}
+Plug 'dense-analysis/ale'
 
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'jiangmiao/auto-pairs'
@@ -55,9 +62,6 @@ Plug 'morhetz/gruvbox', { 'as': 'gruvbox' } "vim theme
 
 " Plug 'liuchengxu/vim-which-key'
 Plug 'jeffkreeftmeijer/vim-numbertoggle' "automatically toggles between hybrid and absolute line numbers
-
-" Vim game to practice some movements
-" Plug 'ThePrimeagen/vim-be-good'
 
 call plug#end()
 
@@ -77,8 +81,6 @@ let g:goyo_width = 120
 let g:vista_fzf_preview = ['right:50%']
 let g:vista#renderer#enable_icon = 1
 
-" vim-polyglot config
-let g:polyglot_disabled = ['python']
 
 " fzf config
 let g:fzf_action = {
@@ -122,12 +124,16 @@ let g:ale_sign_error = '❌'
 let g:ale_sign_warning = '⚠️'
 let g:ale_fix_on_save = 1
 
+" Don't lint when text is changed
+let g:ale_lint_on_text_changed = 'never'
+
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] [%code%] %s [%severity%]'
 
 let g:ale_open_list = 1
 let g:ale_list_window_size = 3
+
 highlight ALEError ctermbg=White
 highlight ALEError ctermfg=DarkRed
 highlight ALEWarning ctermbg=LightYellow
@@ -146,6 +152,9 @@ let g:ale_fixers = {
 \   'python': ['autopep8']
 \}
 autocmd FileType python let b:ale_warn_about_trailing_whitespace = 0
+" Disable line too long warning for flake8
+let g:ale_python_flake8_options = '--ignore=E501'
+
 autocmd FileType json let g:indentLine_conceallevel = 0
 
 " coc config
@@ -191,9 +200,10 @@ let g:rainbow#max_level = 16
 let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
 
 " vim-floaterm config
+" " Go back to the NORMAL mode using <C-\><C-N>
 let g:floaterm_gitcommit='floaterm'
-let g:floaterm_width=0.8
-let g:floaterm_height=0.8
+let g:floaterm_width=0.9
+let g:floaterm_height=0.9
 
 " vim-auto-save config
 let g:auto_save_silent = 1  " do not display the auto-save notification
@@ -202,6 +212,3 @@ let g:auto_save = 0 " auto-save off by default
 "autocmd FileType python let b:auto_save = 1
 
 let g:auto_save_events = ["InsertLeave", "TextChanged"] " set events to trigger auto-save
-
-" vim-be-good config
-let g:vim_be_good_floating = 0

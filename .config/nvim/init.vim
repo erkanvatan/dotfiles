@@ -59,6 +59,9 @@ set expandtab
 set smarttab
 set smartindent
 
+" Disable sql-complete
+let g:omni_sql_no_default_maps = 1
+
 " Language-specific
 "augroup langindentation
 "	autocmd Filetype go setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4

@@ -171,6 +171,8 @@ nnoremap <leader>gf :diffget //2<CR>
 " " <M-p> : Toggle auto-pairs
 " " <M-e> : Insert () or {} or [] before something then hit <M-e> to fast wrap
 " " <M-n> : Jump to next closed pair
+" " Use Ctrl-V) to insert paren without trigerring plugin
+" " Use x or DEL to delete the character inserted by the plugin
 
 " nerdcommenter
 " " [count]<leader>cc          : make lines commented

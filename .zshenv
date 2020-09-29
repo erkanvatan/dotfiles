@@ -10,7 +10,7 @@ if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; t
   source "${ZDOTDIR:-$HOME}/.zprofile"
 fi
 
-export PATH="$PATH:$HOME/bin"
+export PATH="$PATH:$HOME/.local/bin:$HOME/bin"
 
 # My environment variables
 export LOCATION="***REMOVED***,TR"	# used for ansiweather location

@@ -33,9 +33,6 @@ highlight CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
 highlight CursorLineNR cterm=bold
 set nowrap
 
-" Disable newline continution of comments
-set formatoptions-=cro
-
 let g:python3_host_prog='/usr/bin/python3' "set python3 path
 
 set ignorecase

@@ -39,13 +39,15 @@ Plug 'junegunn/gv.vim'
 
 Plug 'tpope/vim-surround' "change surroundings like single or double quotes to different things (cs) or delete them (ds) easily
 Plug 'scrooloose/nerdcommenter'
+Plug 'mattn/emmet-vim' " good for html tags
+
 
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'Yggdroot/indentLine'
 
 " Syntax highlighting
-Plug 'sheerun/vim-polyglot' "language pack for vim
+"Plug 'sheerun/vim-polyglot' "language pack for vim
 Plug 'vim-python/python-syntax', { 'for': 'python' }
 Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] }
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
@@ -56,7 +58,7 @@ Plug 'jiangmiao/auto-pairs'
 
 Plug 'honza/vim-snippets'
 Plug 'voldikss/vim-floaterm' "floating terminal for vim
-"Plug 'alvan/vim-closetag'  " auto close HTML tags
+Plug 'alvan/vim-closetag'  " auto close HTML tags
 
 Plug 'morhetz/gruvbox', { 'as': 'gruvbox' } "vim theme
 
@@ -142,13 +144,15 @@ highlight ALEWarning ctermfg=Darkmagenta
 " " Set linters by file type
 let g:ale_linters = {
 \   'javascript': ['eslint'],
-\   'python': ['flake8']
+\   'python': ['flake8'],
+\   'html': ['tidy']
 \}
 " " Set fixers by file type
 " " remove trailing lines and trim whitespaces for every file type
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \   'javascript': ['eslint'],
+\   'html': ['tidy'],
 \   'python': ['autopep8']
 \}
 autocmd FileType python let b:ale_warn_about_trailing_whitespace = 0
@@ -162,14 +166,17 @@ autocmd FileType json let g:indentLine_conceallevel = 0
 let g:coc_user_config = {}
 let g:coc_global_extensions = [
     \ 'coc-json',
+    \ 'coc-xml',
     \ 'coc-yank',
     \ 'coc-marketplace',
     \ 'coc-git',
     \ 'coc-vimlsp',
-    \ 'coc-tsserver',
+    \ 'coc-eslint',
     \ 'coc-python',
     \ 'coc-clangd',
     \ 'coc-snippets',
+    \ 'coc-emmet',
+    \ 'coc-html',
     \ ]
 
 augroup mygroup
@@ -198,6 +205,8 @@ let g:python_highlight_all = 1
 " rainbow_parentheses config
 let g:rainbow#max_level = 16
 let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
+" " Auto activate RainbowParentheses
+autocmd FileType * RainbowParentheses
 
 " vim-floaterm config
 " " Go back to the NORMAL mode using <C-\><C-N>
@@ -212,3 +221,11 @@ let g:auto_save = 0 " auto-save off by default
 "autocmd FileType python let b:auto_save = 1
 
 let g:auto_save_events = ["InsertLeave", "TextChanged"] " set events to trigger auto-save
+
+" vim-closetag config
+" " Shortcut for closing tags, default is '>'
+let g:closetag_shortcut = '>'
+" " These are the file types where this plugin is enabled.
+let g:closetag_filetypes = 'html,xhtml,phtml,xml'
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.xml'
+let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'

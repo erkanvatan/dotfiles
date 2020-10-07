@@ -15,7 +15,9 @@ export PATH="$PATH:$HOME/.local/bin:$HOME/bin"
 # My environment variables
 export LOCATION="***REMOVED***,TR"	# used for ansiweather location
 export EDITOR='vim'
-export BROWSER='firefox'
+# WSL2 only
+#export BROWSER='firefox'
+export BROWSER="/mnt/c/Firefox/firefox.exe"
 
 # Setting fd as the default source for fzf
 export FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude .git'

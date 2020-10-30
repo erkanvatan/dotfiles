@@ -182,3 +182,12 @@ nnoremap <leader>gf :diffget //2<CR>
 " " Works with parentheses(), brackets [], quotes (double or single), XML tags <q> </q>  and more
 " " cs'<q>     : To change 'Hello' to <q>Hello</q>
 " " ds'        : To remove delimiters from 'Hello'
+
+" vim-closetag
+" " Shortcut for closing tags, default is '>'
+let g:closetag_shortcut = '>'
+
+" emmet-vim
+" " All commands and bindings:  https://raw.githubusercontent.com/mattn/emmet-vim/master/TUTORIAL
+" " Trigger key <C-y>,      you can also use autocomplete to select abbreviation
+let g:user_emmet_leader_key='<C-y>'

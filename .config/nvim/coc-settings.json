@@ -11,15 +11,15 @@
   "coc.preferences.hoverTarget": "float",
   "coc.preferences.colorSupport": true,
 
-  "python.linting.flake8Path": "~/.local/bin/flake8",
-  "python.linting.pylintPath": "~/.local/bin/pylint",
+  "python.linting.flake8Path":  "~/.pyenv/versions/3.9.0/bin/flake8",
+  "python.linting.pylintPath":  "~/.pyenv/versions/3.9.0/bin/pylint",
   "python.linting.pylintEnabled": false,
   "python.linting.enabled": false,
   "python.linting.flake8Enabled": false,
   "python.linting.flake8Args": ["--ignore=E501"],
   "python.jediEnabled": true,
-  "python.jediPath": "/usr/lib/python3.8/site-packages/",
-  "python.formatting.autopep8Path": "/usr/bin/autopep8",
+  "python.jediPath": "~/.pyenv/versions/3.9.0/lib/python3.9/site-packages",
+  "python.formatting.autopep8Path": "~/.pyenv/versions/3.9.0/bin/autopep8",
   "python.formatting.autopep8Args": [
     "--max-line-length=120"
   ],
@@ -27,6 +27,9 @@
   "html.enable": true,
 
   "eslint.autoFixOnSave": true,
+  "eslint.enable": false,
+
+  "tsserver.npm": "/usr/bin/npm",
 
   "suggest.noselect": false,
   "snippets.extends": {

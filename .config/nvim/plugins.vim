@@ -6,9 +6,6 @@ if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-" vim-polyglot config
-" let g:polyglot_disabled = ['python']
-
 " Disable ALE lsp for specific files
 "autocmd FileType python let b:ale_disable_lsp = 1
 
@@ -39,7 +36,9 @@ Plug 'junegunn/gv.vim'
 
 Plug 'tpope/vim-surround' "change surroundings like single or double quotes to different things (cs) or delete them (ds) easily
 Plug 'scrooloose/nerdcommenter'
+
 Plug 'mattn/emmet-vim' " good for html tags
+Plug 'othree/html5.vim', {'for': ['html', 'html5', 'htm']}
 
 
 Plug 'norcalli/nvim-colorizer.lua'
@@ -47,7 +46,6 @@ Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'Yggdroot/indentLine'
 
 " Syntax highlighting
-"Plug 'sheerun/vim-polyglot' "language pack for vim
 Plug 'vim-python/python-syntax', { 'for': 'python' }
 Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] }
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
@@ -62,7 +60,6 @@ Plug 'alvan/vim-closetag'  " auto close HTML tags
 
 Plug 'morhetz/gruvbox', { 'as': 'gruvbox' } "vim theme
 
-" Plug 'liuchengxu/vim-which-key'
 Plug 'jeffkreeftmeijer/vim-numbertoggle' "automatically toggles between hybrid and absolute line numbers
 
 call plug#end()
@@ -127,14 +124,15 @@ let g:ale_sign_warning = '⚠️'
 let g:ale_fix_on_save = 1
 
 " Don't lint when text is changed
-let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_on_insert_leave = 1
 
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] [%code%] %s [%severity%]'
 
-let g:ale_open_list = 1
-let g:ale_list_window_size = 3
+let g:ale_open_list = 0
+let g:ale_list_window_size = 5
 
 highlight ALEError ctermbg=White
 highlight ALEError ctermfg=DarkRed
@@ -145,14 +143,16 @@ highlight ALEWarning ctermfg=Darkmagenta
 let g:ale_linters = {
 \   'javascript': ['eslint'],
 \   'python': ['flake8'],
-\   'html': ['tidy']
+\   'html': ['tidy'],
+\   'css': ['stylelint']
 \}
 " " Set fixers by file type
 " " remove trailing lines and trim whitespaces for every file type
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \   'javascript': ['eslint'],
-\   'html': ['tidy'],
+\   'html': ['prettier'],
+\   'css': ['stylelint'],
 \   'python': ['autopep8']
 \}
 autocmd FileType python let b:ale_warn_about_trailing_whitespace = 0
@@ -176,7 +176,9 @@ let g:coc_global_extensions = [
     \ 'coc-clangd',
     \ 'coc-snippets',
     \ 'coc-emmet',
+    \ 'coc-tsserver',
     \ 'coc-html',
+    \ 'coc-css'
     \ ]
 
 augroup mygroup
@@ -223,8 +225,6 @@ let g:auto_save = 0 " auto-save off by default
 let g:auto_save_events = ["InsertLeave", "TextChanged"] " set events to trigger auto-save
 
 " vim-closetag config
-" " Shortcut for closing tags, default is '>'
-let g:closetag_shortcut = '>'
 " " These are the file types where this plugin is enabled.
 let g:closetag_filetypes = 'html,xhtml,phtml,xml'
 let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.xml'

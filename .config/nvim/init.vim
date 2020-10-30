@@ -33,7 +33,8 @@ highlight CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
 highlight CursorLineNR cterm=bold
 set nowrap
 
-let g:python3_host_prog='/usr/bin/python3' "set python3 path
+ "set python3 path
+let g:python3_host_prog='~/.pyenv/versions/3.9.0/bin/python3.9'
 
 set ignorecase
 set smartcase
@@ -60,18 +61,18 @@ set smartindent
 let g:omni_sql_no_default_maps = 1
 
 " Language-specific
-"augroup langindentation
-"	autocmd Filetype go setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
-"	autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
-"	autocmd Filetype css setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-"	autocmd Filetype scss setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-"	autocmd Filetype javascript setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-"	autocmd Filetype html setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-"	autocmd Filetype htmldjango setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-"	autocmd Filetype handlebars setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-"	autocmd Filetype ember setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-"	autocmd Filetype json setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-"	autocmd Filetype yaml setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-"	autocmd Filetype xml setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-"	autocmd Filetype lua setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-"augroup END
+augroup langindentation
+"    autocmd Filetype go setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
+    autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
+    autocmd Filetype css setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd Filetype scss setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd Filetype javascript setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd Filetype html setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd Filetype htmldjango setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd Filetype handlebars setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd Filetype ember setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd Filetype json setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+"    autocmd Filetype yaml setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd Filetype xml setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+"    autocmd Filetype lua setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+augroup END

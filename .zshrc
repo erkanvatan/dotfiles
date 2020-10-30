@@ -40,9 +40,6 @@ eval "$(fasd --init auto)"	# fasd
 
 
 ### Program aliases
-# python3
-alias python='python3'
-
 # k plugin
 alias l='k -h'
 
@@ -98,3 +95,8 @@ setopt CLOBBER
 # Load nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+# Load PyEnv
+export PATH="$HOME/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"

@@ -17,3 +17,5 @@ SAYINGS=(
 echo $SAYINGS[$(($RANDOM % ${#SAYINGS} + 1))]
 
 } >&2
+
+kill $SSH_AGENT_PID

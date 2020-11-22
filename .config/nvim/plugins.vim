@@ -167,7 +167,6 @@ let g:coc_user_config = {}
 let g:coc_global_extensions = [
     \ 'coc-json',
     \ 'coc-xml',
-    \ 'coc-yank',
     \ 'coc-marketplace',
     \ 'coc-git',
     \ 'coc-vimlsp',

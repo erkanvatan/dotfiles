@@ -8,6 +8,7 @@
 # Run these at the login
 # $HOME/bin/onedrive_sync.sh
 
+
 # Execute code that does not affect the current session in the background.
 {
   # Compile the completion dump to increase startup speed.

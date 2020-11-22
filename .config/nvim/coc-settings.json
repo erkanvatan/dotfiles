@@ -11,6 +11,7 @@
   "coc.preferences.hoverTarget": "float",
   "coc.preferences.colorSupport": true,
 
+  "python.pythonPath": "~/.pyenv/versions/anaconda3-2020.07/bin/python3",
   "python.linting.flake8Path":  "~/.pyenv/versions/3.9.0/bin/flake8",
   "python.linting.pylintPath":  "~/.pyenv/versions/3.9.0/bin/pylint",
   "python.linting.pylintEnabled": false,

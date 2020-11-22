@@ -18,6 +18,9 @@ export EDITOR='vim'
 # WSL2 only
 #export BROWSER='firefox'
 export BROWSER="/mnt/c/Firefox/firefox.exe"
+#backend for GUI apps
+export DISPLAY=`grep -oP "(?<=nameserver ).+" /etc/resolv.conf`:0.0
+export LIBGL_ALWAYS_INDIRECT=1
 
 # Setting fd as the default source for fzf
 export FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude .git'

@@ -65,3 +65,6 @@ fi
 
 # Start ssh-agent
 eval `ssh-agent`
+
+# variable for directories
+export DESKTOP='/mnt/c/Users/arensonz/Desktop'

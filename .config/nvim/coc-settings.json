@@ -5,29 +5,29 @@
     "function": "f"
   },
   "suggest.autoTrigger": "always",
+  "suggest.minTriggerInputLength": 3,
+  "coc.source.floaterm.enable": false,
 
   "diagnostic.displayByAle": false,
 
   "coc.preferences.hoverTarget": "float",
   "coc.preferences.colorSupport": true,
 
-  "python.pythonPath": "~/.pyenv/versions/anaconda3-2020.07/bin/python3",
-  "python.linting.flake8Path":  "~/.pyenv/versions/3.9.0/bin/flake8",
-  "python.linting.pylintPath":  "~/.pyenv/versions/3.9.0/bin/pylint",
-  "python.linting.pylintEnabled": false,
-  "python.linting.enabled": false,
-  "python.linting.flake8Enabled": false,
-  "python.linting.flake8Args": ["--ignore=E501"],
-  "python.jediEnabled": true,
-  "python.jediPath": "~/.pyenv/versions/3.9.0/lib/python3.9/site-packages",
-  "python.formatting.autopep8Path": "~/.pyenv/versions/3.9.0/bin/autopep8",
-  "python.formatting.autopep8Args": [
-    "--max-line-length=120"
-  ],
+  "jedi.enable": true,
+  "jedi.startupMessage": true,
+  "jedi.markupKindPreferred": "plaintext",
+  "jedi.jediSettings.autoImportModules": ["numpy", "matplotlib"],
+  "jedi.executable.command": "jedi-language-server",
+  "jedi.executable.args": [],
+  "jedi.completion.disableSnippets": false,
+  "jedi.diagnostics.enable": false,
+  "jedi.diagnostics.didOpen": false,
+  "jedi.diagnostics.didChange": false,
+  "jedi.diagnostics.didSave": false,
+  "jedi.workspace.extraPaths": [],
 
   "html.enable": true,
 
-  "eslint.autoFixOnSave": true,
   "eslint.enable": false,
 
   "tsserver.npm": "/usr/bin/npm",

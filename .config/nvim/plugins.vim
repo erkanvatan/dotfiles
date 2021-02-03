@@ -179,7 +179,7 @@ let g:coc_global_extensions = [
     \ 'coc-html',
     \ 'coc-css'
     \ ]
-
+" change line highlighting from line number only to line only for CocList
 augroup mygroup
   autocmd!
   " " Setup formatexpr specified filetype(s).
@@ -228,3 +228,6 @@ let g:auto_save_events = ["InsertLeave", "TextChanged"] " set events to trigger 
 let g:closetag_filetypes = 'html,xhtml,phtml,xml'
 let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.xml'
 let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
+
+" emmet-vim config
+let g:user_emmet_mode='nv' " only enable emmet in normal mode

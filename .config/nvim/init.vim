@@ -28,10 +28,14 @@ set showtabline=2
 " Show line numbers and make current line bold
 " Don't wrap lines
 set number
-set cursorline
-highlight CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
-highlight CursorLineNR cterm=bold
+" replacement for cursorline for coclist issue
+autocmd FileType list set winhighlight=CursorLine:CocUnderline
+" set cursorline
+" highlight CursorLine cterm=NONE ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
+" highlight CursorLineNR cterm=bold
 set nowrap
+set textwidth=0
+set wrapmargin=0
 
  "set python3 path
 let g:python3_host_prog='~/.pyenv/versions/3.9.0/bin/python3.9'

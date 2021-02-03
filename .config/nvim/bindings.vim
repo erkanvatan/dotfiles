@@ -53,12 +53,12 @@ nnoremap <silent> <C-Right> :vertical resize +2<CR>
 " COC (language server) bindings
 imap <C-k> <Plug>(coc-snippets-expand-jump)
 vmap <C-j> <Plug>(coc-snippets-select)
-" " Jump bindings, to go back to previous location use Ctrl+O
+"   Jump bindings, to go back to previous location use Ctrl+O
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
-" " Set trigger completion functions
+"   Set trigger completion functions
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~ '\s'
@@ -98,11 +98,11 @@ nmap <silent> [a <Plug>(ale_previous_wrap)
 nmap <silent> ]a <Plug>(ale_next_wrap)
 
 " vim-gitgutter bindings
+"   Stage the hunk with <Leader>hs
+"   Undo the hunk with <Leader>hu
+"   Preview the hunk with <Leader>hp
 nmap [h <Plug>(GitGutterPrevHunk)
 nmap ]h <Plug>(GitGutterNextHunk)
-" " Stage the hunk with <Leader>hs
-" " Undo the hunk with <Leader>hu
-" " Preview the hunk with <Leader>hp
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -119,6 +119,9 @@ let g:floaterm_keymap_prev   = '<F8>'
 let g:floaterm_keymap_new    = '<F10>'
 
 " fzf find bindings
+"   Select multiple things with Shift + TAB
+"   Open entries in split panes with TAB
+"   Open entries in different tabs with Ctrl + T
 nmap <leader>ff :Files<cr>
 nmap <leader>ft :BTags<cr>
 nmap <leader>fT :Tags<cr>
@@ -128,14 +131,11 @@ nmap <leader>fg :GFiles?<cr>
 nmap <leader>fb :Buffers<cr>
 nmap <leader>fc :BCommits<cr>
 nmap <leader>fC :Commits<cr>
-" " Select multiple things with Shift + TAB
-" " Open entries in split panes with TAB
-" " Open entries in different tabs with Ctrl + T
 
 " fzf-checkout bindings
+"   ctrl + d to delete the branch under cursor
+"   alt + enter to track a remote branch locally
 nnoremap <leader>gc :GBranches<CR>
-" " ctrl + d to delete the branch under cursor
-" " alt + enter to track a remote branch locally
 
 " Clear previous search highlight
 nnoremap <leader>h :noh<CR><esc>
@@ -157,37 +157,57 @@ nnoremap <leader>tr :RainbowParentheses!!<CR>
 nnoremap <leader>tc :ColorizerToggle<CR>
 
 " vim-fugitive
-" " Enter :Git and then do g? to checkout all hotkeys
-" " After :Git use cc to enter commit buffer
-" " to add the file under cursor to .gitignore use {anynumber}gI
-" " git status
+"   Enter :Git and then do g? to checkout all hotkeys
+"   After :Git use cc to enter commit buffer
+"   to add the file under cursor to .gitignore use {anynumber}gI
+"   git status
 nnoremap <leader>gs :G<CR>
-" " solving merge conflicts
+"   solving merge conflicts
 nnoremap <leader>gj :diffget //3<CR>
 nnoremap <leader>gf :diffget //2<CR>
 
 
 " auto-pairs
-" " <M-p> : Toggle auto-pairs
-" " <M-e> : Insert () or {} or [] before something then hit <M-e> to fast wrap
-" " <M-n> : Jump to next closed pair
-" " Use Ctrl-V) to insert paren without trigerring plugin
-" " Use x or DEL to delete the character inserted by the plugin
+"   <M-p> : Toggle auto-pairs
+"   <M-e> : Insert () or {} or [] before something then hit <M-e> to fast wrap
+"   <M-n> : Jump to next closed pair
+"   Use Ctrl-V) to insert paren without trigerring plugin
+"   Use x or DEL to delete the character inserted by the plugin
 
 " nerdcommenter
-" " [count]<leader>cc          : make lines commented
-" " [count]<leader>c<space>    : toggle line's comment status (commented/uncommented)
+"   [count]<leader>cc          : make lines commented
+"   [count]<leader>c<space>    : toggle line's comment status (commented/uncommented)
 
 " vim-surround
-" " Works with parentheses(), brackets [], quotes (double or single), XML tags <q> </q>  and more
-" " cs'<q>     : To change 'Hello' to <q>Hello</q>
-" " ds'        : To remove delimiters from 'Hello'
+"   Works with parentheses(), brackets [], quotes (double or single), XML tags <q> </q>  and more
+"   Example:
+"   cs'<q>     : To change 'Hello' to <q>Hello</q>
+"   ds'        : To remove delimiters from 'Hello'
 
 " vim-closetag
-" " Shortcut for closing tags, default is '>'
+"   Shortcut for closing tags, default is '>'
 let g:closetag_shortcut = '>'
 
 " emmet-vim
-" " All commands and bindings:  https://raw.githubusercontent.com/mattn/emmet-vim/master/TUTORIAL
-" " Trigger key <C-y>,      you can also use autocomplete to select abbreviation
-let g:user_emmet_leader_key='<C-y>'
+"   All commands and bindings:  https://raw.githubusercontent.com/mattn/emmet-vim/master/TUTORIAL
+"   Trigger key <C-y>,      you can also use autocomplete to select abbreviation
+"   Example: Write one of the keywords listed below, go to normal mod and
+"            press ,,
+"   remove a tag                : <C-y>k
+"   update image's size         : <C-y>i
+"   make anchor from a URL      : <C-y>a
+"   make quoted text from a URL : <C-y>A
+"
+"   tag expansion               : div
+"   nested tag expansion        : div>div1>div2>div3
+"   creating lists              : div#mylist>li*10>{List Item} (list with 10
+"                                                               items)
+"   creating lists with indices : div#mylist>li*10>{List Item $}
+"   creating sibling tags       : div+h1+h2
+"   shortcuts                   : bq, btn, hdr, ftr
+"   ID expansion                : tag_name#id_name
+"   class expansion             : tag_name.class_name
+"   default class expansion     : .class_name (div is assumed as tag)
+"   multi class expansion       : .class1.class2
+"   ID & class expansion        : #myid.myclass
+let g:user_emmet_leader_key=','

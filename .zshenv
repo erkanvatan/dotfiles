@@ -30,3 +30,6 @@ export FZF_DEFAULT_OPTS='--layout=reverse'
 
 # grep
 export GREP_COLORS='0;31'
+
+# variable for directories
+export DESKTOP='/mnt/c/Users/arensonz/Desktop'

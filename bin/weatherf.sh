@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-# Prints ***REMOVED***'s weather in ANSI
+# Prints ***REMOVED***'s 5 days weather in ANSI
 # LOCATION is a environment variable defined in .zshenv
 
 if [[ -x $(which ansiweather) ]]; then
-    ansiweather -u metric -l $LOCATION -s true -d true -w true -h true -a false > /tmp/weather
+    ansiweather -u metric -F -l $LOCATION -s true -d true -w true -h true -a false > /tmp/weather
     str=$(cat /tmp/weather)
     first_line=1
 

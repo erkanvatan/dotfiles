@@ -29,6 +29,7 @@
   "html.enable": true,
 
   "eslint.enable": false,
+  "tsserver.enable": false,
 
   "tsserver.npm": "/usr/bin/npm",
 

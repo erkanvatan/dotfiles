@@ -34,7 +34,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 
-Plug 'tpope/vim-surround' "change surroundings like single or double quotes to different things (cs) or delete them (ds) easily
+Plug 'tpope/vim-surround' "change surroundings like single or double quotes to different things (cs) or delete them (ds) easily, docs at :help surround
 Plug 'scrooloose/nerdcommenter'
 
 Plug 'mattn/emmet-vim' " good for html tags
@@ -61,6 +61,9 @@ Plug 'alvan/vim-closetag'  " auto close HTML tags
 Plug 'morhetz/gruvbox', { 'as': 'gruvbox' } "vim theme
 
 Plug 'jeffkreeftmeijer/vim-numbertoggle' "automatically toggles between hybrid and absolute line numbers
+Plug 'michaeljsmith/vim-indent-object' "adds an object to select everything at an indent level
+
+Plug 'zef/vim-cycle' "ability to cycle through some group of words, easy edit
 
 call plug#end()
 
@@ -103,11 +106,11 @@ let g:NERDTreeIndicatorMapCustom = {
     \ 'Ignored'   : '&',
     \ "Unknown"   : "?"
     \ }
-" " automatically close nerdtree if it's the last buffer open
+"   automatically close nerdtree if it's the last buffer open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " nerdcommenter config
-" " Add spaces after comment delimiters by default
+"   Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
 
 " vim-markdown config
@@ -116,7 +119,7 @@ let g:vim_markdown_conceal = 0
 let g:vim_markdown_conceal_code_blocks = 0
 
 " ALE (Asynchronous Lint Engine)
-" " auto close error-list when it's the last buffer open
+"   auto close error-list when it's the last buffer open
 autocmd QuitPre * if empty(&bt) | lclose | endif
 
 let g:ale_sign_error = '❌'
@@ -133,21 +136,24 @@ let g:ale_echo_msg_format = '[%linter%] [%code%] %s [%severity%]'
 
 let g:ale_open_list = 0
 let g:ale_list_window_size = 5
+"   Commands to disable ALE fixers temporarily
+command! ALEDisableFixersBuffer let b:ale_fix_on_save=0
+command! ALEEnableFixersBuffer  let b:ale_fix_on_save=1
 
 highlight ALEError ctermbg=White
 highlight ALEError ctermfg=DarkRed
 highlight ALEWarning ctermbg=LightYellow
 highlight ALEWarning ctermfg=Darkmagenta
 
-" " Set linters by file type
+"   Set linters by file type
 let g:ale_linters = {
 \   'javascript': ['eslint'],
 \   'python': ['flake8'],
 \   'html': ['tidy'],
 \   'css': ['stylelint']
 \}
-" " Set fixers by file type
-" " remove trailing lines and trim whitespaces for every file type
+"   Set fixers by file type
+"   remove trailing lines and trim whitespaces for every file type
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \   'javascript': ['eslint'],
@@ -162,7 +168,7 @@ let g:ale_python_flake8_options = '--ignore=E501'
 autocmd FileType json let g:indentLine_conceallevel = 0
 
 " coc config
-" " coc extensions to install automatically
+"   coc extensions to install automatically
 let g:coc_user_config = {}
 let g:coc_global_extensions = [
     \ 'coc-json',
@@ -182,22 +188,22 @@ let g:coc_global_extensions = [
 " change line highlighting from line number only to line only for CocList
 augroup mygroup
   autocmd!
-  " " Setup formatexpr specified filetype(s).
+  "     Setup formatexpr specified filetype(s).
   autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " " Update signature help on jump placeholder.
+  "     Update signature help on jump placeholder.
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
-" " Highlight the symbol and its references when holding the cursor.
+"   Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
-" " Use C to open coc config
+"   Use C to open coc config
 call SetupCommandAbbrs('C', 'CocConfig')
-" " Add `:Format` command to format current buffer.
+"   Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
-" " Add `:Fold` command to fold current buffer.
+"   Add `:Fold` command to fold current buffer.
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-" " Add `:OR` command for organize imports of the current buffer.
+"   Add `:OR` command for organize imports of the current buffer.
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-" " Close the preview window when completion is done
+"   Close the preview window when completion is done
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 " python syntax
@@ -206,11 +212,11 @@ let g:python_highlight_all = 1
 " rainbow_parentheses config
 let g:rainbow#max_level = 16
 let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
-" " Auto activate RainbowParentheses
+"   Auto activate RainbowParentheses
 autocmd FileType * RainbowParentheses
 
 " vim-floaterm config
-" " Go back to the NORMAL mode using <C-\><C-N>
+"   Go back to the NORMAL mode using <C-\><C-N>
 let g:floaterm_gitcommit='floaterm'
 let g:floaterm_width=0.9
 let g:floaterm_height=0.9
@@ -224,10 +230,13 @@ let g:auto_save = 0 " auto-save off by default
 let g:auto_save_events = ["InsertLeave", "TextChanged"] " set events to trigger auto-save
 
 " vim-closetag config
-" " These are the file types where this plugin is enabled.
+"   These are the file types where this plugin is enabled.
 let g:closetag_filetypes = 'html,xhtml,phtml,xml'
 let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.xml'
 let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
 
 " emmet-vim config
 let g:user_emmet_mode='nv' " only enable emmet in normal mode
+
+" vim-cycle config
+autocmd FileType python call AddCycleGroup('python', ['True', 'False'])

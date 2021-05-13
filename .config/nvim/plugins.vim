@@ -14,9 +14,9 @@ call plug#begin('~/.config/nvim/plugged')
 Plug '907th/vim-auto-save'
 Plug 'mhinz/vim-startify' "changes default vim starting screen
 
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
-Plug 'ryanoasis/vim-devicons', { 'on': 'NERDTreeToggle' }
+Plug 'preservim/nerdtree' |
+            \ Plug 'Xuyuanp/nerdtree-git-plugin' |
+            \ Plug 'ryanoasis/vim-devicons'
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -58,7 +58,8 @@ Plug 'honza/vim-snippets'
 Plug 'voldikss/vim-floaterm' "floating terminal for vim
 Plug 'alvan/vim-closetag'  " auto close HTML tags
 
-Plug 'morhetz/gruvbox', { 'as': 'gruvbox' } "vim theme
+" Plug 'morhetz/gruvbox', { 'as': 'gruvbox' } "vim theme
+Plug 'dracula/vim', { 'as': 'dracula' }
 
 Plug 'jeffkreeftmeijer/vim-numbertoggle' "automatically toggles between hybrid and absolute line numbers
 Plug 'michaeljsmith/vim-indent-object' "adds an object to select everything at an indent level
@@ -74,7 +75,7 @@ function! SetupCommandAbbrs(from, to)
 endfunction
 
 " gruvbox config
-let g:gruvbox_italic=1 "enables italic support of gruvbox
+" let g:gruvbox_italic=1 "enables italic support of gruvbox
 
 " goyo config
 let g:goyo_width = 120
@@ -108,6 +109,8 @@ let g:NERDTreeIndicatorMapCustom = {
     \ }
 "   automatically close nerdtree if it's the last buffer open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+"   vim-devicons ignore deprecated warning
+let g:NERDTreeGitStatusLogLevel = 3
 
 " nerdcommenter config
 "   Add spaces after comment delimiters by default
@@ -117,6 +120,9 @@ let g:NERDSpaceDelims = 1
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_conceal = 0
 let g:vim_markdown_conceal_code_blocks = 0
+" markdown-preview config
+" let g:mkdp_browser = '/mnt/c/Firefox/firefox.exe'
+let g:mkdp_browser='wsl-open'
 
 " ALE (Asynchronous Lint Engine)
 "   auto close error-list when it's the last buffer open

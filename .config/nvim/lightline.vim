@@ -14,7 +14,7 @@ function! LightlineFilename()
 endfunction
 
 let g:lightline = {
-      \ 'colorscheme': 'gruvbox',
+      \ 'colorscheme': 'dracula',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste', 'readonly' ],
       \             [ 'gitbranch', 'filename' ],

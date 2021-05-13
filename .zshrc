@@ -38,11 +38,18 @@ fi
 
 eval "$(fasd --init auto)"	# fasd
 
+# Change WSL2 directory colors for readability
+#Change ls colours
+export CLICOLOR=1
+export LS_COLORS='rs=0:no=00:mi=00:mh=00:ln=01;36:or=01;31:di=01;34:ow=04;01;34:st=34:tw=04;34:pi=01;33:so=01;33:do=01;33:bd=01;33:cd=01;33:su=01;35:sg=01;35:ca=01;35:ex=01;32:'
+
+#Make cd use the ls colours
+zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
+autoload -Uz compinit
+compinit
+
 
 ### Program aliases
-# k plugin
-alias l='k -h'
-
 # translate-shell
 alias td='trans :tr'
 alias tureng='trans tr:en'
@@ -59,11 +66,17 @@ alias config='/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME'
 # Git aliases
 alias gs='git status'
 alias gc='git commit'
+alias gco='git checkout'
 alias gl='git log --oneline'
+alias glg='git log --oneline --all --decorate --graph'
 alias ga='git add'
+alias gb='git branch'
+alias gpl='git pull'
+alias gps='git push'
 
 # neovim
 alias vim="stty stop '' -ixoff; nvim" # disable Ctrl + S mapping of the terminal before running nvim
+alias nvim="stty stop '' -ixoff; nvim" # disable Ctrl + S mapping of the terminal before running nvim
 
 # fd-find (fd)
 alias fd='fdfind'

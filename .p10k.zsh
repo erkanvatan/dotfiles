@@ -1648,3 +1648,9 @@ typeset -g POWERLEVEL9K_CONFIG_FILE=${${(%):-%x}:a}
 
 (( ${#p10k_config_opts} )) && setopt ${p10k_config_opts[@]}
 'builtin' 'unset' 'p10k_config_opts'
+
+### My Configs
+# Change prompt colors
+typeset -g POWERLEVEL9K_DIR_BACKGROUND=029
+typeset -g POWERLEVEL9K_TIME_BACKGROUND=029
+typeset -g POWERLEVEL9K_TIME_FOREGROUND=255

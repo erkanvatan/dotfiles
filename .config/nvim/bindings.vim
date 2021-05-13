@@ -211,3 +211,13 @@ let g:closetag_shortcut = '>'
 "   multi class expansion       : .class1.class2
 "   ID & class expansion        : #myid.myclass
 let g:user_emmet_leader_key=','
+
+" vim-cycle
+"   Move cursor on a word and hit <C-A> or <C-X> to toggle between pair of
+"       words or even increment-decrement a number
+
+" vim-indent-object
+"   Defines two new text objects to select only current indentation level
+"   <count>ai 	An Indentation level and line above.
+"   <count>ii 	Inner Indentation level (no line above).
+"   <count>aI 	An Indentation level and lines above/below.

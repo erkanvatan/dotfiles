@@ -143,8 +143,12 @@ nnoremap <leader>h :noh<CR><esc>
 " goyo
 nnoremap <leader>tg :Goyo<CR><esc>
 
-" markdown-preview
-nmap <leader>tm <Plug>MarkdownPreviewToggle
+" vim-livedown
+nmap <leader>tm :LivedownToggle<CR>
+
+" bracey.vim
+nmap <leader>tb :Bracey<CR>
+
 
 " Better multiple lines tabbing with < and >
 vnoremap < <gv
@@ -183,6 +187,9 @@ nnoremap <leader>gf :diffget //2<CR>
 "   Example:
 "   cs'<q>     : To change 'Hello' to <q>Hello</q>
 "   ds'        : To remove delimiters from 'Hello'
+"   dst        : To remove the surrounding tag
+"   cst<p>     : To change the surrounding tag to <p>
+"   vS         : In visual mode, S surrounds the selected (vSt for tag)
 
 " vim-closetag
 "   Shortcut for closing tags, default is '>'
@@ -190,7 +197,7 @@ let g:closetag_shortcut = '>'
 
 " emmet-vim
 "   All commands and bindings:  https://raw.githubusercontent.com/mattn/emmet-vim/master/TUTORIAL
-"   Trigger key <C-y>,      you can also use autocomplete to select abbreviation
+"   Trigger key ,,      you can also use autocomplete to select abbreviation
 "   Example: Write one of the keywords listed below, go to normal mod and
 "            press ,,
 "   remove a tag                : <C-y>k
@@ -221,3 +228,20 @@ let g:user_emmet_leader_key=','
 "   <count>ai 	An Indentation level and line above.
 "   <count>ii 	Inner Indentation level (no line above).
 "   <count>aI 	An Indentation level and lines above/below.
+
+
+" vim-dadbod config
+"   In visual mode:
+"       select the query and press <leader>db to execute the query
+"   In normal mode:
+"       press <leader>dbb to execute query on the line
+"       press <leader>db + text-object to run the queries by specifying text
+"        object
+xnoremap <expr> <Plug>(DBExe)     db#op_exec()
+nnoremap <expr> <Plug>(DBExe)     db#op_exec()
+nnoremap <expr> <Plug>(DBExeLine) db#op_exec() . '_'
+
+xmap <leader>db  <Plug>(DBExe)
+nmap <leader>db  <Plug>(DBExe)
+omap <leader>db  <Plug>(DBExe)
+nmap <leader>dbb <Plug>(DBExeLine)

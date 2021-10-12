@@ -22,12 +22,12 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'stsewd/fzf-checkout.vim'
 
-
 Plug 'liuchengxu/vista.vim' "viewer and finder for LSP symbols and tags
 Plug 'junegunn/goyo.vim' "distraction-free writing
 
 Plug 'itchyny/lightline.vim' "configurable statusline/tabline
 Plug 'maximbaz/lightline-ale'
+Plug 'shinchu/lightline-gruvbox.vim' "gruvbox theme for lightline
 
 " git plugins
 Plug 'airblade/vim-gitgutter'
@@ -35,11 +35,13 @@ Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 
 Plug 'tpope/vim-surround' "change surroundings like single or double quotes to different things (cs) or delete them (ds) easily, docs at :help surround
-Plug 'scrooloose/nerdcommenter'
+Plug 'preservim/nerdcommenter'
 
+" Web development
 Plug 'mattn/emmet-vim' " good for html tags
 Plug 'othree/html5.vim', {'for': ['html', 'html5', 'htm']}
-
+Plug 'turbio/bracey.vim' " live preview of html/css/js
+    " cd to ~/.config/nvim/plugged/bracey.vim and run `npm install --prefix server`
 
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'junegunn/rainbow_parentheses.vim'
@@ -48,7 +50,8 @@ Plug 'Yggdroot/indentLine'
 " Syntax highlighting
 Plug 'vim-python/python-syntax', { 'for': 'python' }
 Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] }
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+Plug 'shime/vim-livedown' " live preview of markdown
+    " run `npm install -g livedown` after installation
 Plug 'dense-analysis/ale'
 
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
@@ -58,13 +61,18 @@ Plug 'honza/vim-snippets'
 Plug 'voldikss/vim-floaterm' "floating terminal for vim
 Plug 'alvan/vim-closetag'  " auto close HTML tags
 
-" Plug 'morhetz/gruvbox', { 'as': 'gruvbox' } "vim theme
+Plug 'morhetz/gruvbox', { 'as': 'gruvbox' } "vim theme
 Plug 'dracula/vim', { 'as': 'dracula' }
 
 Plug 'jeffkreeftmeijer/vim-numbertoggle' "automatically toggles between hybrid and absolute line numbers
 Plug 'michaeljsmith/vim-indent-object' "adds an object to select everything at an indent level
 
 Plug 'zef/vim-cycle' "ability to cycle through some group of words, easy edit
+Plug 'lambdalisue/suda.vim' "suport for sudo in neovim
+
+" SQL
+Plug 'lifepillar/pgsql.vim' "support for PostgreSQL
+Plug 'tpope/vim-dadbod' "modern database interface for Vim
 
 call plug#end()
 
@@ -112,17 +120,29 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 "   vim-devicons ignore deprecated warning
 let g:NERDTreeGitStatusLogLevel = 3
 
+" vim-startify config
+let g:startify_session_dir = '~/.config/nvim/session'
+let g:startify_bookmarks = ['~/.zshrc', '~/.config/nvim/plugins.vim', '~/.config/nvim/bindings.vim']
+let g:startify_session_persistence = 1
+
 " nerdcommenter config
 "   Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
+autocmd FileType python let g:NERDDefaultAlign = 'left'
 
 " vim-markdown config
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_conceal = 0
 let g:vim_markdown_conceal_code_blocks = 0
-" markdown-preview config
-" let g:mkdp_browser = '/mnt/c/Firefox/firefox.exe'
-let g:mkdp_browser='wsl-open'
+
+" bracey config
+let g:bracey_server_port = 8000
+let g:bracey_server_allow_remote_connections = 1
+
+" vim-livedown config
+let g:livedown_port = 8001
+let g:livedown_browser = "xdg-open"
+let g:livedown_open = 1
 
 " ALE (Asynchronous Lint Engine)
 "   auto close error-list when it's the last buffer open
@@ -132,7 +152,7 @@ let g:ale_sign_error = '❌'
 let g:ale_sign_warning = '⚠️'
 let g:ale_fix_on_save = 1
 
-" Don't lint when text is changed
+"   Don't lint when text is changed
 let g:ale_lint_on_text_changed = 'normal'
 let g:ale_lint_on_insert_leave = 1
 
@@ -156,6 +176,7 @@ let g:ale_linters = {
 \   'javascript': ['eslint'],
 \   'python': ['flake8'],
 \   'html': ['tidy'],
+\   'sql': ['sql-lint'],
 \   'css': ['stylelint']
 \}
 "   Set fixers by file type
@@ -163,13 +184,19 @@ let g:ale_linters = {
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \   'javascript': ['eslint'],
-\   'html': ['prettier'],
+\   'html': ['html-beautify'],
 \   'css': ['stylelint'],
+\   'sql': ['pgformatter'],
 \   'python': ['autopep8']
 \}
 autocmd FileType python let b:ale_warn_about_trailing_whitespace = 0
 " Disable line too long warning for flake8
 let g:ale_python_flake8_options = '--ignore=E501'
+let g:ale_html_beautify_options = '--indent-size 2 --max-preserve-newlines 1 --wrap-line-length 120'
+
+let g:ale_javascript_prettier_use_local_config = 1
+" let g:ale_javascript_prettier_executable = './node_modules/.bin/prettier'
+" let g:ale_javascript_eslint_executable = './node_modules/.bin/eslint'
 
 autocmd FileType json let g:indentLine_conceallevel = 0
 
@@ -189,6 +216,8 @@ let g:coc_global_extensions = [
     \ 'coc-emmet',
     \ 'coc-tsserver',
     \ 'coc-html',
+    \ 'coc-bootstrap-classname',
+    \ 'coc-db',
     \ 'coc-css'
     \ ]
 " change line highlighting from line number only to line only for CocList
@@ -241,8 +270,12 @@ let g:closetag_filetypes = 'html,xhtml,phtml,xml'
 let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.xml'
 let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
 
+
 " emmet-vim config
 let g:user_emmet_mode='nv' " only enable emmet in normal mode
 
 " vim-cycle config
 autocmd FileType python call AddCycleGroup('python', ['True', 'False'])
+
+" gruvbox config
+let g:gruvbox_contrast_light = 'hard'

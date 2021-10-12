@@ -38,16 +38,28 @@ fi
 
 eval "$(fasd --init auto)"	# fasd
 
+### WSL2 Config
 # Change WSL2 directory colors for readability
-#Change ls colours
+#   Change ls colours
 export CLICOLOR=1
 export LS_COLORS='rs=0:no=00:mi=00:mh=00:ln=01;36:or=01;31:di=01;34:ow=04;01;34:st=34:tw=04;34:pi=01;33:so=01;33:do=01;33:bd=01;33:cd=01;33:su=01;35:sg=01;35:ca=01;35:ex=01;32:'
-
-#Make cd use the ls colours
+#   Make cd use the ls colours
 zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
+
+# Aliases
+alias explorer='/mnt/c/Windows/explorer.exe .'
+
+# Run hwclock at startup to fix clock skew
+# sudo hwclock --hctosys
+
+# Activate tab completion
 autoload -Uz compinit
 compinit
+autoload -U bashcompinit
+bashcompinit
 
+# Set browser
+alias firefox="/mnt/c/Firefox/firefox.exe"
 
 ### Program aliases
 # translate-shell
@@ -65,14 +77,17 @@ alias config='/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME'
 
 # Git aliases
 alias gs='git status'
+alias gsh='git stash'
 alias gc='git commit'
+alias gm='git merge'
+alias gd='git diff'
 alias gco='git checkout'
 alias gl='git log --oneline'
 alias glg='git log --oneline --all --decorate --graph'
 alias ga='git add'
 alias gb='git branch'
 alias gpl='git pull'
-alias gps='git push'
+alias gph='git push'
 
 # neovim
 alias vim="stty stop '' -ixoff; nvim" # disable Ctrl + S mapping of the terminal before running nvim
@@ -111,5 +126,17 @@ export NVM_DIR="$HOME/.nvm"
 
 # Load PyEnv
 export PATH="$HOME/.pyenv/bin:$PATH"
+eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
+
+# Set pipx default python interpreter
+export PIPX_DEFAULT_PYTHON="$HOME/.pyenv/versions/3.9.0/bin/python"
+
+# Load pipx completions
+eval "$(register-python-argcomplete pipx)"
+
+
+### FUNCTIONS
+#   mkdir and cd to that directory
+function mkdircd () { mkdir -p "$@" && eval cd "\"\$$#\""; }

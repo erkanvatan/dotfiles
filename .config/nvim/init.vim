@@ -5,12 +5,13 @@ set encoding=UTF-8
 source $HOME/.config/nvim/plugins.vim
 source $HOME/.config/nvim/lightline.vim
 source $HOME/.config/nvim/bindings.vim
+source $HOME/.config/nvim/functions.vim
+
 " Colors
 syntax on   " Enable syntax highlighting
 set t_8f=^[[38;2;%lu;%lu;%lum        " set foreground color
 set t_8b=^[[48;2;%lu;%lu;%lum        " set background color
-set background=dark
-colorscheme dracula
+call ChangeBackground()
 set t_Co=256                         " Enable 256 colors
 set termguicolors                    " Enable GUI colors for the terminal to get truecolor
 
@@ -40,6 +41,10 @@ autocmd FileType list set winhighlight=CursorLine:CocUnderline
 
  "set python3 path
 let g:python3_host_prog='~/.pyenv/versions/3.9.0/bin/python3.9'
+
+" set default sql syntax
+let g:sql_type_default = 'pgsql'
+" let g:sql_type_default = 'mysql'
 
 set ignorecase
 set smartcase
@@ -81,3 +86,6 @@ augroup langindentation
     autocmd Filetype xml setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 "    autocmd Filetype lua setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 augroup END
+
+" fix for startify recent files
+" set viminfo='100,n$HOME/.vim/files/info/viminfo

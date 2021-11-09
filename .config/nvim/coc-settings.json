@@ -17,7 +17,7 @@
   "jedi.startupMessage": true,
   "jedi.markupKindPreferred": "plaintext",
   "jedi.jediSettings.autoImportModules": ["numpy", "matplotlib"],
-  "jedi.executable.command": "jedi-language-server",
+  "jedi.executable.command": "/home/arensonz/.local/bin/jedi-language-server",
   "jedi.executable.args": [],
   "jedi.completion.disableSnippets": false,
   "jedi.diagnostics.enable": false,

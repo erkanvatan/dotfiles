@@ -2,8 +2,8 @@
 function! ChangeBackground()
   if system("awk '/background/ {print $2}' FS=: /mnt/c/Users/arensonz/.system_theme_color") =~ 'light'
     set background=light  " for the light version of the theme
-    colorscheme gruvbox
-    let g:lightline.colorscheme = 'gruvbox'
+    autocmd vimenter * ++nested colorscheme solarized8_high
+    let g:lightline.colorscheme = 'solarized'
   else
     set background=dark   " for the dark version of the theme
     colorscheme dracula

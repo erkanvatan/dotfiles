@@ -104,6 +104,7 @@ alias pip='pip3'
 
 ### Script aliases
 alias weather='weather.sh'
+alias fwhite='format_whitespace.py'
 
 ### Reminder/corrector aliases
 # alias rm='echo "Use trash instead of rm (use \\\\rm -i if you want to skip this warning.)"'

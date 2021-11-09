@@ -63,6 +63,9 @@ Plug 'alvan/vim-closetag'  " auto close HTML tags
 
 Plug 'morhetz/gruvbox', { 'as': 'gruvbox' } "vim theme
 Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'junegunn/seoul256.vim', { 'as': 'seoul256' }
+Plug 'lifepillar/vim-solarized8'
+
 
 Plug 'jeffkreeftmeijer/vim-numbertoggle' "automatically toggles between hybrid and absolute line numbers
 Plug 'michaeljsmith/vim-indent-object' "adds an object to select everything at an indent level

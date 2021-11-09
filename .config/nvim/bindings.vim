@@ -231,6 +231,8 @@ let g:user_emmet_leader_key=','
 
 
 " vim-dadbod config
+"   Setup:
+"       let b:db = "postgresql://[username[:password]@][host][:port][/dbname]"
 "   In visual mode:
 "       select the query and press <leader>db to execute the query
 "   In normal mode:

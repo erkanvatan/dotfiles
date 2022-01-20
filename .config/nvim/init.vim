@@ -6,6 +6,7 @@ source $HOME/.config/nvim/plugins.vim
 source $HOME/.config/nvim/lightline.vim
 source $HOME/.config/nvim/bindings.vim
 source $HOME/.config/nvim/functions.vim
+source $HOME/.config/nvim/mydadbods.vim
 
 " Colors
 syntax on   " Enable syntax highlighting

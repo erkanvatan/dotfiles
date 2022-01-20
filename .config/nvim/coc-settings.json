@@ -28,6 +28,8 @@
 
   "html.enable": true,
 
+  "clangd.disableDiagnostics": true,
+
   "eslint.enable": false,
   "tsserver.enable": true,
 
@@ -38,10 +40,9 @@
       "python": ["django"]
   },
 
-  "snippets.userSnippetsDirectory": "~/.config/nvim/snippets",
+  "snippets.userSnippetsDirectory": "~/.config/nvim/UltiSnips",
   "snippets.ultisnips.directories": [
-    "UltiSnips",
-    "gosnippets/UltiSnips"
+    "UltiSnips"
   ],
   "coc.preferences.extensionUpdateCheck": "weekly"
 }

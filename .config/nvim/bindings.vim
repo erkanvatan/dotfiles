@@ -22,7 +22,7 @@ inoremap <M-s> <ESC>:AutoSaveToggle<CR>a
 
 " NERDTree bindings
 nnoremap <silent> <C-c> :NERDTreeToggle<CR>
-" " Map to open current file in NERDTree
+"   Map to open current file in NERDTree
 nnoremap <leader>pv :NERDTreeFind<bar><CR>
 
 nnoremap <Leader>tv :Vista!!<CR>
@@ -51,8 +51,6 @@ nnoremap <silent> <C-Left> :vertical resize -2<CR>
 nnoremap <silent> <C-Right> :vertical resize +2<CR>
 
 " COC (language server) bindings
-imap <C-k> <Plug>(coc-snippets-expand-jump)
-vmap <C-j> <Plug>(coc-snippets-select)
 "   Jump bindings, to go back to previous location use Ctrl+O
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
@@ -68,30 +66,36 @@ inoremap <silent><expr> <Tab>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<Tab>" :
       \ coc#refresh()
-" " Use <c-space> to trigger completion.
+"   Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
-" " Use TAB and Shift+TAB to navigate in completion list
+"   Use TAB and Shift+TAB to navigate in completion list
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-" " Use <CR> to confirm completion
+"   Use <CR> to confirm completion
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-" " Formatting selected code.
+"   Formatting selected code.
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
-" Applying codeAction to the selected region.
-" Example: `<leader>aap` for current paragraph
+"   Applying codeAction to the selected region.
+"   Example: `<leader>aap` for current paragraph
 xmap <leader>a  <Plug>(coc-codeaction-selected)
 nmap <leader>a  <Plug>(coc-codeaction-selected)
-" Apply AutoFix to problem on the current line.
+"   Apply AutoFix to problem on the current line.
 nmap <leader>qf  <Plug>(coc-fix-current)
-" " Use K to show documentation in preview window.
+"   Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
-"v" Symbol renaming.
+"   Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
-" Use `[c` and `]c` to navigate diagnostics
-" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+"   Use `[c` and `]c` to navigate diagnostics
+"   Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
 nmap <silent> [c <Plug>(coc-diagnostic-prev)
 nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+"   coc-snippets
+imap <C-k> <Plug>(coc-snippets-expand-jump)
+vmap <C-j> <Plug>(coc-snippets-select)
+"       Use <leader>x for convert visual selected code to snippet
+xmap <leader>x  <Plug>(coc-convert-snippet)
 
 " ALE bindings (Asynchronous Lint Engine)
 nmap <silent> [a <Plug>(ale_previous_wrap)

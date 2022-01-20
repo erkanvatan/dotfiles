@@ -97,7 +97,7 @@ alias nvim="stty stop '' -ixoff; nvim" # disable Ctrl + S mapping of the termina
 alias fd='fdfind'
 
 # batcat (bat)
-alias bat='batcat'
+alias bat='batcat --theme=TwoDark'
 
 # pip3
 alias pip='pip3'

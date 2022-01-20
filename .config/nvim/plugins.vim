@@ -1,4 +1,4 @@
-"If plugin manager vim-plug isn't installed, install it automatically
+" If plugin manager vim-plug isn't installed, install it automatically
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
     echo "Downloading junegunn/vim-plug to manage plugins..."
     silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
@@ -57,13 +57,15 @@ Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'jiangmiao/auto-pairs'
 
+" Snippets
 Plug 'honza/vim-snippets'
+Plug 'SirVer/ultisnips'
+
 Plug 'voldikss/vim-floaterm' "floating terminal for vim
 Plug 'alvan/vim-closetag'  " auto close HTML tags
 
 Plug 'morhetz/gruvbox', { 'as': 'gruvbox' } "vim theme
 Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'junegunn/seoul256.vim', { 'as': 'seoul256' }
 Plug 'lifepillar/vim-solarized8'
 
 
@@ -77,6 +79,10 @@ Plug 'lambdalisue/suda.vim' "suport for sudo in neovim
 Plug 'lifepillar/pgsql.vim' "support for PostgreSQL
 Plug 'tpope/vim-dadbod' "modern database interface for Vim
 
+" LaTeX
+Plug 'lervag/vimtex' "filetype plugin for LaTeX files
+
+
 call plug#end()
 
 function! SetupCommandAbbrs(from, to)
@@ -86,7 +92,7 @@ function! SetupCommandAbbrs(from, to)
 endfunction
 
 " gruvbox config
-" let g:gruvbox_italic=1 "enables italic support of gruvbox
+"let g:gruvbox_italic=1 "enables italic support of gruvbox
 
 " goyo config
 let g:goyo_width = 120
@@ -180,8 +186,10 @@ let g:ale_linters = {
 \   'python': ['flake8'],
 \   'html': ['tidy'],
 \   'sql': ['sql-lint'],
-\   'css': ['stylelint']
+\   'css': ['stylelint'],
+\   'c': ['cc']
 \}
+
 "   Set fixers by file type
 "   remove trailing lines and trim whitespaces for every file type
 let g:ale_fixers = {
@@ -190,16 +198,20 @@ let g:ale_fixers = {
 \   'html': ['html-beautify'],
 \   'css': ['stylelint'],
 \   'sql': ['pgformatter'],
-\   'python': ['autopep8']
+\   'python': ['autopep8'],
+\   'c': ['clang-format']
 \}
 autocmd FileType python let b:ale_warn_about_trailing_whitespace = 0
 " Disable line too long warning for flake8
 let g:ale_python_flake8_options = '--ignore=E501'
 let g:ale_html_beautify_options = '--indent-size 2 --max-preserve-newlines 1 --wrap-line-length 120'
 
+let g:ale_c_cc_options = '-std=c99 -Wall -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused-result -Wwrite-strings'
+let g:ale_c_clangformat_options = "-style='{BasedOnStyle: WebKit, ColumnLimit: 120, BreakBeforeBraces: Linux, IndentWidth: 4, IndentCaseLabels: false, PointerAlignment: Right, SpaceBeforeAssignmentOperators: true}'"
+
 let g:ale_javascript_prettier_use_local_config = 1
-" let g:ale_javascript_prettier_executable = './node_modules/.bin/prettier'
-" let g:ale_javascript_eslint_executable = './node_modules/.bin/eslint'
+"let g:ale_javascript_prettier_executable = './node_modules/.bin/prettier'
+"let g:ale_javascript_eslint_executable = './node_modules/.bin/eslint'
 
 autocmd FileType json let g:indentLine_conceallevel = 0
 
@@ -221,6 +233,7 @@ let g:coc_global_extensions = [
     \ 'coc-html',
     \ 'coc-bootstrap-classname',
     \ 'coc-db',
+    \ 'coc-vimtex',
     \ 'coc-css'
     \ ]
 " change line highlighting from line number only to line only for CocList
@@ -262,7 +275,7 @@ let g:floaterm_height=0.9
 " vim-auto-save config
 let g:auto_save_silent = 1  " do not display the auto-save notification
 let g:auto_save = 0 " auto-save off by default
-" FileTypes to enable auto_save
+"   FileTypes to enable auto_save
 "autocmd FileType python let b:auto_save = 1
 
 let g:auto_save_events = ["InsertLeave", "TextChanged"] " set events to trigger auto-save
@@ -275,10 +288,19 @@ let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
 
 
 " emmet-vim config
-let g:user_emmet_mode='nv' " only enable emmet in normal mode
+" let g:user_emmet_mode='nv' " only enable emmet in normal mode
+let g:user_emmet_mode='a' " enable emmet in all modes
 
 " vim-cycle config
 autocmd FileType python call AddCycleGroup('python', ['True', 'False'])
 
 " gruvbox config
 let g:gruvbox_contrast_light = 'hard'
+
+" vimtex config
+let g:tex_flavor='latex'
+let g:vimtex_view_method='zathura'
+" let g:vimtex_view_general_viewer = 'evince' "pdf reader that auto refreshes
+let g:vimtex_quickfix_mode=0
+set conceallevel=1
+let g:tex_conceal='abdmg'

@@ -21,7 +21,7 @@ set hidden
 set updatetime=300
 set nobackup    " Disables backup files
 set nowritebackup   " Disables backup files
-set cmdheight=2 " height of command-line at the bottom
+set cmdheight=1 " height of command-line at the bottom
 set shortmess+=c
 set signcolumn=yes "always show sign column, otherwise it will shift text
 

@@ -20,16 +20,6 @@ fi
 
 ### Terminal start
 
-# Weather
-#if [[ -x $(which ansiweather) ]]; then
-#	ansiweather -u metric  -l $LOCATION -s true -w true -h false -p false -d true
-#fi
-
-# Quotes
-if [[ -x $(which motivate) ]]; then
-    motivate
-fi
-
 ### Source external plugins
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -48,9 +38,6 @@ zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
 
 # Aliases
 alias explorer='/mnt/c/Windows/explorer.exe .'
-
-# Run hwclock at startup to fix clock skew
-# sudo hwclock --hctosys
 
 # Activate tab completion
 autoload -Uz compinit

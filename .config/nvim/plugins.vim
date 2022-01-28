@@ -14,20 +14,15 @@ call plug#begin('~/.config/nvim/plugged')
 Plug '907th/vim-auto-save'
 Plug 'mhinz/vim-startify' "changes default vim starting screen
 
-Plug 'preservim/nerdtree' |
-            \ Plug 'Xuyuanp/nerdtree-git-plugin' |
-            \ Plug 'ryanoasis/vim-devicons'
+Plug 'tpope/vim-vinegar' " plugin to enhance netrw
+Plug 'ryanoasis/vim-devicons'
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'stsewd/fzf-checkout.vim'
 
-Plug 'liuchengxu/vista.vim' "viewer and finder for LSP symbols and tags
-Plug 'junegunn/goyo.vim' "distraction-free writing
-
 Plug 'itchyny/lightline.vim' "configurable statusline/tabline
 Plug 'maximbaz/lightline-ale'
-Plug 'shinchu/lightline-gruvbox.vim' "gruvbox theme for lightline
 
 " git plugins
 Plug 'airblade/vim-gitgutter'
@@ -45,7 +40,7 @@ Plug 'turbio/bracey.vim' " live preview of html/css/js
 
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'junegunn/rainbow_parentheses.vim'
-Plug 'Yggdroot/indentLine'
+Plug 'lukas-reineke/indent-blankline.nvim'
 
 " Syntax highlighting
 Plug 'vim-python/python-syntax', { 'for': 'python' }
@@ -53,6 +48,7 @@ Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] }
 Plug 'shime/vim-livedown' " live preview of markdown
     " run `npm install -g livedown` after installation
 Plug 'dense-analysis/ale'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'jiangmiao/auto-pairs'
@@ -64,12 +60,10 @@ Plug 'SirVer/ultisnips'
 Plug 'voldikss/vim-floaterm' "floating terminal for vim
 Plug 'alvan/vim-closetag'  " auto close HTML tags
 
-Plug 'morhetz/gruvbox', { 'as': 'gruvbox' } "vim theme
+" Themes
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'lifepillar/vim-solarized8'
 
-
-Plug 'jeffkreeftmeijer/vim-numbertoggle' "automatically toggles between hybrid and absolute line numbers
 Plug 'michaeljsmith/vim-indent-object' "adds an object to select everything at an indent level
 
 Plug 'zef/vim-cycle' "ability to cycle through some group of words, easy edit
@@ -91,17 +85,6 @@ function! SetupCommandAbbrs(from, to)
         \ .'? ("'.a:to.'") : ("'.a:from.'"))'
 endfunction
 
-" gruvbox config
-"let g:gruvbox_italic=1 "enables italic support of gruvbox
-
-" goyo config
-let g:goyo_width = 120
-
-" vista config
-let g:vista_fzf_preview = ['right:50%']
-let g:vista#renderer#enable_icon = 1
-
-
 " fzf config
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
@@ -110,24 +93,6 @@ let g:fzf_action = {
 let g:fzf_tags_command = 'ctags -R'
 let g:fzf_layout = {'up':'~80%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5} }
 let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
-
-" nerdtree config
-let g:NERDTreeIndicatorMapCustom = {
-    \ "Modified"  : "x",
-    \ "Staged"    : "✚",
-    \ "Untracked" : "o",
-    \ "Renamed"   : "➜",
-    \ "Unmerged"  : "═",
-    \ "Deleted"   : "D",
-    \ "Dirty"     : "~",
-    \ "Clean"     : "*",
-    \ 'Ignored'   : '&',
-    \ "Unknown"   : "?"
-    \ }
-"   automatically close nerdtree if it's the last buffer open
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-"   vim-devicons ignore deprecated warning
-let g:NERDTreeGitStatusLogLevel = 3
 
 " vim-startify config
 let g:startify_session_dir = '~/.config/nvim/session'
@@ -288,8 +253,7 @@ let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
 
 
 " emmet-vim config
-" let g:user_emmet_mode='nv' " only enable emmet in normal mode
-let g:user_emmet_mode='a' " enable emmet in all modes
+let g:user_emmet_mode='nv' " only enable emmet in normal mode
 
 " vim-cycle config
 autocmd FileType python call AddCycleGroup('python', ['True', 'False'])
@@ -304,3 +268,12 @@ let g:vimtex_view_method='zathura'
 let g:vimtex_quickfix_mode=0
 set conceallevel=1
 let g:tex_conceal='abdmg'
+
+" indent-blankline config
+let g:indent_blankline_show_first_indent_level = v:false
+let g:indent_blankline_show_current_context = v:false
+
+" netrw config
+let g:netrw_keepdir = 0
+let g:netrw_winsize = 25
+let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'

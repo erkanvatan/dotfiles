@@ -20,12 +20,11 @@ inoremap <C-s> <ESC>:w<CR>a
 noremap <M-s> :AutoSaveToggle<CR>
 inoremap <M-s> <ESC>:AutoSaveToggle<CR>a
 
-" NERDTree bindings
-nnoremap <silent> <C-c> :NERDTreeToggle<CR>
-"   Map to open current file in NERDTree
-nnoremap <leader>pv :NERDTreeFind<bar><CR>
-
-nnoremap <Leader>tv :Vista!!<CR>
+" netrw bindings
+"   Open netrw in the current working directory
+nnoremap <silent> <C-c> :Lexplore<CR>
+"   Open netrw in the directory of current file
+nnoremap <leader>pv :Lexplore %:p:h<CR>
 
 " Copy-paste bindings for system clipboard (+)
 nnoremap <Leader>yy "+y
@@ -143,9 +142,6 @@ nnoremap <leader>gc :GBranches<CR>
 
 " Clear previous search highlight
 nnoremap <leader>h :noh<CR><esc>
-
-" goyo
-nnoremap <leader>tg :Goyo<CR><esc>
 
 " vim-livedown
 nmap <leader>tm :LivedownToggle<CR>

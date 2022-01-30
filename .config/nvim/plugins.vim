@@ -185,7 +185,6 @@ autocmd FileType json let g:indentLine_conceallevel = 0
 let g:coc_user_config = {}
 let g:coc_global_extensions = [
     \ 'coc-json',
-    \ 'coc-xml',
     \ 'coc-marketplace',
     \ 'coc-git',
     \ 'coc-vimlsp',
@@ -277,3 +276,22 @@ let g:indent_blankline_show_current_context = v:false
 let g:netrw_keepdir = 0
 let g:netrw_winsize = 25
 let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
+
+" nvim-tresitter config
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained",
+  sync_install = false,
+  ignore_install = {},
+  highlight = {
+    enable = true,
+    -- list of language that will be disabled
+    disable = {},
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
+EOF

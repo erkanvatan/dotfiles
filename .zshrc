@@ -128,3 +128,4 @@ eval "$(register-python-argcomplete pipx)"
 ### FUNCTIONS
 #   mkdir and cd to that directory
 function mkdircd () { mkdir -p "$@" && eval cd "\"\$$#\""; }
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

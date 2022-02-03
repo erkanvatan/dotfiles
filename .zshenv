@@ -12,24 +12,23 @@ fi
 
 export PATH="$PATH:$HOME/.local/bin:$HOME/bin"
 
-# My environment variables
-export LOCATION="***REMOVED***,TR"	# used for ansiweather location
+### ENVIRONMENT VARIABLES
 export EDITOR='vim'
+
 # WSL2 only
-#export BROWSER='firefox'
 export BROWSER="/mnt/c/Firefox/firefox.exe"
-#backend for GUI apps
+#   Set backend for GUI apps
 export DISPLAY=`grep -oP "(?<=nameserver ).+" /etc/resolv.conf`:0.0
 export LIBGL_ALWAYS_INDIRECT=1
+#   easy access to Windows desktop
+export DESKTOP='/mnt/c/Users/arensonz/Desktop'
 
-# Setting fd as the default source for fzf
+# FZF
+#   set fd as the default source
 export FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude .git'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-# fzf default opts
+#   default options
 export FZF_DEFAULT_OPTS='--layout=reverse'
 
 # grep
 export GREP_COLORS='0;31'
-
-# variable for directories
-export DESKTOP='/mnt/c/Users/arensonz/Desktop'

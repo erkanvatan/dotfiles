@@ -5,35 +5,22 @@
 #   Sorin Ionescu <sorin.ionescu@gmail.com>
 #
 
-
-#
-# Browser
-#
-
+### Browser
 if [[ "$OSTYPE" == darwin* ]]; then
   export BROWSER='open'
 fi
 
-#
-# Editors
-#
-
+### Editors
 export EDITOR='nvim'
 export VISUAL='nvim'
 export PAGER='less'
 
-#
-# Language
-#
-
+### Language
 if [[ -z "$LANG" ]]; then
   export LANG='en_US.UTF-8'
 fi
 
-#
-# Paths
-#
-
+### Paths
 # Ensure path arrays do not contain duplicates.
 typeset -gU cdpath fpath mailpath path
 
@@ -48,10 +35,7 @@ path=(
   $path
 )
 
-#
-# Less
-#
-
+### Less
 # Set the default Less options.
 # Mouse-wheel scrolling has been disabled by -X (disable screen clearing).
 # Remove -X and -F (exit if the content fits on one screen) to enable it.
@@ -63,5 +47,5 @@ if (( $#commands[(i)lesspipe(|.sh)] )); then
   export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
 fi
 
-# Start ssh-agent
+### Start ssh-agent
 eval `ssh-agent`

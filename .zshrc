@@ -17,18 +17,11 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
+################
+# TERMINAL START
+################
 
-### Terminal start
-
-### Source external plugins
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-### Module initialization
-
-eval "$(fasd --init auto)"	# fasd
-
-### WSL2 Config
+### WSL2 CONFIG
 # Change WSL2 directory colors for readability
 #   Change ls colours
 export CLICOLOR=1
@@ -39,16 +32,10 @@ zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
 # Aliases
 alias explorer='/mnt/c/Windows/explorer.exe .'
 
-# Activate tab completion
-autoload -Uz compinit
-compinit
-autoload -U bashcompinit
-bashcompinit
-
 # Set browser
 alias firefox="/mnt/c/Firefox/firefox.exe"
 
-### Program aliases
+### PROGRAM ALIASES
 # translate-shell
 alias td='trans :tr'
 alias tureng='trans tr:en'
@@ -59,7 +46,7 @@ alias fzfp="fzf --preview 'batcat --style=numbers --color=always {} | head -500'
 # Make history command show all history
 alias history='fc -l 1'
 
-# Alias for config --bare git repository
+# config --bare git repository
 alias config='/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME'
 
 # Git aliases
@@ -89,12 +76,19 @@ alias bat='batcat --theme=TwoDark'
 # pip3
 alias pip='pip3'
 
-### Script aliases
+### SCRIPT ALIASES
 alias weather='weather.sh'
 alias fwhite='format_whitespace.py'
 
-### Reminder/corrector aliases
+### REMINDER/CORRECTOR ALIASES
 # alias rm='echo "Use trash instead of rm (use \\\\rm -i if you want to skip this warning.)"'
+
+### CONFIGS
+# Activate tab completion
+autoload -Uz compinit
+compinit
+autoload -U bashcompinit
+bashcompinit
 
 # Disable autocorrect in zsh  (nyae prompt)
 unsetopt correct
@@ -104,28 +98,35 @@ DISABLE_CORRECTION="true"
 # Overwrite existing files with > and >>.
 setopt CLOBBER
 
+### FUNCTIONS
+# mkdir and cd to that directory
+function mkdircd () { mkdir -p "$@" && eval cd "\"\$$#\""; }
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+### MODULE INITIALIZATION
+# fasd
+eval "$(fasd --init auto)"
+
+# fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# p10k
+#   To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# Load nvm
+# nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+#   bash completion
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
-# Load PyEnv
+# PyEnv
 export PATH="$HOME/.pyenv/bin:$PATH"
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
-# Set pipx default python interpreter
+# pipx
+#   Set pipx default python interpreter
 export PIPX_DEFAULT_PYTHON="$HOME/.pyenv/versions/3.9.0/bin/python"
-
-# Load pipx completions
+#   Load pipx completions
 eval "$(register-python-argcomplete pipx)"
-
-
-### FUNCTIONS
-#   mkdir and cd to that directory
-function mkdircd () { mkdir -p "$@" && eval cd "\"\$$#\""; }
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

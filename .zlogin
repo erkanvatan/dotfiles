@@ -5,10 +5,12 @@
 #   Sorin Ionescu <sorin.ionescu@gmail.com>
 #
 
-# Run these at the login
+### user commands
+# start onedrive sync
 # $HOME/bin/onedrive_sync.sh
 
 
+### prezto commands
 # Execute code that does not affect the current session in the background.
 {
   # Compile the completion dump to increase startup speed.

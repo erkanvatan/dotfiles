@@ -1,15 +1,23 @@
 #!/usr/bin/env bash
 
-########################################
-# You should NOT run this file as SUDO #
-########################################
+############################################
+# You should NOT run this file as SUDO.    #
+# Running this with SUDO causes apps to be #
+# installed in root home directory.        #
+############################################
 
 DISTRO=${1^^} # turn to all uppercase
 EMAIL=${2}
 
 if [ "$#" -ne 2 ]; then
     echo "E: Illegal number of parameters"
-    echo "usage: sudo bash install.sh distro_name email_addr"
+    echo "usage: bash install.sh distro_name email_addr"
+    exit 1
+fi
+
+if  [ $(whoami) = "root" ]; then
+    echo 'E: You should not run this file as SUDO'
+    echo "usage: bash install.sh distro_name email_addr"
     exit 1
 fi
 
@@ -19,7 +27,7 @@ UBUNTU)
 	;;
 *)
 	echo E: not supported distro
-    echo 'usage: sudo bash install.sh distro_name email_addr'
+    echo "usage: bash install.sh distro_name email_addr"
 	exit 1
 	;;
 esac
@@ -27,8 +35,13 @@ esac
 TEMP_DIR=$HOME/setup-temp
 LOG_DIR=/tmp/system_install
 
+# create needed directories
 mkdir -p $LOG_DIR
 mkdir -p $TEMP_DIR
+
+mkdir -p $HOME/gist
+mkdir -p $HOME/projects
+mkdir -p $HOME/programs
 # push user's directory onto stack
 pushd $(pwd)
 cd $TEMP_DIR
@@ -47,8 +60,34 @@ fi
 
 echo '>>> PREZTO FINISHED <<<'
 
+### Installing into ~/programs
+echo '### INSTALLING INTO ~/programs ###'
+pushd $(pwd)
+cd $HOME/programs
+
+# install swift-map for homerow computing
+if [ ! -d "$HOME/programs/swift-map" ]; then
+    echo '# INSTALLING SWIFT-MAP #'
+    git clone "https://github.com/arensonzz/swift-map"
+    pushd $(pwd)
+    cd swift-map
+    chmod +x mainloop.py
+
+    echo '\tadd mainloop.py to system startup applications.'
+    popd
+    echo '> SWIFT-MAP INSTALL FINISHED <'
+else
+    echo '# W: SWIFT-MAP ALREADY INSTALLED #'
+    echo '\tadd mainloop.py to system startup applications if swift-map is not working.'
+fi
+
+
+popd
+echo '>>> INSTALLING INTO ~/programs FINISHED <<<'
+
 ### Downloading applications from their repos
 echo '### REPOSITORIES FROM WEB ###'
+
 
 # install neovim
 if ! [ -x "$(command -v nvim)" ]; then
@@ -68,6 +107,14 @@ if ! [ -x "$(command -v nvm)" ]; then
     export NVM_DIR="$HOME/.nvm"
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+    echo '# initialize nvm' >> $HOME/.bashrc
+    echo \
+'export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+' >> $HOME/.bashrc
+
 else
     echo '# W: NVM ALREADY INSTALLED (CHECK LATEST VERSION FROM NVM-SH/NVM GITHUB PAGE!) #'
 fi
@@ -94,6 +141,13 @@ if ! [ -x "$(command -v pyenv)" ]; then
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
 
+    echo '# initialize pyenv' >> $HOME/.bashrc
+    echo \
+'export PATH="$HOME/.pyenv/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)
+' >> $HOME/.bashrc
     # install pyenv plugins
     git clone https://github.com/momo-lab/xxenv-latest.git "$(pyenv root)"/plugins/xxenv-latest
     pyenv update
@@ -112,9 +166,17 @@ if ! [ -x "$(command -v pipx)" ]; then
     python3 -m pipx ensurepath
     # initialize pipx
     #   Set pipx default python interpreter
-    export PIPX_DEFAULT_PYTHON="$HOME/.pyenv/versions/3.9.0/bin/python"
+    export PIPX_DEFAULT_PYTHON="$HOME/.pyenv/versions/$(pyenv version-name)/bin/python"
     #   Load pipx completions
     eval "$(register-python-argcomplete pipx)"
+
+    echo '# initialize pipx' >> $HOME/.bashrc
+    echo \
+'#   Set pipx default python interpreter
+export PIPX_DEFAULT_PYTHON="$HOME/.pyenv/versions/$(pyenv version-name)/bin/python"
+#   Load pipx completions
+eval "$(register-python-argcomplete pipx)"
+' >> $HOME/.bashrc
 else
     echo '# W: PIPX ALREADY INSTALLED, UPDATING #'
     python3 -m pip install --user -U pipx
@@ -127,6 +189,11 @@ if ! [ -x "$(command -v fzf)" ]; then
     $HOME/.fzf/install
     # initialize fzf
     [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+    echo '# initialize fzf' >> $HOME/.bashrc
+    echo \
+'[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+' >> $HOME/.bashrc
 else
     echo '# W: FZF ALREADY INSTALLED, UPDATING #'
     pushd $(pwd)
@@ -202,11 +269,11 @@ echo Purged temp folder
 echo '### CHECKING INSTALLATIONS ###'
 
 echo '- nvim version:'
-nvim --version
+nvim --version | head -n1
 echo '- nvm version:'
 nvm --version
 echo '- node version:'
-nvm list
+nvm list | head -n7
 echo '- pyenv check'
 pyenv doctor
 echo '- pipx version:'

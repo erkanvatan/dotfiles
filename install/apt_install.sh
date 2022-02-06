@@ -14,6 +14,12 @@ if [ "$#" -ne 2 ]; then
     exit 1
 fi
 
+if [ $(whoami) != "root" ]; then
+    echo 'E: You should run this file as SUDO'
+    echo "usage: sudo bash apt_install.sh distro_name email_addr"
+    exit 1
+fi
+
 case $DISTRO in
 UBUNTU)
 	echo '### INSTALLING FOR UBUNTU ###'

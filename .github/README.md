@@ -8,13 +8,13 @@
 **1.** Initialize bare git directory.
 
 ```sh
-git init --bare $HOME/dotfiles
+git init --bare $HOME/.dotfiles
 ```
 
 **2.** Add alias to .bashrc or .zshrc (if you use ZSH as shell) to be able to refer the repo by `config`.
 
 ```sh
-alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 ```
 **3.** Set git to show only tracked files in commands.
 
@@ -44,5 +44,3 @@ config add ~/.fzf
 config commit -m "Add fzf config"
 config push origin master
 ```
-
-

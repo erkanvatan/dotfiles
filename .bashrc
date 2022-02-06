@@ -10,6 +10,10 @@ fi
 alias usage='du -sk * | sort -n | perl -ne '\''($s,$f)=split(m{\t});for (qw(K M G)) {if($s<1024) {printf("%.1f",$s);print "$_\t$f"; last};$s=$s/1024}'\'
 alias ls="ls --color"
 
+
+# Change path
+export PATH="$PATH:$HOME/.local/bin:$HOME/bin"
+
 ### PROMPT CONFIG
 # show full path for current directory
 export PS1="\[\033[1;32m\]\u \[\033[31m\]\W $ \[\033[0m\]"
@@ -70,7 +74,6 @@ alias bat='batcat --theme=TwoDark'
 alias pip='pip3'
 
 ### SCRIPT ALIASES
-alias weather='weather.sh'
 alias fwhite='format_whitespace.py'
 
 ### REMINDER/CORRECTOR ALIASES
@@ -81,24 +84,3 @@ alias fwhite='format_whitespace.py'
 ### FUNCTIONS
 # mkdir and cd to that directory
 function mkdircd () { mkdir -p "$@" && eval cd "\"\$$#\""; }
-
-### MODULE INITIALIZATION
-# nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# fzf
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
-# PyEnv
-export PATH="$HOME/.pyenv/bin:$PATH"
-eval "$(pyenv init --path)"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-
-# pipx
-#   Set pipx default python interpreter
-export PIPX_DEFAULT_PYTHON="$HOME/.pyenv/versions/3.9.0/bin/python"
-#   Load pipx completions
-eval "$(register-python-argcomplete pipx)"

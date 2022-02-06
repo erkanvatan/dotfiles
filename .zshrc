@@ -77,7 +77,6 @@ alias bat='batcat --theme=TwoDark'
 alias pip='pip3'
 
 ### SCRIPT ALIASES
-alias weather='weather.sh'
 alias fwhite='format_whitespace.py'
 
 ### REMINDER/CORRECTOR ALIASES

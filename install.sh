@@ -1,191 +1,147 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+########################################
+# You should NOT run this file as SUDO #
+########################################
+
 DISTRO=${1^^} # turn to all uppercase
 EMAIL=${2}
 
 if [ "$#" -ne 2 ]; then
-    echo "Illegal number of parameters"
+    echo "E: Illegal number of parameters"
     echo "usage: sudo bash install.sh distro_name email_addr"
     exit 1
 fi
 
 case $DISTRO in
 UBUNTU)
-	echo installing for Ubuntu
+	echo '### INSTALLING FOR UBUNTU ###'
 	;;
 *)
-	echo not supported distro
+	echo E: not supported distro
     echo 'usage: sudo bash install.sh distro_name email_addr'
 	exit 1
 	;;
 esac
 
-TEMP_DIR=~/setup-temp
+TEMP_DIR=$HOME/setup-temp
 LOG_DIR=/tmp/system_install
-
-# Empty log files
-echo "" >$LOG_DIR/error.log
-echo "" >$LOG_DIR/prezto.log
-echo "" >$LOG_DIR/web_repos.log
-echo "" >$LOG_DIR/npm.log
-echo "" >$LOG_DIR/pipx.log
-
-# Redirect stderr to error.log
-exec 2>> $LOG_DIR/error.log
 
 mkdir -p $LOG_DIR
 mkdir -p $TEMP_DIR
+# push user's directory onto stack
+pushd $(pwd)
 cd $TEMP_DIR
 
-echo 'running apt-get update'
-apt-get -qq update
-echo '> apt-get update finished'
-
-### Global software installation using apt-get
-echo '# GLOBAL SOFTWARE #'
-echo 'installing apt apps'
-
-apt-get -qq --yes install bat
-apt-get -qq --yes install apt-file
-apt-get -qq --yes install clangd
-apt-get -qq --yes install curl
-apt-get -qq --yes install fd-find
-if [ -x "$(command -v git)" ]; then
-    # Configure git for the first install
-    apt-get -qq --yes install git
-    git config --global user.name "$USERNAME"
-    git config --global user.email "$EMAIL"
-    git config --global color.ui true
-    git config --global core.editor vim
-else
-    apt-get -qq --yes install git
-fi
-
-apt-get -qq --yes install grep
-apt-get -qq --yes install ripgrep
-apt-get -qq --yes install tidy
-apt-get -qq --yes install translate-shell
-apt-get -qq --yes install trash-cli
-apt-get -qq --yes install unzip
-apt-get -qq --yes install valgrind
-apt-get -qq --yes install wget
-apt-get -qq --yes install xclip
-apt-get -qq --yes install xdg-utils
-apt-get -qq --yes install subversion
-apt-get -qq --yes install libgtk-3-dev
-apt-get -qq --yes install neofetch
-apt-get -qq --yes install zsh
-apt-get -qq --yes install tmux
-apt-get -qq --yes install ffmpeg
-
-echo '> apt apps install finished'
-echo 'installing pyenv dependencies'
-apt-get -qq --yes install make build-essential libssl-dev zlib1g-dev \
-libbz2-dev libreadline-dev libsqlite3-dev llvm \
-libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
-echo '> pyenv dependency install finished'
-echo '> GLOBAL SOFTWARE FINISHED'
-
 ### Prezto installation using git
-echo '# PREZTO #'
+echo '### PREZTO ###'
 
 if ! [ -d "$HOME/.zprezto" ]; then
-    echo 'installing prezto for zsh'
-    exec 1>>$LOG_DIR/prezto.log
+    echo '# INSTALLING PREZTO FOR ZSH #'
     git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
-    chsh -s /bin/zsh
-    exec 1>/dev/tty # redirect stdout back to terminal
-    echo '> prezto install finished'
+    echo '> PREZTO INSTALL FINISHED <'
 else
-    echo '.zprezto folder already exists, updating'
-    zprezto-update >>$LOG_DIR/prezto.log
+    echo '# W: .ZPREZTO FOLDER ALREADY EXISTS, UPDATING #'
+    zprezto-update
 fi
 
-echo '> PREZTO FINISHED'
+echo '>>> PREZTO FINISHED <<<'
 
 ### Downloading applications from their repos
-echo '# REPOSITORIES FROM WEB #'
-exec 1>>$LOG_DIR/web_repos.log
+echo '### REPOSITORIES FROM WEB ###'
 
 # install neovim
 if ! [ -x "$(command -v nvim)" ]; then
-    echo 'installing neovim' 1>/dev/tty
+    echo '# INSTALLING NEOVIM #'
     curl -L https://github.com/neovim/neovim/releases/latest/download/nvim.appimage -o "nvim"
     chmod u+x nvim
-    mv nvim /usr/local/bin
+    sudo mv nvim /usr/local/bin
 else
-    echo 'neovim already installed (check latest version from neovim/neovim github page!)' 1>/dev/tty
+    echo '# W: NEOVIM ALREADY INSTALLED (CHECK LATEST VERSION FROM NEOVIM/NEOVIM GITHUB PAGE!) #'
 fi
 
 # install nvm
 if ! [ -x "$(command -v nvm)" ]; then
-    echo 'installing nvm (v0.39.1)' 1>/dev/tty
+    echo '# INSTALLING NVM (V0.39.1) #'
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+    # initialize nvm
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 else
-    echo 'nvm already installed (check latest version from nvm-sh/nvm github page!)' 1>/dev/tty
+    echo '# W: NVM ALREADY INSTALLED (CHECK LATEST VERSION FROM NVM-SH/NVM GITHUB PAGE!) #'
 fi
 
 # install nodejs
 if ! [ -x "$(command -v node)" ]; then
-    echo 'installing latest LTS nodejs' 1>/dev/tty
+    echo '# INSTALLING LATEST LTS NODEJS #'
+
     nvm install --lts
     nvm alias default node
     nvm use --lts
 else
-    echo 'nodejs already installed (check latest version from "nvm list" command!)' 1>/dev/tty
+    echo '# W: NODEJS ALREADY INSTALLED (CHECK LATEST VERSION FROM "NVM LIST" COMMAND!) #'
 fi
 
 # install pyenv
 if ! [ -x "$(command -v pyenv)" ]; then
-    echo 'installing latest pyenv' 1>/dev/tty
+    echo '# INSTALLING LATEST PYENV #'
     # install pyenv using automatic installer
-    curl -L https://github.com/psyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
-    exec $SHELL
+    curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+    # initialize pyenv
+    export PATH="$HOME/.pyenv/bin:$PATH"
+    eval "$(pyenv init --path)"
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+
     # install pyenv plugins
-    git clone https://github.com/pyenv/pyenv-update.git $(pyenv root)/plugins/pyenv-update
-
-    git clone git://github.com/pyenv/pyenv-doctor.git $(pyenv root)/plugins/pyenv-doctor
-    git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
-    git clone https://github.com/momo-lab/xxenv-latest.git "$(**env root)"/plugins/xxenv-latest
+    git clone https://github.com/momo-lab/xxenv-latest.git "$(pyenv root)"/plugins/xxenv-latest
     pyenv update
-
     # install latest python version inside pyenv
     pyenv latest install
     pyenv latest global
 else
-    echo 'pyenv already installed, updating' 1>/dev/tty
+    echo '# W: PYENV ALREADY INSTALLED, UPDATING #'
     pyenv update
 fi
 
 # install pipx
 if ! [ -x "$(command -v pipx)" ]; then
-    echo 'installing latest pipx' 1>/dev/tty
+    echo '# INSTALLING LATEST PIPX #'
     python3 -m pip install --user pipx
     python3 -m pipx ensurepath
+    # initialize pipx
+    #   Set pipx default python interpreter
+    export PIPX_DEFAULT_PYTHON="$HOME/.pyenv/versions/3.9.0/bin/python"
+    #   Load pipx completions
+    eval "$(register-python-argcomplete pipx)"
 else
-    echo 'pipx already installed, updating' 1>/dev/tty
+    echo '# W: PIPX ALREADY INSTALLED, UPDATING #'
     python3 -m pip install --user -U pipx
 fi
 
 # install fzf
 if ! [ -x "$(command -v fzf)" ]; then
-    echo 'installing latest fzf' 1>/dev/tty
-    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-    ~/.fzf/install
+    echo '# INSTALLING LATEST FZF #'
+    git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf
+    $HOME/.fzf/install
+    # initialize fzf
+    [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 else
-    echo 'fzf already installed, updating' 1>/dev/tty
-    cd ~/.fzf && git pull && ./install
-    cd $TEMP_DIR
+    echo '# W: FZF ALREADY INSTALLED, UPDATING #'
+    pushd $(pwd)
+    cd $HOME/.fzf && git pull
+    ./install
+    popd
 fi
 
-exec 1>/dev/tty # redirect stdout back to terminal
-echo '> REPOSITORIES FROM WEB FINISHED'
+echo '>>> REPOSITORIES FROM WEB FINISHED <<<'
 
 ### Installing applications using npm
-echo '# NPM APPS #'
-exec 1>>$LOG_DIR/npm.log
+echo '### NPM APPS ###'
 
 if [ -x "$(command -v npm)" ]; then
-    echo 'installing npm apps' 1>/dev/tty
+    echo '# INSTALLING NPM APPS #'
     npm i -g --quiet livedown
     npm i -g --quiet live-server
     npm i -g --quiet http-server
@@ -193,52 +149,49 @@ if [ -x "$(command -v npm)" ]; then
     npm i -g --quiet tldr
     npm i -g --quiet sql-lint
     npm i -g --quiet wsl-open
-    echo '> npm apps install finished' 1>/dev/tty
-    echo 'updating npm apps' 1>/dev/tty
+    echo '> NPM APPS INSTALL FINISHED <'
+    echo '# UPDATING NPM APPS #'
     npm i -g --quiet npm-check-updates
 else
-    echo 'npm not installed, could not install the apps' 1>/dev/tty
+    echo '# E: NPM NOT INSTALLED, COULD NOT INSTALL THE APPS #'
 fi
 
-exec 1>/dev/tty # redirect stdout back to terminal
-echo '> NPM APPS FINISHED'
+echo '>>> NPM APPS FINISHED <<<'
 
 ### Installing applications using pipx
-echo '# PIPX APPS #'
-exec 1>>$LOG_DIR/pipx.log
+echo '### PIPX APPS ###'
 
 if [ -x "$(command -v pipx)" ]; then
-    echo 'installing pipx apps' 1>/dev/tty
+    echo '# INSTALLING PIPX APPS #'
     pipx install yt-dlp
     pipx install flake8
     pipx install autopep8
     pipx install youtube-dl
     pipx install jedi-language-server
     pipx install pycodestyle
-    echo '> pipx apps install finished' 1>/dev/tty
+    echo '> PIPX APPS INSTALL FINISHED <'
 
-    echo 'updating pipx apps' 1>/dev/tty
+    echo '# UPDATING PIPX APPS #'
     pipx upgrade-all
 else
-    echo 'pipx not installed, could not install the apps'
+    echo '# E: PIPX NOT INSTALLED, COULD NOT INSTALL THE APPS #'
 fi
 
-exec 1>/dev/tty # redirect stdout back to terminal
-echo '> PIPX APPS FINISHED'
+echo '>>> PIPX APPS FINISHED <<<'
 
 ### Configurations
-echo '# CONFIGURATIONS #'
+echo '### CONFIGURATIONS ###'
 
-if [ ! -f ~/.ssh/id_rsa.pub ]; then
-    echo 'configuring SSH'
-	ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa -C $EMAIL
+if [ ! -f $HOME/.ssh/id_rsa.pub ]; then
+    echo '# CONFIGURING SSH #'
+	ssh-keygen -t rsa -b 4096 -f $HOME/.ssh/id_rsa -C $EMAIL
 	eval "$(ssh-agent -s)"
-	ssh-add ~/.ssh/id_rsa
+	ssh-add $HOME/.ssh/id_rsa
 else
-    echo 'SSH already configured'
+    echo '# W: SSH ALREADY CONFIGURED #'
 fi
 
-echo '# CONFIGURATIONS FINISHED #'
+echo '>>> CONFIGURATIONS FINISHED <<<'
 
 
 rm -rf $TEMP_DIR
@@ -246,7 +199,7 @@ rm -rf $TEMP_DIR
 echo Purged temp folder
 
 ### Checking if apps are installed correctly
-echo '# CHECKING INSTALLATIONS #'
+echo '### CHECKING INSTALLATIONS ###'
 
 echo '- nvim version:'
 nvim --version
@@ -258,12 +211,17 @@ echo '- pyenv check'
 pyenv doctor
 echo '- pipx version:'
 pipx --version
-echo '# CHECKING INSTALLATIONS FINISHED #'
+echo '- default python version:'
+python --version
+echo '>>> CHECKING INSTALLATIONS FINISHED <<<'
 
 ### Reminder
-echo REMEMBER TO:
+echo '### REMEMBER TO ###:'
 echo - update all packages and the system
 echo - register ssh public key to github
-echo "-check $TMP_DIR for error logs"
+echo " -check $TMP_DIR for error logs"
 echo '- download recommended font for powerlevel10k (MesloLGS NF)'
 echo - reboot
+
+# go back to user's directory
+popd

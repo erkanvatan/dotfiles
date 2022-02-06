@@ -70,7 +70,6 @@ else
 fi
 
 apt-get -qq --yes install grep
-apt-get -qq --yes install ripgrep
 apt-get -qq --yes install tidy
 apt-get -qq --yes install translate-shell
 apt-get -qq --yes install trash-cli

@@ -44,7 +44,7 @@ alias fzfp="fzf --preview 'batcat --style=numbers --color=always {} | head -500'
 alias history='fc -l 1'
 
 # config --bare git repository
-alias config='/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME'
+alias config='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
 
 # Git aliases
 alias gs='git status'

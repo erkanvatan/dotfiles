@@ -47,7 +47,7 @@ alias fzfp="fzf --preview 'batcat --style=numbers --color=always {} | head -500'
 alias history='fc -l 1'
 
 # config --bare git repository
-alias config='/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME'
+alias config='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
 
 # Git aliases
 alias gs='git status'
@@ -124,8 +124,8 @@ eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
-# pipx
+# initialize pipx
 #   Set pipx default python interpreter
-export PIPX_DEFAULT_PYTHON="$HOME/.pyenv/versions/3.9.0/bin/python"
+export PIPX_DEFAULT_PYTHON="$HOME/.pyenv/versions/$(pyenv version-name)/bin/python"
 #   Load pipx completions
 eval "$(register-python-argcomplete pipx)"

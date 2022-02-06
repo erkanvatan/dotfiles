@@ -43,8 +43,7 @@ mkdir -p $HOME/gist
 mkdir -p $HOME/projects
 mkdir -p $HOME/programs
 # push user's directory onto stack
-pushd $(pwd)
-cd $TEMP_DIR
+pushd $TEMP_DIR >/dev/null
 
 ### Prezto installation using git
 echo '### PREZTO ###'
@@ -62,32 +61,29 @@ echo '>>> PREZTO FINISHED <<<'
 
 ### Installing into ~/programs
 echo '### INSTALLING INTO ~/programs ###'
-pushd $(pwd)
-cd $HOME/programs
+pushd $HOME/programs >/dev/null
 
 # install swift-map for homerow computing
 if [ ! -d "$HOME/programs/swift-map" ]; then
     echo '# INSTALLING SWIFT-MAP #'
     git clone "https://github.com/arensonzz/swift-map"
-    pushd $(pwd)
-    cd swift-map
+    pushd swift-map >/dev/null
     chmod +x mainloop.py
 
-    echo '\tadd mainloop.py to system startup applications.'
-    popd
+    printf '\tadd mainloop.py to system startup applications.\n'
+    popd >/tmp/null
     echo '> SWIFT-MAP INSTALL FINISHED <'
 else
     echo '# W: SWIFT-MAP ALREADY INSTALLED #'
-    echo '\tadd mainloop.py to system startup applications if swift-map is not working.'
+    printf '\tadd mainloop.py to system startup applications if swift-map is not working.\n'
 fi
 
 
-popd
+popd >/tmp/null
 echo '>>> INSTALLING INTO ~/programs FINISHED <<<'
 
 ### Downloading applications from their repos
 echo '### REPOSITORIES FROM WEB ###'
-
 
 # install neovim
 if ! [ -x "$(command -v nvim)" ]; then
@@ -99,8 +95,18 @@ else
     echo '# W: NEOVIM ALREADY INSTALLED (CHECK LATEST VERSION FROM NEOVIM/NEOVIM GITHUB PAGE!) #'
 fi
 
+# install TPM (Tmux Package Manager)
+if ! [ -d "$HOME/.tmux/plugins/tpm" ]; then
+    echo '# INSTALLING TPM (Tmux Package Manager) #'
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm && ~/.tmux/plugins/tpm/bin/install_plugins
+else
+    echo '# W: TPM (Tmux Package Manager) ALREADY INSTALLED, UPDATING #'
+    pushd $HOME/.tmux/plugins/tpm >/tmp/null && git pull && ~/.tmux/plugins/tpm/bin/install_plugins
+    popd >/tmp/null
+fi
+
 # install nvm
-if ! [ -x "$(command -v nvm)" ]; then
+if ! [ -d "$HOME/.nvm" ]; then
     echo '# INSTALLING NVM (V0.39.1) #'
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
     # initialize nvm
@@ -131,7 +137,7 @@ else
 fi
 
 # install pyenv
-if ! [ -x "$(command -v pyenv)" ]; then
+if ! [ -d "$HOME/.pyenv" ]; then
     echo '# INSTALLING LATEST PYENV #'
     # install pyenv using automatic installer
     curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
@@ -146,7 +152,7 @@ if ! [ -x "$(command -v pyenv)" ]; then
 'export PATH="$HOME/.pyenv/bin:$PATH"
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)
+eval "$(pyenv virtualenv-init -)"
 ' >> $HOME/.bashrc
     # install pyenv plugins
     git clone https://github.com/momo-lab/xxenv-latest.git "$(pyenv root)"/plugins/xxenv-latest
@@ -188,18 +194,15 @@ if ! [ -x "$(command -v fzf)" ]; then
     git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf
     $HOME/.fzf/install
     # initialize fzf
-    [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
     echo '# initialize fzf' >> $HOME/.bashrc
     echo \
-'[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+'[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 ' >> $HOME/.bashrc
 else
-    echo '# W: FZF ALREADY INSTALLED, UPDATING #'
-    pushd $(pwd)
-    cd $HOME/.fzf && git pull
-    ./install
-    popd
+    echo '# W: FZF ALREADY INSTALLED #'
+    printf 'You can update by calling:\n\tcd $HOME/.fzf && git pull\n\t./install\n'
 fi
 
 echo '>>> REPOSITORIES FROM WEB FINISHED <<<'
@@ -209,13 +212,36 @@ echo '### NPM APPS ###'
 
 if [ -x "$(command -v npm)" ]; then
     echo '# INSTALLING NPM APPS #'
-    npm i -g --quiet livedown
-    npm i -g --quiet live-server
-    npm i -g --quiet http-server
-    npm i -g --quiet neovim
-    npm i -g --quiet tldr
-    npm i -g --quiet sql-lint
-    npm i -g --quiet wsl-open
+
+    if ! [ -x "$(command -v livedown)" ]; then
+        npm i -g --quiet livedown
+    fi
+
+    if ! [ -x "$(command -v live-server)" ]; then
+        npm i -g --quiet live-server
+    fi
+
+    if ! [ -x "$(command -v http-server)" ]; then
+        npm i -g --quiet http-server
+    fi
+
+    # if the package is not executable then check using this snippet
+    if [ `npm list -g | grep -c neovim` -eq 0 ]; then
+        npm i -g --quiet neovim
+    fi
+
+    if ! [ -x "$(command -v tldr)" ]; then
+        npm i -g --quiet tldr
+    fi
+
+    if ! [ -x "$(command -v sql-lint)" ]; then
+        npm i -g --quiet sql-lint
+    fi
+
+    if ! [ -x "$(command -v wsl-open)" ]; then
+        npm i -g --quiet wsl-open
+    fi
+
     echo '> NPM APPS INSTALL FINISHED <'
     echo '# UPDATING NPM APPS #'
     npm i -g --quiet npm-check-updates
@@ -236,6 +262,7 @@ if [ -x "$(command -v pipx)" ]; then
     pipx install youtube-dl
     pipx install jedi-language-server
     pipx install pycodestyle
+    pipx install pipreqs
     echo '> PIPX APPS INSTALL FINISHED <'
 
     echo '# UPDATING PIPX APPS #'
@@ -246,6 +273,24 @@ fi
 
 echo '>>> PIPX APPS FINISHED <<<'
 
+### Installing and updating applications using pip
+echo '### PIP APPS ###'
+
+if [ -x "$(command -v pip3)" ]; then
+    echo '# INSTALLING OR UPDATING PIP APPS #'
+
+    if [ `pip list | grep -c pynvim` -eq 0 ]; then
+        pip install pynvim
+    else
+        pip install --upgrade pynvim
+    fi
+    echo '> PIP APPS INSTALL FINISHED <'
+else
+    echo '# E: PIP NOT INSTALLED, COULD NOT INSTALL THE APPS #'
+fi
+
+echo '>>> PIP APPS FINISHED <<<'
+
 ### Configurations
 echo '### CONFIGURATIONS ###'
 
@@ -254,16 +299,13 @@ if [ ! -f $HOME/.ssh/id_rsa.pub ]; then
 	ssh-keygen -t rsa -b 4096 -f $HOME/.ssh/id_rsa -C $EMAIL
 	eval "$(ssh-agent -s)"
 	ssh-add $HOME/.ssh/id_rsa
+    echo '# CONFIGURED SSH#'
+    printf '\tregister ssh public key to GitHub\n'
 else
     echo '# W: SSH ALREADY CONFIGURED #'
 fi
 
 echo '>>> CONFIGURATIONS FINISHED <<<'
-
-
-rm -rf $TEMP_DIR
-
-echo Purged temp folder
 
 ### Checking if apps are installed correctly
 echo '### CHECKING INSTALLATIONS ###'
@@ -280,15 +322,16 @@ echo '- pipx version:'
 pipx --version
 echo '- default python version:'
 python --version
+
 echo '>>> CHECKING INSTALLATIONS FINISHED <<<'
+
+# go back to user's directory
+popd >/tmp/null
+rm -rf $TEMP_DIR
+echo '# PURGED TEMP FOLDER #'
 
 ### Reminder
 echo '### REMEMBER TO ###:'
 echo - update all packages and the system
-echo - register ssh public key to github
-echo " -check $TMP_DIR for error logs"
+echo "- check $LOG_DIR for error logs"
 echo '- download recommended font for powerlevel10k (MesloLGS NF)'
-echo - reboot
-
-# go back to user's directory
-popd

@@ -84,8 +84,8 @@ apt-get -qq --yes install neofetch
 if ! [ -x "$(command -v zsh)" ]; then
     # Configure zsh for the first install
     apt-get -qq --yes install zsh
-    echo "Changing default shell to ZSH." 1>/dev/tty
-    chsh -s $(which zsh) $(whoami) 1>/dev/tty
+    echo "Changing default shell to ZSH by running:" 1>/dev/tty
+    printf '\tchsh -s $(which zsh) $(whoami)' 1>/dev/tty
     echo "W: Please logout after for default shell change to take effect." 1>/dev/tty
 else
     apt-get -qq --yes install zsh

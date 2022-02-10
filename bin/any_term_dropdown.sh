@@ -23,7 +23,7 @@ my_term="alacritty"
 pgrep -x $my_term >/dev/null
 exit_code=$?
 if [ "$exit_code" -ne 0 ]; then
-    alacritty &
+    $my_term &
 fi
 
 # option 2: auto detect terminal emulator (note: make sure to only open one)

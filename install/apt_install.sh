@@ -42,8 +42,7 @@ echo "" >$LOG_DIR/apt_install.log
 exec 1>$LOG_DIR/apt_install.log
 
 # push user's directory onto stack
-pushd $(pwd)
-cd $TEMP_DIR
+pushd $TEMP_DIR >/dev/null
 
 echo '# RUNNING APT-GET UPDATE #' 1>/dev/tty
 apt-get --yes update 1>/dev/tty
@@ -84,9 +83,9 @@ apt-get -qq --yes install neofetch
 if ! [ -x "$(command -v zsh)" ]; then
     # Configure zsh for the first install
     apt-get -qq --yes install zsh
-    echo "Changing default shell to ZSH by running:" 1>/dev/tty
-    printf '\tchsh -s $(which zsh) $(whoami)' 1>/dev/tty
-    echo "W: Please logout after for default shell change to take effect." 1>/dev/tty
+    echo "Run following command to change default shell to ZSH:" 1>/dev/tty
+    printf '\tchsh -s $(which zsh) $(whoami)\n' 1>/dev/tty
+    echo "W: Please restart after for default shell change to take effect." 1>/dev/tty
 else
     apt-get -qq --yes install zsh
 fi
@@ -94,11 +93,51 @@ fi
 apt-get -qq --yes install tmux
 apt-get -qq --yes install ffmpeg
 apt-get -qq --yes install python3-pip
+apt-get -qq --yes install cargo
 
-echo '> APT APPS INSTALL FINISHED <' 1>/dev/tty
-echo '# INSTALLING PYENV DEPENDENCIES #' 1>/dev/tty
+# installing dependencies
+#   pyenv
 apt-get -qq --yes install make build-essential libssl-dev zlib1g-dev \
 libbz2-dev libreadline-dev libsqlite3-dev llvm \
 libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
-echo '> PYENV DEPENDENCY INSTALL FINISHED <' 1>/dev/tty
+
+#   alacritty
+apt-get -qq --yes install cmake pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev libegl1-mesa-dev
+
+#   any_term_dropdown.sh
+apt-get -qq --yes install coreutils xdotool
+apt-get -qq --yes install libxcb-util-dev libxcb-cursor-dev
+
+echo '> APT APPS INSTALL FINISHED <' 1>/dev/tty
+
+echo '# INSTALLING FROM PPA REPOS #' 1>/dev/tty
+# cherrytree
+add-apt-repository -y ppa:giuspen/ppa
+apt-get -qq --yes install cherrytree
+
+echo '> PPA REPOS INSTALL FINISHED <' 1>/dev/tty
+
 echo '### GLOBAL SOFTWARE FINISHED ###' 1>/dev/tty
+
+echo '### INSTALLING FONTS ###' 1>/dev/tty
+# Install MesloLGS truetype font
+if ! [ -d "/usr/share/fonts/truetype/MesloLGS" ]; then
+    echo '# INSTALLING MESLOLGS #' 1>/dev/tty
+    mkdir -p MesloLGS
+    wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf -O MesloLGS/MesloLGS-Regular.ttf &>>$LOG_DIR/apt_install.log
+    wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf -O MesloLGS/MesloLGS-Bold.ttf &>>$LOG_DIR/apt_install.log
+    wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf -O MesloLGS/MesloLGS-Italic.ttf &>>$LOG_DIR/apt_install.log
+    wget https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf -O MesloLGS/MesloLGS-BoldItalic.ttf &>$LOG_DIR/apt_install.log
+
+    cp -rf MesloLGS /usr/share/fonts/truetype
+    fc-cache -f -v
+    echo '> MESLOLGS INSTALL FINISHED <' 1>/dev/tty
+else
+    echo 'W: MESLOLGS ALREADY INSTALLED' 1>/dev/tty
+fi
+
+echo '>>> FONT INSTALL FINISHED <<<' 1>/dev/tty
+
+# go back to user's directory
+popd >/tmp/null
+rm -rf $TEMP_DIR

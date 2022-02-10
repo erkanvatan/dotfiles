@@ -11,17 +11,20 @@ if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; t
 fi
 
 export PATH="$PATH:$HOME/.local/bin:$HOME/bin"
+export PATH="$PATH:$HOME/.cargo/bin"
+
 
 ### ENVIRONMENT VARIABLES
 export EDITOR='vim'
+export BROWSER='firefox'
 
 # WSL2 only
-export BROWSER="/mnt/c/Firefox/firefox.exe"
+# export BROWSER="/mnt/c/Firefox/firefox.exe"
 #   Set backend for GUI apps
-export DISPLAY=`grep -oP "(?<=nameserver ).+" /etc/resolv.conf`:0.0
-export LIBGL_ALWAYS_INDIRECT=1
+# export DISPLAY=`grep -oP "(?<=nameserver ).+" /etc/resolv.conf`:0.0
+# export LIBGL_ALWAYS_INDIRECT=1
 #   easy access to Windows desktop
-export DESKTOP='/mnt/c/Users/arensonz/Desktop'
+# export DESKTOP='/mnt/c/Users/arensonz/Desktop'
 
 # FZF
 #   set fd as the default source

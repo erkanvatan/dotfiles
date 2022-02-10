@@ -24,16 +24,16 @@ fi
 ### WSL2 CONFIG
 # Change WSL2 directory colors for readability
 #   Change ls colours
-export CLICOLOR=1
-export LS_COLORS='rs=0:no=00:mi=00:mh=00:ln=01;36:or=01;31:di=01;34:ow=04;01;34:st=34:tw=04;34:pi=01;33:so=01;33:do=01;33:bd=01;33:cd=01;33:su=01;35:sg=01;35:ca=01;35:ex=01;32:'
+# export CLICOLOR=1
+# export LS_COLORS='rs=0:no=00:mi=00:mh=00:ln=01;36:or=01;31:di=01;34:ow=04;01;34:st=34:tw=04;34:pi=01;33:so=01;33:do=01;33:bd=01;33:cd=01;33:su=01;35:sg=01;35:ca=01;35:ex=01;32:'
 #   Make cd use the ls colours
-zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
+# zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
 
 # Aliases
-alias explorer='/mnt/c/Windows/explorer.exe .'
+# alias explorer='/mnt/c/Windows/explorer.exe .'
 
 # Set browser
-alias firefox="/mnt/c/Firefox/firefox.exe"
+# alias firefox="/mnt/c/Firefox/firefox.exe"
 
 ### PROGRAM ALIASES
 # translate-shell

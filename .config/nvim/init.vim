@@ -36,7 +36,7 @@ set nocursorline
 set nocursorcolumn
 
  "set python3 path
-let g:python3_host_prog='~/.pyenv/versions/3.9.0/bin/python3.9'
+let g:python3_host_prog='~/.pyenv/versions/3.10.2/bin/python3.10'
 
 " set default sql syntax
 let g:sql_type_default = 'pgsql'

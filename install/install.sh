@@ -53,8 +53,8 @@ if ! [ -d "$HOME/.zprezto" ]; then
     git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
     echo '> PREZTO INSTALL FINISHED <'
 else
-    echo '# W: .ZPREZTO FOLDER ALREADY EXISTS, UPDATING #'
-    zprezto-update
+    echo '# W: .ZPREZTO FOLDER ALREADY EXISTS, UPDATE BY RUNNING: #'
+    printf '\tzprezto-update\n'
 fi
 
 echo '>>> PREZTO FINISHED <<<'
@@ -78,7 +78,18 @@ else
     printf '\tadd mainloop.py to system startup applications if swift-map is not working.\n'
 fi
 
+if [ ! -d "$HOME/programs/core" ]; then
+    echo '# INSTALLING WMUTILS/CORE #'
+    git clone "https://github.com/wmutils/core.git"
+    pushd core >/dev/null
+    make
+    sudo make install
 
+    popd >/tmp/null
+    echo '> WMUTILS INSTALL FINISHED <'
+else
+    echo '# W: WMUTILS ALREADY INSTALLED #'
+fi
 popd >/tmp/null
 echo '>>> INSTALLING INTO ~/programs FINISHED <<<'
 
@@ -291,6 +302,10 @@ fi
 
 echo '>>> PIP APPS FINISHED <<<'
 
+### Installing and updating applications using cargo
+echo '### CARGO APPS #'
+cargo install alacritty
+echo '>>> CARGO APPS FINISHED <<<'
 ### Configurations
 echo '### CONFIGURATIONS ###'
 
@@ -333,5 +348,3 @@ echo '# PURGED TEMP FOLDER #'
 ### Reminder
 echo '### REMEMBER TO ###:'
 echo - update all packages and the system
-echo "- check $LOG_DIR for error logs"
-echo '- download recommended font for powerlevel10k (MesloLGS NF)'

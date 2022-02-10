@@ -20,6 +20,12 @@ my_term="alacritty"
 # my_term=terminator
 # my_term=gnome-terminal
 
+pgrep -x $my_term >/dev/null
+exit_code=$?
+if [ "$exit_code" -ne 0 ]; then
+    alacritty &
+fi
+
 # option 2: auto detect terminal emulator (note: make sure to only open one)
 # my_term="urxvt|xterm|uxterm|termite|sakura|lxterminal|terminator|mate-terminal|pantheon-terminal|konsole|gnome-terminal|xfce4-terminal"
 

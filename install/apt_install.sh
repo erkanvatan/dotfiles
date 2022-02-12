@@ -44,14 +44,37 @@ exec 1>$LOG_DIR/apt_install.log
 # push user's directory onto stack
 pushd $TEMP_DIR >/dev/null
 
+echo '# ADDING PPA REPOS #' 1>/dev/tty
+# cherrytree
+add-apt-repository -y ppa:giuspen/ppa
+# crow-translate
+add-apt-repository -y ppa:jonmagon/crow-translate
+# open broadcaster software (obs-studio)
+add-apt-repository -y ppa:obsproject/obs-studio
+# openshot
+add-apt-repository -y ppa:openshot.developers/ppa
+# musicbrainz picard
+add-apt-repository -y ppa:musicbrainz-developers/stable
+# qbittorrent
+add-apt-repository -y ppa:qbittorrent-team/qbittorrent-stable
+
+echo '> ADDED PPA REPOS <' 1>/dev/tty
+
 echo '# RUNNING APT-GET UPDATE #' 1>/dev/tty
 apt-get --yes update 1>/dev/tty
 echo '> APT-GET UPDATE FINISHED <' 1>/dev/tty
 
-### Global software installation using apt-get
+### Global software installation
 echo '### GLOBAL SOFTWARE ###' 1>/dev/tty
 echo '# INSTALLING APT APPS #' 1>/dev/tty
 
+# CLI APPS
+#   package managers
+apt-get -qq --yes install cargo
+apt-get -qq --yes install python3-pip
+apt-get -qq --yes install flatpak
+
+#
 apt-get -qq --yes install bat
 apt-get -qq --yes install apt-file
 apt-get -qq --yes install clangd
@@ -92,8 +115,19 @@ fi
 
 apt-get -qq --yes install tmux
 apt-get -qq --yes install ffmpeg
-apt-get -qq --yes install python3-pip
-apt-get -qq --yes install cargo
+apt-get -qq --yes install gdebi-core
+
+
+# GUI APPS
+apt-get -qq --yes install cherrytree
+apt-get --qq --yes install keepassxc
+apt-get --qq --yes install crow-translate
+apt-get --qq --yes install gsmartcontrol
+apt-get --qq --yes install obs-studio
+apt-get --qq --yes install openshot-qt python3-openshot
+apt-get --qq --yes install picard
+apt-get --qq --yes install qbittorrent
+apt-get --qq --yes install steam
 
 # installing dependencies
 #   pyenv
@@ -110,12 +144,7 @@ apt-get -qq --yes install libxcb-util-dev libxcb-cursor-dev
 
 echo '> APT APPS INSTALL FINISHED <' 1>/dev/tty
 
-echo '# INSTALLING FROM PPA REPOS #' 1>/dev/tty
-# cherrytree
-add-apt-repository -y ppa:giuspen/ppa
-apt-get -qq --yes install cherrytree
 
-echo '> PPA REPOS INSTALL FINISHED <' 1>/dev/tty
 
 echo '### GLOBAL SOFTWARE FINISHED ###' 1>/dev/tty
 

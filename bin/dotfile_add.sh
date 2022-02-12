@@ -7,7 +7,8 @@
 # This script is a solution to shell not providing autocomplete for
 # file names in bare repositories issue.
 
-config="/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
+dot_dir="$HOME/.dotfiles"
+config="/usr/bin/git --git-dir=$dot_dir --work-tree=$HOME"
 
 pushd $HOME >/dev/null
 dotfile=$($config diff --name-only | sort | fzf -m) && $config add $dotfile

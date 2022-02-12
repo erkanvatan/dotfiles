@@ -216,7 +216,32 @@ else
     printf 'You can update by calling:\n\tcd $HOME/.fzf && git pull\n\t./install\n'
 fi
 
+# install calibre
+if ! [ -x "$(command -v calibre)" ]; then
+    echo '# INSTALLING LATEST CALIBRE #'
+    sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin
+else
+    echo '# W: CALIBRE ALREADY INSTALLED #'
+fi
+
 echo '>>> REPOSITORIES FROM WEB FINISHED <<<'
+
+# install discord
+if ! [ -x "$(command -v discord)" ]; then
+    echo '# INSTALLING LATEST DISCORD #'
+    wget -O discord.deb https://discord.com/api/download?platform=linux&format=deb | sudo gdebi
+else
+    echo '# W: DISCORD ALREADY INSTALLED #'
+fi
+
+# install zoom
+if ! [ -x "$(command -v zoom)" ]; then
+    echo '# INSTALLING LATEST ZOOM #'
+    wget -O zoom.deb https://zoom.us/client/latest/zoom_amd64.deb | sudo gdebi
+else
+    echo '# W: ZOOM ALREADY INSTALLED #'
+fi
+
 
 ### Installing applications using npm
 echo '### NPM APPS ###'
@@ -306,6 +331,16 @@ echo '>>> PIP APPS FINISHED <<<'
 echo '### CARGO APPS #'
 cargo install alacritty
 echo '>>> CARGO APPS FINISHED <<<'
+
+### Installing and updating applications using flatpak
+echo '### FLATPAK APPS ###'
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak update --appstream # update repository
+flatpak install -y flathub fr.handbrake.ghb
+flatpak install -y flathub org.telegram.desktop
+
+echo '> FLATPAK APPS FINISHED <'
+
 ### Configurations
 echo '### CONFIGURATIONS ###'
 
@@ -348,3 +383,7 @@ echo '# PURGED TEMP FOLDER #'
 ### Reminder
 echo '### REMEMBER TO ###:'
 echo - update all packages and the system
+echo - install FreeFileSync: https://freefilesync.org/download.php
+echo - install ProtonVPN: https://protonvpn.com/support/linux-ubuntu-vpn-setup/
+echo - install Anki: https://apps.ankiweb.net/#download
+echo - install VirtualBox: https://www.virtualbox.org/wiki/Linux_Downloads

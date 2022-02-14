@@ -120,14 +120,14 @@ apt-get -qq --yes install gdebi-core
 
 # GUI APPS
 apt-get -qq --yes install cherrytree
-apt-get --qq --yes install keepassxc
-apt-get --qq --yes install crow-translate
-apt-get --qq --yes install gsmartcontrol
-apt-get --qq --yes install obs-studio
-apt-get --qq --yes install openshot-qt python3-openshot
-apt-get --qq --yes install picard
-apt-get --qq --yes install qbittorrent
-apt-get --qq --yes install steam
+apt-get -qq --yes install keepassxc
+apt-get -qq --yes install crow-translate
+apt-get -qq --yes install gsmartcontrol
+apt-get -qq --yes install obs-studio
+apt-get -qq --yes install openshot-qt python3-openshot
+apt-get -qq --yes install picard
+apt-get -qq --yes install qbittorrent
+apt-get -qq --yes install steam
 
 # installing dependencies
 #   pyenv

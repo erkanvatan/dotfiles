@@ -13,6 +13,7 @@ alias ls="ls --color"
 
 # Change path
 export PATH="$PATH:$HOME/.local/bin:$HOME/bin"
+export PATH="$PATH:$HOME/.cargo/bin"
 
 ### PROMPT CONFIG
 # show full path for current directory
@@ -84,5 +85,3 @@ alias fwhite='format_whitespace.py'
 ### FUNCTIONS
 # mkdir and cd to that directory
 function mkdircd () { mkdir -p "$@" && eval cd "\"\$$#\""; }
-
-### MODULE INITIALIZATIONS

@@ -57,6 +57,11 @@ add-apt-repository -y ppa:openshot.developers/ppa
 add-apt-repository -y ppa:musicbrainz-developers/stable
 # qbittorrent
 add-apt-repository -y ppa:qbittorrent-team/qbittorrent-stable
+# tlp
+add-apt-repository -y ppa:linrunner/tlp
+# tlpui
+add-apt-repository -y ppa:linuxuprising/apps
+
 
 echo '> ADDED PPA REPOS <' 1>/dev/tty
 
@@ -116,6 +121,7 @@ fi
 apt-get -qq --yes install tmux
 apt-get -qq --yes install ffmpeg
 apt-get -qq --yes install gdebi-core
+apt-get -qq --yes install tlp tlp-rdw
 
 
 # GUI APPS
@@ -128,6 +134,7 @@ apt-get -qq --yes install openshot-qt python3-openshot
 apt-get -qq --yes install picard
 apt-get -qq --yes install qbittorrent
 apt-get -qq --yes install steam
+apt-get -qq --yes install tlpui
 
 # installing dependencies
 #   pyenv

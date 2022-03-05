@@ -76,6 +76,8 @@ Plug 'tpope/vim-dadbod' "modern database interface for Vim
 " LaTeX
 Plug 'lervag/vimtex' "filetype plugin for LaTeX files
 
+" C Language
+Plug 'cdelledonne/vim-cmake'
 
 call plug#end()
 
@@ -101,6 +103,7 @@ let g:startify_session_persistence = 1
 
 " nerdcommenter config
 "   Add spaces after comment delimiters by default
+let g:NERDCreateDefaultMappings = 0
 let g:NERDSpaceDelims = 1
 autocmd FileType python let g:NERDDefaultAlign = 'left'
 
@@ -171,8 +174,10 @@ autocmd FileType python let b:ale_warn_about_trailing_whitespace = 0
 let g:ale_python_flake8_options = '--ignore=E501'
 let g:ale_html_beautify_options = '--indent-size 2 --max-preserve-newlines 1 --wrap-line-length 120'
 
+let g:ale_c_build_dir_names = ['build', 'bin', 'Debug', 'Release']
 let g:ale_c_cc_options = '-std=c99 -Wall -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused-result -Wwrite-strings'
-let g:ale_c_clangformat_options = "-style='{BasedOnStyle: WebKit, ColumnLimit: 120, BreakBeforeBraces: Linux, IndentWidth: 4, IndentCaseLabels: false, PointerAlignment: Right, SpaceBeforeAssignmentOperators: true}'"
+" let g:ale_c_clangformat_options = "-style='{BasedOnStyle: WebKit, ColumnLimit: 120, BreakBeforeBraces: Linux, IndentWidth: 4, IndentCaseLabels: false, PointerAlignment: Right, SpaceBeforeAssignmentOperators: true}'"
+let g:ale_c_clangformat_options = "-style='{BasedOnStyle: LLVM, ColumnLimit: 120, BreakBeforeBraces: Allman, IndentWidth: 4, IndentCaseLabels: false, PointerAlignment: Right, SpaceBeforeAssignmentOperators: true, AllowShortBlocksOnASingleLine: Never, AllowShortFunctionsOnASingleLine: None}'"
 
 let g:ale_javascript_prettier_use_local_config = 1
 "let g:ale_javascript_prettier_executable = './node_modules/.bin/prettier'
@@ -191,6 +196,7 @@ let g:coc_global_extensions = [
     \ 'coc-jedi',
     \ 'coc-eslint',
     \ 'coc-clangd',
+    \ 'coc-cmake',
     \ 'coc-snippets',
     \ 'coc-emmet',
     \ 'coc-tsserver',
@@ -295,3 +301,15 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 EOF
+"   set which filetypes will use treesitter folding
+"   if you want to activate folding for the current filetype
+"   call :setlocal foldmethod=expr
+set foldmethod=manual
+autocmd FileType python,c,cpp,xml,html,xhtml setlocal foldmethod=expr
+"       start with all folds open
+autocmd FileType python,c,cpp,xml,html,xhtml normal zR
+set foldexpr=nvim_treesitter#foldexpr()
+
+" vim-cmake config
+let g:cmake_link_compile_commands = 1
+let g:cmake_root_markers = ['.git', '.svn']

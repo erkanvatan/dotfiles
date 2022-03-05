@@ -90,6 +90,19 @@ if [ ! -d "$HOME/programs/core" ]; then
 else
     echo '# W: WMUTILS ALREADY INSTALLED #'
 fi
+
+if [ ! -d "$HOME/programs/onedrive" ]; then
+    echo '# INSTALLING ABRAUNEGG ONEDRIVE DEPENDENCIES #'
+
+    curl -fsS https://dlang.org/install.sh | bash -s dmd
+
+    git clone "https://github.com/abraunegg/onedrive.git"
+
+    echo '> ONEDRIVE DEPENDENCY INSTALL FINISHED <'
+else
+    echo '# W: ONEDRIVE ALREADY INSTALLED #'
+fi
+
 popd >/tmp/null
 echo '>>> INSTALLING INTO ~/programs FINISHED <<<'
 
@@ -229,7 +242,9 @@ echo '>>> REPOSITORIES FROM WEB FINISHED <<<'
 # install discord
 if ! [ -x "$(command -v discord)" ]; then
     echo '# INSTALLING LATEST DISCORD #'
-    wget -O discord.deb https://discord.com/api/download?platform=linux&format=deb | sudo gdebi
+    sudo -v
+    wget -O discord.deb https://discord.com/api/download?platform=linux&format=deb
+    sudo gdebi discord.deb
 else
     echo '# W: DISCORD ALREADY INSTALLED #'
 fi
@@ -237,7 +252,9 @@ fi
 # install zoom
 if ! [ -x "$(command -v zoom)" ]; then
     echo '# INSTALLING LATEST ZOOM #'
-    wget -O zoom.deb https://zoom.us/client/latest/zoom_amd64.deb | sudo gdebi
+    sudo -v
+    wget -O zoom.deb https://zoom.us/client/latest/zoom_amd64.deb
+    sudo gdebi zoom.deb
 else
     echo '# W: ZOOM ALREADY INSTALLED #'
 fi
@@ -274,9 +291,9 @@ if [ -x "$(command -v npm)" ]; then
         npm i -g --quiet sql-lint
     fi
 
-    if ! [ -x "$(command -v wsl-open)" ]; then
-        npm i -g --quiet wsl-open
-    fi
+    # if ! [ -x "$(command -v wsl-open)" ]; then
+        # npm i -g --quiet wsl-open
+    # fi
 
     echo '> NPM APPS INSTALL FINISHED <'
     echo '# UPDATING NPM APPS #'
@@ -299,6 +316,7 @@ if [ -x "$(command -v pipx)" ]; then
     pipx install jedi-language-server
     pipx install pycodestyle
     pipx install pipreqs
+    pipx install cmake-language-server
     echo '> PIPX APPS INSTALL FINISHED <'
 
     echo '# UPDATING PIPX APPS #'
@@ -337,7 +355,7 @@ echo '### FLATPAK APPS ###'
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 flatpak update --appstream # update repository
 flatpak install -y flathub fr.handbrake.ghb
-flatpak install -y flathub org.telegram.desktop
+flatpak install -y flathub org.kde.okular
 
 echo '> FLATPAK APPS FINISHED <'
 
@@ -387,3 +405,5 @@ echo - install FreeFileSync: https://freefilesync.org/download.php
 echo - install ProtonVPN: https://protonvpn.com/support/linux-ubuntu-vpn-setup/
 echo - install Anki: https://apps.ankiweb.net/#download
 echo - install VirtualBox: https://www.virtualbox.org/wiki/Linux_Downloads
+echo - install Telegram Desktop: https://telegram.org/dl/desktop/linux
+echo - install onedrive https://github.com/abraunegg/onedrive/blob/master/docs/INSTALL.md

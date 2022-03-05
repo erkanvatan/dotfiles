@@ -28,7 +28,7 @@ set signcolumn=yes "always show sign column, otherwise it will shift text
 set showtabline=2
 
 " set manual folding for functions, conditions etc.
-set foldmethod=manual
+" set foldmethod=manual
 
 " Show line numbers
 set relativenumber

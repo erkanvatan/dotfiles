@@ -44,5 +44,7 @@
   "snippets.ultisnips.directories": [
     "UltiSnips"
   ],
-  "coc.preferences.extensionUpdateCheck": "weekly"
+  "coc.preferences.extensionUpdateCheck": "weekly",
+
+  "cmake.lsp.enable": true
 }

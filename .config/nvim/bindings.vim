@@ -181,6 +181,10 @@ nnoremap <leader>gf :diffget //2<CR>
 " nerdcommenter
 "   [count]<leader>cc          : make lines commented
 "   [count]<leader>c<space>    : toggle line's comment status (commented/uncommented)
+map <leader>cc <plug>NERDCommenterComment
+map <leader>cu <plug>NERDCommenterUncomment
+map <leader>ct <plug>NERDCommenterToggle
+map <leader>cm <plug>NERDCommenterMinimal
 
 " vim-surround
 "   Works with parentheses(), brackets [], quotes (double or single), XML tags <q> </q>  and more
@@ -247,3 +251,7 @@ xmap <leader>db  <Plug>(DBExe)
 nmap <leader>db  <Plug>(DBExe)
 omap <leader>db  <Plug>(DBExe)
 nmap <leader>dbb <Plug>(DBExeLine)
+
+" vim-cmake config
+nnoremap <leader>cg :CMakeGenerate<CR>
+nnoremap <leader>cb :CMakeBuild<CR>

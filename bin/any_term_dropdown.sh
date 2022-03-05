@@ -17,13 +17,14 @@ height=$(wattr h "$ROOT")
 # my_term=urxvt
 # my_term=sakura
 my_term="alacritty"
+my_term_path="$HOME/.cargo/bin/alacritty"
 # my_term=terminator
 # my_term=gnome-terminal
 
 pgrep -x $my_term >/dev/null
 exit_code=$?
 if [ "$exit_code" -ne 0 ]; then
-    $my_term &
+    $my_term_path &
 fi
 
 # option 2: auto detect terminal emulator (note: make sure to only open one)

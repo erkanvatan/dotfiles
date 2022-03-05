@@ -61,6 +61,10 @@ add-apt-repository -y ppa:qbittorrent-team/qbittorrent-stable
 add-apt-repository -y ppa:linrunner/tlp
 # tlpui
 add-apt-repository -y ppa:linuxuprising/apps
+# xournalpp
+add-apt-repository -y ppa:apandada1/xournalpp-stable
+# quod libet
+add-apt-repository -y ppa:lazka/ppa
 
 
 echo '> ADDED PPA REPOS <' 1>/dev/tty
@@ -122,6 +126,9 @@ apt-get -qq --yes install tmux
 apt-get -qq --yes install ffmpeg
 apt-get -qq --yes install gdebi-core
 apt-get -qq --yes install tlp tlp-rdw
+apt-get -qq --yes install numlockx
+apt-get -qq --yes install w3m w3m-img
+apt-get -qq --yes install python-xlib
 
 
 # GUI APPS
@@ -135,6 +142,10 @@ apt-get -qq --yes install picard
 apt-get -qq --yes install qbittorrent
 apt-get -qq --yes install steam
 apt-get -qq --yes install tlpui
+apt-get -qq --yes install gparted
+apt-get -qq --yes install xournalpp
+apt-get -qq --yes install quodlibet
+apt-get -qq --yes install gimp
 
 # installing dependencies
 #   pyenv
@@ -143,11 +154,15 @@ libbz2-dev libreadline-dev libsqlite3-dev llvm \
 libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
 
 #   alacritty
-apt-get -qq --yes install cmake pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev libegl1-mesa-dev
+apt-get -qq --yes install cmake phkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev libegl1-mesa-dev
 
 #   any_term_dropdown.sh
 apt-get -qq --yes install coreutils xdotool
 apt-get -qq --yes install libxcb-util-dev libxcb-cursor-dev
+
+#   onedrive
+apt-get -qq --yes install build-essential libcurl4-openssl-dev libsqlite3-dev \
+pkg-config git curl libnotify-dev
 
 echo '> APT APPS INSTALL FINISHED <' 1>/dev/tty
 

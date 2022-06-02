@@ -91,18 +91,6 @@ else
     echo '# W: WMUTILS ALREADY INSTALLED #'
 fi
 
-if [ ! -d "$HOME/programs/onedrive" ]; then
-    echo '# INSTALLING ABRAUNEGG ONEDRIVE DEPENDENCIES #'
-
-    curl -fsS https://dlang.org/install.sh | bash -s dmd
-
-    git clone "https://github.com/abraunegg/onedrive.git"
-
-    echo '> ONEDRIVE DEPENDENCY INSTALL FINISHED <'
-else
-    echo '# W: ONEDRIVE ALREADY INSTALLED #'
-fi
-
 popd >/tmp/null
 echo '>>> INSTALLING INTO ~/programs FINISHED <<<'
 
@@ -259,6 +247,15 @@ else
     echo '# W: ZOOM ALREADY INSTALLED #'
 fi
 
+# install rustup
+if ! [ -x "$(command -v rustup)" ]; then
+    echo '# INSTALLING RUSTUP #'
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    source $HOME/.cargo/env
+else
+    echo '# W: RUSTUP ALREADY INSTALLED #'
+fi
+
 
 ### Installing applications using npm
 echo '### NPM APPS ###'
@@ -295,6 +292,22 @@ if [ -x "$(command -v npm)" ]; then
         # npm i -g --quiet wsl-open
     # fi
 
+    if ! [ -x "$(command -v degit)" ]; then
+        npm i -g --quiet degit
+    fi
+
+    if ! [ -x "$(command -v js-beautify)" ]; then
+        npm i -g --quiet js-beautify
+    fi
+
+    if ! [ -x "$(command -v sass)" ]; then
+        npm i -g --quiet sass
+    fi
+
+    # if the package is not executable then check using this snippet
+    if [ `npm list -g | grep -c svelte-language-server` -eq 0 ]; then
+        npm i -g --quiet svelte-language-server
+    fi
     echo '> NPM APPS INSTALL FINISHED <'
     echo '# UPDATING NPM APPS #'
     npm i -g --quiet npm-check-updates
@@ -317,6 +330,7 @@ if [ -x "$(command -v pipx)" ]; then
     pipx install pycodestyle
     pipx install pipreqs
     pipx install cmake-language-server
+    pipx install speedtest-cli
     echo '> PIPX APPS INSTALL FINISHED <'
 
     echo '# UPDATING PIPX APPS #'
@@ -346,9 +360,14 @@ fi
 echo '>>> PIP APPS FINISHED <<<'
 
 ### Installing and updating applications using cargo
-echo '### CARGO APPS #'
+echo '### CARGO APPS ###'
 cargo install alacritty
 echo '>>> CARGO APPS FINISHED <<<'
+
+### Installing rustup components
+echo '### RUSTUP COMPONENTS ###'
+rustup component add rusfmt
+echo '>>> RUSTUP COMPONENTS FINISHED <<<'
 
 ### Installing and updating applications using flatpak
 echo '### FLATPAK APPS ###'
@@ -356,6 +375,7 @@ flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flat
 flatpak update --appstream # update repository
 flatpak install -y flathub fr.handbrake.ghb
 flatpak install -y flathub org.kde.okular
+flatpak install -y flathub org.gimp.GIMP
 
 echo '> FLATPAK APPS FINISHED <'
 
@@ -400,10 +420,23 @@ echo '# PURGED TEMP FOLDER #'
 
 ### Reminder
 echo '### REMEMBER TO ###:'
-echo - update all packages and the system
-echo - install FreeFileSync: https://freefilesync.org/download.php
-echo - install ProtonVPN: https://protonvpn.com/support/linux-ubuntu-vpn-setup/
-echo - install Anki: https://apps.ankiweb.net/#download
-echo - install VirtualBox: https://www.virtualbox.org/wiki/Linux_Downloads
-echo - install Telegram Desktop: https://telegram.org/dl/desktop/linux
-echo - install onedrive https://github.com/abraunegg/onedrive/blob/master/docs/INSTALL.md
+echo '- update all packages and the system'
+echo '  * Update zprezto by calling: zprezto-update'
+echo '  * Check latest Neovim version from: https://github.com/neovim/neovim/releases/latest'
+echo '  * Check latest NVM version from: https://github.com/nvm-sh/nvm/releases/latest'
+echo '  * Check latest Node.js version from: nvm list'
+printf '  * Update fzf by calling:\n\tcd $HOME/.fzf && git pull\n\t./install\n'
+echo '  * Update pip3 by calling: pip3 install --upgrade pip'
+echo '  * Update npm by calling: '
+echo '- install'
+echo '  * FreeFileSync: https://freefilesync.org/download.php'
+echo '  * ProtonVPN: https://protonvpn.com/support/linux-ubuntu-vpn-setup/'
+echo '  * Anki: https://apps.ankiweb.net/#download'
+echo '  * VirtualBox: https://www.virtualbox.org/wiki/Linux_Downloads'
+echo '  * Telegram: https://telegram.org/dl/desktop/linux'
+echo '  * onedrive: https://github.com/abraunegg/onedrive/blob/master/docs/INSTALL.md'
+echo '  * scrcpy: https://github.com/Genymobile/scrcpy/blob/master/BUILD.md#simple'
+echo '  * drawio: https://github.com/jgraph/drawio-desktop/releases'
+echo '  * texlive-full: https://gist.github.com/wkrea/b91e3d14f35d741cf6b05e57dfad8faf'
+echo '  * sqlectron: https://github.com/sqlectron/sqlectron-gui/releases/latest'
+

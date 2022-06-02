@@ -38,7 +38,6 @@ fi
 ### PROGRAM ALIASES
 # translate-shell
 alias td='trans :tr'
-alias tureng='trans tr:en'
 
 # fzf
 alias fzfp="fzf --preview 'batcat --style=numbers --color=always {} | head -500'"
@@ -75,6 +74,13 @@ alias bat='batcat --theme=TwoDark'
 
 # pip3
 alias pip='pip3'
+
+# NPM
+#   add fixer/linter dependencies
+alias devtools_web_vanilla='pnpm add -D eslint prettier eslint-plugin-prettier eslint-config-prettier stylelint stylelint-config-standard'
+alias devtools_web_svelte_eslint='pnpm add -D eslint eslint-plugin-svelte3 eslint-plugin-import typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin @rollup/plugin-typescript @tsconfig/svelte stylelint stylelint-config-recommended-scss stylelint-config-html postcss postcss-html sass prettier prettier-plugin-svelte'
+alias devtools_web_svelteserver='pnpm add -D eslint eslint-plugin-prettier eslint-config-prettier typescript @rollup/plugin-typescript @tsconfig/svelte stylelint stylelint-config-recommended-scss stylelint-config-html postcss postcss-html sass prettier prettier-plugin-svelte'
+
 
 ### SCRIPT ALIASES
 alias fwhite='format_whitespace.py'
@@ -129,3 +135,10 @@ eval "$(pyenv virtualenv-init -)"
 export PIPX_DEFAULT_PYTHON="$HOME/.pyenv/versions/$(pyenv version-name)/bin/python"
 #   Load pipx completions
 eval "$(register-python-argcomplete pipx)"
+
+# tabtab source for packages
+# uninstall by removing these lines
+[[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && . ~/.config/tabtab/zsh/__tabtab.zsh || true
+
+export PNPM_HOME="/home/arensonz/.local/share/pnpm"
+export PATH="$PNPM_HOME:$PATH"

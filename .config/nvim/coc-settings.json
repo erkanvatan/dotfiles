@@ -6,12 +6,14 @@
   },
   "suggest.autoTrigger": "always",
   "suggest.minTriggerInputLength": 3,
-  "coc.source.floaterm.enable": false,
+  "suggest.noselect": false,
 
-  "diagnostic.displayByAle": false,
+  "diagnostic.displayByAle": true,
+  "diagnostic.enable": false,
+  "diagnostic.checkCurrentLine": true,
+  "diagnostic.messageTarget": "echo",
+  "diagnostic.signPriority": 9999999,
 
-  "coc.preferences.hoverTarget": "float",
-  "coc.preferences.colorSupport": true,
 
   "jedi.enable": true,
   "jedi.startupMessage": true,
@@ -27,24 +29,43 @@
   "jedi.workspace.extraPaths": [],
 
   "html.enable": true,
+  "html.filetypes": [
+    "html",
+    "handlebars",
+    "htmldjango",
+    "blade",
+    "html.jinja",
+    "jinja.html",
+    "htmljinja"
+  ],
 
-  "clangd.disableDiagnostics": true,
-
-  "eslint.enable": false,
+  "eslint.enable": true,
   "tsserver.enable": true,
-
   "tsserver.npm": "/usr/bin/npm",
 
-  "suggest.noselect": false,
   "snippets.extends": {
       "python": ["django"]
   },
-
   "snippets.userSnippetsDirectory": "~/.config/nvim/UltiSnips",
   "snippets.ultisnips.directories": [
     "UltiSnips"
   ],
+  "snippets.loadFromExtensions": true,
+
   "coc.preferences.extensionUpdateCheck": "weekly",
 
-  "cmake.lsp.enable": true
+  "cmake.lsp.enable": true,
+  "clangd.disableDiagnostics": true,
+
+  "svelte.enable-ts-plugin": true,
+  "svelte.plugin.svelte.diagnostics.enable": true,
+  "svelte.plugin.css.diagnostics.enable": false,
+  "svelte.plugin.typescript.diagnostics.enable": true,
+  "html.autoClosingTags": false,
+  "svelte.plugin.html.tagComplete.enable": false,
+
+  "rust-analyzer.diagnostics.enable": false,
+  "rust-analyzer.diagnostics.enableExperimental": false,
+
+  "sql.database": "postgresql"
 }

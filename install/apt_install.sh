@@ -101,6 +101,7 @@ else
 fi
 
 apt-get -qq --yes install grep
+# apt-get -qq --yes install ripgrep
 apt-get -qq --yes install tidy
 apt-get -qq --yes install translate-shell
 apt-get -qq --yes install trash-cli
@@ -129,6 +130,7 @@ apt-get -qq --yes install tlp tlp-rdw
 apt-get -qq --yes install numlockx
 apt-get -qq --yes install w3m w3m-img
 apt-get -qq --yes install python-xlib
+apt-get -qq --yes install pgformatter
 
 
 # GUI APPS
@@ -145,7 +147,7 @@ apt-get -qq --yes install tlpui
 apt-get -qq --yes install gparted
 apt-get -qq --yes install xournalpp
 apt-get -qq --yes install quodlibet
-apt-get -qq --yes install gimp
+apt-get -qq --yes install blueman
 
 # installing dependencies
 #   pyenv

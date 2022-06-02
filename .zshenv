@@ -13,6 +13,8 @@ fi
 export PATH="$PATH:$HOME/.local/bin:$HOME/bin"
 export PATH="$PATH:$HOME/.cargo/bin"
 
+# source cargo for Rust lang
+. "$HOME/.cargo/env"
 
 ### ENVIRONMENT VARIABLES
 export EDITOR='vim'
@@ -28,7 +30,7 @@ export BROWSER='firefox'
 
 # FZF
 #   set fd as the default source
-export FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude .git'
+export FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude "{node_modules,.git}"'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 #   default options
 export FZF_DEFAULT_OPTS='--layout=reverse'

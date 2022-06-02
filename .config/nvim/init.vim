@@ -12,7 +12,11 @@ source $HOME/.config/nvim/mydadbods.vim
 syntax on   " Enable syntax highlighting
 set t_8f=^[[38;2;%lu;%lu;%lum        " set foreground color
 set t_8b=^[[48;2;%lu;%lu;%lum        " set background color
-call ChangeBackground()
+
+set background=dark   " for the dark version of the theme
+colorscheme dracula
+let g:lightline.colorscheme = 'dracula'
+ " call ChangeBackground()
 set t_Co=256                         " Enable 256 colors
 set termguicolors                    " Enable GUI colors for the terminal to get truecolor
 
@@ -44,7 +48,7 @@ let g:sql_type_default = 'pgsql'
 
 set ignorecase
 set smartcase
-set mouse=a
+set mouse=nvchr
 set scrolloff=4 " number of screen lines to always keep above and below the cursor
 
 set undofile
@@ -70,19 +74,40 @@ let g:omni_sql_no_default_maps = 1
 " Language-specific
 augroup langindentation
 "    autocmd Filetype go setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
-    autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
+    " autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
     autocmd Filetype css setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
     autocmd Filetype scss setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
     autocmd Filetype javascript setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd Filetype typescript setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd Filetype svelte setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
     autocmd Filetype html setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-    autocmd Filetype htmldjango setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-    autocmd Filetype handlebars setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-    autocmd Filetype ember setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+    au BufRead,BufNewFile *.html setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
     autocmd Filetype json setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-"    autocmd Filetype yaml setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
     autocmd Filetype xml setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-"    autocmd Filetype lua setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 augroup END
+
+
+" Set long line length marker
+highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+
+fun! LongLineHighlightOn(length)
+    if !exists("w:llh")
+        let w:llh = matchadd("OverLength", '\%' . (a:length + 1) . 'v.*')
+    endif
+endfunction
+
+augroup langindentation
+    autocmd BufWinEnter *.html,*.svelte call LongLineHighlightOn(120)
+    autocmd BufWinEnter *.py,*.css,*.scss,*.js,*.ts,*.rs,*.c,*.sql call LongLineHighlightOn(90)
+augroup END
+
+" Set the filetype based on the file's extension, overriding any
+" 'filetype' that has already been set
+au BufRead,BufNewFile *.html set filetype=html.jinja.javascript
+" Set which files will use highlight from start of file (fix for Javascript
+" inside HTML syntax)
+au BufRead,BufNewFile *.html syntax sync fromstart
+
 
 " fix for startify recent files
 " set viminfo='100,n$HOME/.vim/files/info/viminfo

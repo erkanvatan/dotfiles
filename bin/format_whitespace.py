@@ -41,4 +41,4 @@ if __name__ == "__main__":
     else:
         formattedText = formatWhitespace(text)
     # copy the result to clipboard using xclip linux tool
-    subprocess.run("xclip", universal_newlines=True, input=formattedText)
+    subprocess.run(["xclip", "-i", "-selection", "clipboard"], universal_newlines=True, input=formattedText)

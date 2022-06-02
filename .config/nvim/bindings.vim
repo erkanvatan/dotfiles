@@ -21,6 +21,7 @@ noremap <M-s> :AutoSaveToggle<CR>
 inoremap <M-s> <ESC>:AutoSaveToggle<CR>a
 
 " netrw bindings
+"   Toggle banner: I
 "   Open netrw in the current working directory
 nnoremap <silent> <C-c> :Lexplore<CR>
 "   Open netrw in the directory of current file
@@ -48,6 +49,9 @@ nnoremap <silent> <C-Down> :resize -2<CR>
 nnoremap <silent> <C-Up> :resize +2<CR>
 nnoremap <silent> <C-Left> :vertical resize -2<CR>
 nnoremap <silent> <C-Right> :vertical resize +2<CR>
+
+" Zoom into one pane
+nnoremap <silent> <leader>z :tabnew %<CR>
 
 " COC (language server) bindings
 "   Jump bindings, to go back to previous location use Ctrl+O
@@ -99,6 +103,19 @@ xmap <leader>x  <Plug>(coc-convert-snippet)
 " ALE bindings (Asynchronous Lint Engine)
 nmap <silent> [a <Plug>(ale_previous_wrap)
 nmap <silent> ]a <Plug>(ale_next_wrap)
+noremap <M-a> :call AleAutofixToggle()<CR>
+let g:ale_fix_on_save = 0
+
+function! AleAutofixToggle()
+    if g:ale_fix_on_save
+        echo "g:ale_fix_on_save = 0"
+        let g:ale_fix_on_save = 0
+    else
+        echo "g:ale_fix_on_save = 1"
+        let g:ale_fix_on_save = 1
+    endif
+endfunction
+
 
 " vim-gitgutter bindings
 "   Stage the hunk with <Leader>hs
@@ -134,6 +151,13 @@ nmap <leader>fg :GFiles?<cr>
 nmap <leader>fb :Buffers<cr>
 nmap <leader>fc :BCommits<cr>
 nmap <leader>fC :Commits<cr>
+
+"   Change default bindings
+let g:fzf_action = {
+    \ 'ctrl-t': 'tab split',
+    \ 'ctrl-s': 'split',
+    \ 'ctrl-v': 'vsplit'
+    \ }
 
 " fzf-checkout bindings
 "   ctrl + d to delete the branch under cursor
@@ -188,6 +212,7 @@ map <leader>cm <plug>NERDCommenterMinimal
 
 " vim-surround
 "   Works with parentheses(), brackets [], quotes (double or single), XML tags <q> </q>  and more
+"   NOTE: Use vS) instead of vS( to surround without space
 "   Example:
 "   cs'<q>     : To change 'Hello' to <q>Hello</q>
 "   ds'        : To remove delimiters from 'Hello'

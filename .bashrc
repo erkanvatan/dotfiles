@@ -85,3 +85,6 @@ alias fwhite='format_whitespace.py'
 ### FUNCTIONS
 # mkdir and cd to that directory
 function mkdircd () { mkdir -p "$@" && eval cd "\"\$$#\""; }
+
+# source cargo for Rust lang
+. "$HOME/.cargo/env"

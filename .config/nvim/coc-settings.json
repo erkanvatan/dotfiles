@@ -14,19 +14,8 @@
   "diagnostic.messageTarget": "echo",
   "diagnostic.signPriority": 9999999,
 
-
-  "jedi.enable": true,
-  "jedi.startupMessage": true,
-  "jedi.markupKindPreferred": "plaintext",
-  "jedi.jediSettings.autoImportModules": ["numpy", "matplotlib"],
-  "jedi.executable.command": "/home/arensonz/.local/bin/jedi-language-server",
-  "jedi.executable.args": [],
-  "jedi.completion.disableSnippets": false,
-  "jedi.diagnostics.enable": false,
-  "jedi.diagnostics.didOpen": false,
-  "jedi.diagnostics.didChange": false,
-  "jedi.diagnostics.didSave": false,
-  "jedi.workspace.extraPaths": [],
+  "python.linting.enabled": false,
+  "python.analysis.typeCheckingMode": "off",
 
   "html.enable": true,
   "html.filetypes": [

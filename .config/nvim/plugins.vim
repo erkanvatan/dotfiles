@@ -211,7 +211,7 @@ autocmd FileType svelte let b:ale_linters = {'javascript': [], 'typescript': [],
 " Disable line too long warning for flake8
 let g:ale_python_flake8_options = '--max-line-length 120'
 let g:ale_python_autopep8_options = '--max-line-length 120'
-let g:ale_html_beautify_options = '--indent-size 2 --max-preserve-newlines 1 --wrap-line-length 120'
+let g:ale_html_beautify_options = '--indent-size 2 --max-preserve-newlines 2 --wrap-line-length 120'
 
 let g:ale_c_build_dir_names = ['build', 'bin', 'Debug', 'Release']
 let g:ale_c_cc_options = '-std=c99 -Wall -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused-result -Wwrite-strings'
@@ -239,7 +239,7 @@ let g:coc_global_extensions = [
     \ 'coc-marketplace',
     \ 'coc-git',
     \ 'coc-vimlsp',
-    \ 'coc-jedi',
+    \ 'coc-pyright',
     \ 'coc-eslint',
     \ 'coc-clangd',
     \ 'coc-cmake',
@@ -283,7 +283,7 @@ endfunction
 
 augroup enable_coc_diagnostic
     autocmd!
-    autocmd FileType svelte,typescript,sql call EnableCocDiagnosticBuffer()
+    autocmd FileType svelte,typescript,sql,python call EnableCocDiagnosticBuffer()
     autocmd FileType sql :GitGutterSignsDisable
 augroup end
 
@@ -334,7 +334,7 @@ set conceallevel=1
 let g:tex_conceal='abdmg'
 augroup tex_mappings
     autocmd!
-    autocmd FileType tex,latex,context,plaintex setlocal spell  spelllang=tr
+    autocmd FileType tex,latex,context,plaintex setlocal spell  spelllang=tr,en
 augroup END
 let g:vimtex_compiler_latexmk = {
             \ 'build_dir' : 'build',

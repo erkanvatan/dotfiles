@@ -1,6 +1,7 @@
 " <CR> means carriage return, another saying of <Enter>
 
 let mapleader = "\<Space>"
+let maplocalleader = "\<CR>"
 
 " open bindings.vim buffer in new tab
 nnoremap <silent> <leader>bb :tabnew ~/.config/nvim/bindings.vim<CR>
@@ -23,9 +24,14 @@ inoremap <M-s> <ESC>:AutoSaveToggle<CR>a
 " netrw bindings
 "   Toggle banner: I
 "   Open netrw in the current working directory
-nnoremap <silent> <C-c> :Lexplore<CR>
+nnoremap <silent> <C-c> :call ToggleVExplorer()<CR>
 "   Open netrw in the directory of current file
 nnoremap <leader>pv :Lexplore %:p:h<CR>
+"   toggle hidden files: gh
+"   pre-populate end of the command-line with the file under the cursor: .
+"   yank absolute path of the file under the cursor: y.
+"   go home: ~
+"   switch to the last buffer: ctrl + 6
 
 " Copy-paste bindings for system clipboard (+)
 nnoremap <Leader>yy "+y

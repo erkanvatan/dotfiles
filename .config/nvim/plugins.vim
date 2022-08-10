@@ -34,8 +34,6 @@ Plug 'preservim/nerdcommenter'
 
 " Web development
 Plug 'mattn/emmet-vim' " good for html tags
-Plug 'turbio/bracey.vim' " live preview of html/css/js
-    " cd to ~/.config/nvim/plugged/bracey.vim and run `npm install --prefix server`
 "   dependencies for vim-svelte
 Plug 'othree/html5.vim', {'for': ['html', 'html5', 'htm']}
 Plug 'pangloss/vim-javascript' " javascript syntax highlighting
@@ -56,6 +54,8 @@ Plug 'dense-analysis/ale'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'rust-lang/rust.vim'
 
+" Note taking
+Plug 'nvim-neorg/neorg' | Plug 'nvim-lua/plenary.nvim'
 
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'jiangmiao/auto-pairs'
@@ -85,6 +85,10 @@ Plug 'lervag/vimtex' "filetype plugin for LaTeX files
 
 " C Language
 Plug 'cdelledonne/vim-cmake'
+
+" csharp
+Plug 'OmniSharp/omnisharp-vim'
+
 
 call plug#end()
 
@@ -119,7 +123,7 @@ command! BD call fzf#run(fzf#wrap({
 
 " vim-startify config
 let g:startify_session_dir = '~/.config/nvim/session'
-let g:startify_bookmarks = ['~/.zshrc', '~/.config/nvim/plugins.vim', '~/.config/nvim/bindings.vim']
+let g:startify_bookmarks = ['~/projects', '~/Documents/neorg/personal/index.norg', '~/Documents/neorg/work/index.norg']
 let g:startify_session_persistence = 1
 
 " nerdcommenter config
@@ -132,10 +136,6 @@ autocmd FileType python let g:NERDDefaultAlign = 'left'
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_conceal = 0
 let g:vim_markdown_conceal_code_blocks = 0
-
-" bracey config
-let g:bracey_server_port = 8000
-let g:bracey_server_allow_remote_connections = 1
 
 " vim-livedown config
 let g:livedown_port = 8001
@@ -312,10 +312,9 @@ let g:auto_save_events = ["InsertLeave", "TextChanged"] " set events to trigger 
 
 " vim-closetag config
 "   These are the file types where this plugin is enabled.
-let g:closetag_filetypes = 'html,xhtml,phtml,xml'
-let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.xml'
+let g:closetag_filetypes = 'html,xhtml,phtml,xml,svelte'
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.xml,*.svelte'
 let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
-
 
 " emmet-vim config
 let g:user_emmet_mode='nv' " only enable emmet in normal mode
@@ -359,10 +358,20 @@ let g:netrw_keepdir = 0
 let g:netrw_winsize = 25
 let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
 
+function! ToggleVExplorer()
+    let g:netrw_winsize = 25
+    Lexplore
+endfunction
+
+augroup AutoDeleteNetrwHiddenBuffers
+  au!
+  au FileType netrw setlocal bufhidden=wipe
+augroup end
+
 " nvim-tresitter config
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "bash", "bibtex", "c", "cmake", "comment", "cpp", "css", "dockerfile", "http", "java", "json", "json5", "latex", "lua", "make", "norg", "python", "regex", "rust", "scss", "typescript", "javascript", "vim" },
+  ensure_installed = { "bash", "bibtex", "c", "c_sharp", "cmake", "comment", "cpp", "css", "dockerfile", "http", "java", "json", "json5", "latex", "lua", "make", "norg", "python", "regex", "rust", "scss", "typescript", "javascript", "vim", "yaml" },
   sync_install = true,
   ignore_install = {},
   highlight = {
@@ -381,15 +390,35 @@ EOF
 "   if you want to activate folding for the current filetype
 "   call :setlocal foldmethod=expr
 set foldmethod=manual
-autocmd FileType python,c,cpp,xml,html,xhtml setlocal foldmethod=expr
+autocmd FileType python,c,cpp,xml,html,xhtml,lua,vim,norg setlocal foldmethod=expr
 "       start with all folds open
-autocmd FileType python,c,cpp,xml,html,xhtml normal zR
+autocmd FileType python,c,cpp,xml,html,xhtml,lua,vim,norg normal zR
 set foldexpr=nvim_treesitter#foldexpr()
 
 " vim-cmake config
 let g:cmake_link_compile_commands = 1
 let g:cmake_root_markers = ['.git', '.svn']
 
-" vim-closetag config
-let g:closetag_filetypes = 'html,xhtml,phtml,svelte'
-let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.svelte'
+" neorg config
+lua << EOF
+require('neorg').setup {
+    load = {
+        ["core.defaults"] = {},
+        ["core.keybinds"] = {
+            config = {
+            },
+        },
+        ["core.norg.concealer"] = {
+            config = {
+                icon_preset = "diamond",
+            },
+        },
+        ["core.export"] = {},
+        ["core.norg.qol.toc"] = {},
+    }
+}
+
+EOF
+
+" auto-pairs config
+autocmd FileType norg let g:AutoPairsMapSpace = 0

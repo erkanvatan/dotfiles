@@ -85,6 +85,7 @@ augroup langindentation
     au BufRead,BufNewFile *.html setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
     autocmd Filetype json setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
     autocmd Filetype xml setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd Filetype norg setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 augroup END
 
 
@@ -97,8 +98,8 @@ fun! LongLineHighlightOn(length)
     endif
 endfunction
 
-augroup langindentation
-    autocmd BufWinEnter *.html,*.svelte call LongLineHighlightOn(120)
+augroup longlinehighlight
+    autocmd BufWinEnter *.html,*.svelte,*.norg call LongLineHighlightOn(120)
     autocmd BufWinEnter *.py,*.css,*.scss,*.js,*.ts,*.rs,*.c,*.sql call LongLineHighlightOn(90)
 augroup END
 
@@ -109,6 +110,8 @@ au BufRead,BufNewFile *.html set filetype=html.jinja.javascript
 " inside HTML syntax)
 au BufRead,BufNewFile *.html syntax sync fromstart
 
+" Fix neorg issues
+autocmd BufWinEnter *.norg set autochdir
 
 " fix for startify recent files
 " set viminfo='100,n$HOME/.vim/files/info/viminfo

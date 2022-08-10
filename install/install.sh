@@ -440,4 +440,9 @@ echo '  * scrcpy: https://github.com/Genymobile/scrcpy/blob/master/BUILD.md#simp
 echo '  * drawio: https://github.com/jgraph/drawio-desktop/releases'
 echo '  * texlive-full: https://gist.github.com/wkrea/b91e3d14f35d741cf6b05e57dfad8faf'
 echo '  * sqlectron: https://github.com/sqlectron/sqlectron-gui/releases/latest'
+echo '  * winehq: https://wiki.winehq.org/Ubuntu'
+echo '  * docker-credential-pass (into /usr/local/bin): https://github.com/docker/docker-credential-helpers/releases'
+echo '-- zsh external plugins'
+echo '  * zsh-z: https://github.com/agkozak/zsh-z#installation'
+
 

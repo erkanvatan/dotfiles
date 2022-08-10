@@ -81,6 +81,8 @@ alias devtools_web_vanilla='pnpm add -D eslint prettier eslint-plugin-prettier e
 alias devtools_web_svelte_eslint='pnpm add -D eslint eslint-plugin-svelte3 eslint-plugin-import typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin @rollup/plugin-typescript @tsconfig/svelte stylelint stylelint-config-recommended-scss stylelint-config-html postcss postcss-html sass prettier prettier-plugin-svelte'
 alias devtools_web_svelteserver='pnpm add -D eslint eslint-plugin-prettier eslint-config-prettier typescript @rollup/plugin-typescript @tsconfig/svelte stylelint stylelint-config-recommended-scss stylelint-config-html postcss postcss-html sass prettier prettier-plugin-svelte'
 
+# Docker
+alias sd='sudo -E docker'
 
 ### SCRIPT ALIASES
 alias fwhite='format_whitespace.py'
@@ -108,9 +110,6 @@ setopt CLOBBER
 function mkdircd () { mkdir -p "$@" && eval cd "\"\$$#\""; }
 
 ### MODULE INITIALIZATION
-# fasd
-eval "$(fasd --init auto)"
-
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -142,3 +141,6 @@ eval "$(register-python-argcomplete pipx)"
 
 export PNPM_HOME="/home/arensonz/.local/share/pnpm"
 export PATH="$PNPM_HOME:$PATH"
+
+# dotnet
+export PATH="$HOME/.dotnet/tools:$PATH"

@@ -1,0 +1,80 @@
+"Editor Configs
+"--------------
+let mapleader= "\<Space>"
+
+set ignorecase
+set smartcase
+set mouse=nvchr
+set scrolloff=4 " number of screen lines to always keep above and below the cursor
+
+" Whitespace configs
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+set smartindent
+
+set inccommand=nosplit
+set splitright
+set splitbelow
+set conceallevel=0
+
+set hlsearch
+set incsearch
+
+set cmdheight=1 " height of command-line at the bottom
+set shortmess+=c
+set signcolumn=yes "always show sign column, otherwise it will shift text
+set showtabline=2
+
+" Show line numbers
+set relativenumber
+set nocursorline
+set nocursorcolumn
+
+"Keybindings
+"-----------
+
+" quit without saving
+nnoremap qq :q!<CR>
+
+" quit after saving
+nnoremap qw :wq<CR>
+
+" Copy-paste bindings for system clipboard (+)
+nnoremap <Leader>yy "+y
+vnoremap <Leader>yy "+y
+
+nnoremap <Leader>pp "+p
+vnoremap <Leader>pp "+p
+
+" Change vim window focus
+map <C-h> <C-w>h
+map <C-l> <C-w>l
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+
+" Clear previous search highlight
+nnoremap <Leader>h :noh<CR><esc>
+
+" Better multiple lines tabbing with < and >
+vnoremap < <gv
+vnoremap > >gv
+
+nnoremap <Leader>tg :maximize<CR><esc>
+
+" Language-specific
+augroup langindentation
+"    autocmd Filetype go setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
+    " autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
+    autocmd Filetype css setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd Filetype scss setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd Filetype javascript setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd Filetype typescript setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd Filetype svelte setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd Filetype html setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+    au BufRead,BufNewFile *.html setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd Filetype json setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd Filetype xml setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd Filetype norg setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+augroup END

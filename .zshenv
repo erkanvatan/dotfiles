@@ -37,3 +37,6 @@ export FZF_DEFAULT_OPTS='--layout=reverse'
 
 # grep
 export GREP_COLORS='0;31'
+
+# locales
+export LC_ALL="en_US.UTF-8"

@@ -35,6 +35,8 @@ fi
 # Set browser
 # alias firefox="/mnt/c/Firefox/firefox.exe"
 
+alias usage='du -sk * | sort -n | perl -ne '\''($s,$f)=split(m{\t});for (qw(K M G)) {if($s<1024) {printf("%.1f",$s);print "$_\t$f"; last};$s=$s/1024}'\'
+
 ### PROGRAM ALIASES
 # translate-shell
 alias td='trans :tr'

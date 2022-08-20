@@ -31,6 +31,9 @@ if __name__ == "__main__":
         sys.exit(1)
     # Get the text from the system clipboard using xclip linux tool
     text = subprocess.run(["xclip", "-o"], universal_newlines=True, stdout=subprocess.PIPE).stdout
+    # Log the clipboard input when running from keyboard shortcut
+    #  with open("/home/arensonz/Desktop/log.txt", "w") as file:
+    #      file.write(f"TEXT: {text}")
     if len(sys.argv) == 2:
         # error check keepNewlines flag value, and send the flag to the function
         if str.isdecimal(sys.argv[1]):

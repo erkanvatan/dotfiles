@@ -53,6 +53,7 @@ Plug 'shime/vim-livedown' " live preview of markdown
 Plug 'dense-analysis/ale'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'rust-lang/rust.vim'
+Plug 'acarapetis/vim-sh-heredoc-highlighting'
 
 " Note taking
 Plug 'nvim-neorg/neorg' | Plug 'nvim-lua/plenary.nvim'
@@ -123,7 +124,7 @@ command! BD call fzf#run(fzf#wrap({
 
 " vim-startify config
 let g:startify_session_dir = '~/.config/nvim/session'
-let g:startify_bookmarks = ['~/projects', '~/Documents/neorg/personal/index.norg', '~/Documents/neorg/work/index.norg']
+let g:startify_bookmarks = ['~/projects', '~/Documents/neorg/personal', '~/Documents/neorg/work']
 let g:startify_session_persistence = 1
 
 " nerdcommenter config
@@ -415,6 +416,15 @@ require('neorg').setup {
         },
         ["core.export"] = {},
         ["core.norg.qol.toc"] = {},
+        ["core.norg.dirman"] = {
+            config = {
+                workspaces = {
+                },
+                autochdir = false, -- Automatically change the directory to the current workspace's root every time
+                autodetect = false,
+                index = "", -- The name of the main (root) .norg file
+            }
+        },
     }
 }
 

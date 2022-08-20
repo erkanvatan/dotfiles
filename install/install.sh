@@ -272,10 +272,6 @@ if [ -x "$(command -v npm)" ]; then
         npm i -g --quiet live-server
     fi
 
-    if ! [ -x "$(command -v http-server)" ]; then
-        npm i -g --quiet http-server
-    fi
-
     # if the package is not executable then check using this snippet
     if [ `npm list -g | grep -c neovim` -eq 0 ]; then
         npm i -g --quiet neovim
@@ -326,12 +322,10 @@ if [ -x "$(command -v pipx)" ]; then
     pipx install yt-dlp
     pipx install flake8
     pipx install autopep8
-    pipx install youtube-dl
     pipx install jedi-language-server
     pipx install pycodestyle
     pipx install pipreqs
     pipx install cmake-language-server
-    pipx install speedtest-cli
     echo '> PIPX APPS INSTALL FINISHED <'
 
     echo '# UPDATING PIPX APPS #'
@@ -442,6 +436,10 @@ echo '  * texlive-full: https://gist.github.com/wkrea/b91e3d14f35d741cf6b05e57df
 echo '  * sqlectron: https://github.com/sqlectron/sqlectron-gui/releases/latest'
 echo '  * winehq: https://wiki.winehq.org/Ubuntu'
 echo '  * docker-credential-pass (into /usr/local/bin): https://github.com/docker/docker-credential-helpers/releases'
+echo '  * JMeter: https://jmeter.apache.org/download_jmeter.cgi'
+echo '  * Postman: https://dl.pstmn.io/download/latest/linux64'
+echo '  * Jetbrains Rider: https://www.jetbrains.com/rider/download/'
+echo '  * Teams Preview: https://go.microsoft.com/fwlink/p/?LinkID=2112886&culture=en-us&country=WW'
 echo '-- zsh external plugins'
 echo '  * zsh-z: https://github.com/agkozak/zsh-z#installation'
 

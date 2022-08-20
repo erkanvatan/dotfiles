@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#https://www.jetbrains.com/rider/download/!/usr/bin/env bash
 
 ####################################
 # You should run this file as SUDO #
@@ -147,7 +147,9 @@ apt-get -qq --yes install tlpui
 apt-get -qq --yes install gparted
 apt-get -qq --yes install xournalpp
 apt-get -qq --yes install quodlibet
-apt-get -qq --yes install blueman
+apt-get -qq --yes install zathura
+apt-get -qq --yes install thunderbird
+apt-get -qq --yes install peek
 
 # installing dependencies
 #   pyenv

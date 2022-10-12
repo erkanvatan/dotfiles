@@ -25,7 +25,7 @@ Plug 'itchyny/lightline.vim' "configurable statusline/tabline
 Plug 'maximbaz/lightline-ale'
 
 " git plugins
-Plug 'airblade/vim-gitgutter'
+Plug 'lewis6991/gitsigns.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 
@@ -124,7 +124,7 @@ command! BD call fzf#run(fzf#wrap({
 
 " vim-startify config
 let g:startify_session_dir = '~/.config/nvim/session'
-let g:startify_bookmarks = ['~/projects', '~/Documents/neorg/personal', '~/Documents/neorg/work']
+let g:startify_bookmarks = ['~/projects', '~/Documents/neorg/personal', '~/Documents/neorg/work', '~/subfolders/ytu_repo/_tum_donem_notlarim/4x1']
 let g:startify_session_persistence = 1
 
 " nerdcommenter config
@@ -150,9 +150,8 @@ autocmd QuitPre * if empty(&bt) | lclose | endif
 let g:ale_sign_error = '❌'
 let g:ale_sign_warning = '⚠️'
 let g:ale_fix_on_save = 0
-" Show ale signs over gitgutter signs
+" Show ale signs over gitsigns
 let g:ale_sign_priority=30
-let g:gitgutter_sign_priority=9
 
 "   Don't lint when text is changed
 let g:ale_lint_on_text_changed = 'normal'
@@ -285,7 +284,6 @@ endfunction
 augroup enable_coc_diagnostic
     autocmd!
     autocmd FileType svelte,typescript,sql,python call EnableCocDiagnosticBuffer()
-    autocmd FileType sql :GitGutterSignsDisable
 augroup end
 
 " python syntax
@@ -432,3 +430,16 @@ EOF
 
 " auto-pairs config
 autocmd FileType norg let g:AutoPairsMapSpace = 0
+
+" gitsigns.nvim config
+lua << EOF
+require('gitsigns').setup()
+EOF
+
+" nvim-colorizer config
+lua << EOF
+require ('colorizer').setup {
+    css = { css = true; }; -- Enable parsing rgb(...) functions in css.
+    html = { names = false; } -- Disable parsing "names" like Blue or Gray
+}
+EOF

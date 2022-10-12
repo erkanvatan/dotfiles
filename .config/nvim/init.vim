@@ -1,5 +1,7 @@
 set shell=$SHELL
 set encoding=UTF-8
+set t_Co=256                         " Enable 256 colors
+set termguicolors                    " Enable GUI colors for the terminal to get truecolor
 
 " Importing other configs
 source $HOME/.config/nvim/plugins.vim
@@ -17,8 +19,6 @@ set background=dark   " for the dark version of the theme
 colorscheme dracula
 let g:lightline.colorscheme = 'dracula'
  " call ChangeBackground()
-set t_Co=256                         " Enable 256 colors
-set termguicolors                    " Enable GUI colors for the terminal to get truecolor
 
 " Recommended by CoC
 set hidden
@@ -100,18 +100,18 @@ endfunction
 
 augroup longlinehighlight
     autocmd BufWinEnter *.html,*.svelte,*.norg call LongLineHighlightOn(120)
-    autocmd BufWinEnter *.py,*.css,*.scss,*.js,*.ts,*.rs,*.c,*.sql call LongLineHighlightOn(90)
+    autocmd BufWinEnter *.py,*.css,*.scss,*.js,*.ts,*.rs,*.c,*.sql,*.txt call LongLineHighlightOn(90)
 augroup END
 
 " Set the filetype based on the file's extension, overriding any
 " 'filetype' that has already been set
-au BufRead,BufNewFile *.html set filetype=html.jinja.javascript
+" au BufRead,BufNewFile *.html set filetype=html.jinja.javascript
 " Set which files will use highlight from start of file (fix for Javascript
 " inside HTML syntax)
 au BufRead,BufNewFile *.html syntax sync fromstart
 
 " Fix neorg issues
-autocmd BufWinEnter *.norg set autochdir
+" autocmd BufWinEnter *.norg set autochdir
 
 " fix for startify recent files
 " set viminfo='100,n$HOME/.vim/files/info/viminfo

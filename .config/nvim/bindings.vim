@@ -251,3 +251,6 @@ nmap <leader>dbb <Plug>(DBExeLine)
 " vim-cmake config
 nnoremap <leader>cg :CMakeGenerate<CR>
 nnoremap <leader>cb :CMakeBuild<CR>
+
+" neorg config
+nnoremap <silent> <localleader>nm :Neorg inject-metadata<CR>

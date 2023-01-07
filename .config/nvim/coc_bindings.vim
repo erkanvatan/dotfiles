@@ -51,13 +51,15 @@ endfunction
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Symbol renaming.
+"   If your language server formats code after textEdit, this can cause it to auto
+"   format. Check your language server provider (e.g. clangd).
 nmap <leader>rn <Plug>(coc-rename)
 
 " Formatting selected code.
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
-augroup mygroup
+augroup coc_formatexpr_filetype
   autocmd!
   " Setup formatexpr specified filetype(s).
   autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
@@ -107,3 +109,8 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
 " Add `:OR` command for organize imports of the current buffer.
 command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
+
+"   Use C to open coc config
+call SetupCommandAbbrs('C', 'CocConfig')
+"   Close the preview window when completion is done
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif

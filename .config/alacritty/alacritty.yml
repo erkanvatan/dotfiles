@@ -196,6 +196,6 @@ key_bindings:
   - { key: V,        mods: Control|Alt, action: Paste            }
   - { key: C,        mods: Control|Alt, action: Copy             }
   - { key: Numpad0,     mods: Control,       action: ResetFontSize    }
-  - { key: NumpadAdd,   mods: Control,       action: IncreaseFontSize }
+  - { key: F12,   mods: Control,       action: IncreaseFontSize }
   - { key: NumpadSubtract, mods: Control,       action: DecreaseFontSize }
   - { key: Space, mods: Alt, chars: "\x00" }

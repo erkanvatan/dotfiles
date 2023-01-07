@@ -1,0 +1,13 @@
+[Unit]
+Description=Swift-map service
+StartLimitIntervalSec=0
+[Service]
+Type=simple
+Restart=always
+RestartSec=100ms
+User=arensonz
+Environment=DISPLAY=:0
+WorkingDirectory=/home/arensonz/programs/swift-map
+ExecStart=/usr/bin/env python2.7 /home/arensonz/programs/swift-map/mainloop.py nosleep
+[Install]
+WantedBy=graphical-session.target

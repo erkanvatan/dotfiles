@@ -21,18 +21,6 @@ inoremap <C-s> <ESC>:w<CR>a
 noremap <M-s> :AutoSaveToggle<CR>
 inoremap <M-s> <ESC>:AutoSaveToggle<CR>a
 
-" netrw bindings
-"   Toggle banner: I
-"   Open netrw in the current working directory
-nnoremap <silent> <C-c> :call ToggleVExplorer()<CR>
-"   Open netrw in the directory of current file
-nnoremap <leader>pv :Lexplore %:p:h<CR>
-"   toggle hidden files: gh
-"   pre-populate end of the command-line with the file under the cursor: .
-"   yank absolute path of the file under the cursor: y.
-"   go home: ~
-"   switch to the last buffer: ctrl + 6
-
 " Copy-paste bindings for system clipboard (+)
 nnoremap <Leader>yy "+y
 vnoremap <Leader>yy "+y
@@ -251,6 +239,20 @@ nmap <leader>dbb <Plug>(DBExeLine)
 " vim-cmake config
 nnoremap <leader>cg :CMakeGenerate<CR>
 nnoremap <leader>cb :CMakeBuild<CR>
+nnoremap <leader>co :CMakeOpen<CR>
+
+"   autoclose vim-cmake window after successfull build
+augroup vim_cmake_group
+    autocmd! User CMakeBuildSucceeded CMakeClose
+augroup END
 
 " neorg config
 nnoremap <silent> <localleader>nm :Neorg inject-metadata<CR>
+
+" nvim-tree config
+nnoremap <silent> <C-c> :NvimTreeToggle<CR>
+nnoremap <silent> <leader>pv :NvimTreeFindFile!<CR>
+
+" 'cd' towards the directory in which the current file is edited
+" but only change the path for the current window
+nnoremap <leader>cd :lcd %:h<CR>

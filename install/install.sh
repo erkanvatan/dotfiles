@@ -167,12 +167,8 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 ' >> $HOME/.bashrc
     # install pyenv plugins
-    git clone https://github.com/momo-lab/xxenv-latest.git "$(pyenv root)"/plugins/xxenv-latest
     git clone https://github.com/alefpereira/pyenv-pyright.git $(pyenv root)/plugins/pyenv-pyright
     pyenv update
-    # install latest python version inside pyenv
-    pyenv latest install
-    pyenv latest global
 else
     echo '# W: PYENV ALREADY INSTALLED, UPDATING #'
     pyenv update

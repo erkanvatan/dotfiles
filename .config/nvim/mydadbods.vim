@@ -5,10 +5,41 @@
 let g:dadbods = []
 
 let db = {
-		\"name": "test_db Admin",
-		\"url": "postgresql://postgres:0000@localhost/test_db"
+		\"name": "dbms Admin",
+		\"url": "postgresql://admin:0000@localhost:8080/dbms"
 		\}
 call add(g:dadbods, db)
+
+let db = {
+		\"name": "TodoApi admin",
+		\"url": "postgresql://postgres:0000@localhost/postgres"
+		\}
+call add(g:dadbods, db)
+
+let db = {
+		\"name": "webrtc_customer_service Admin",
+		\"url": "postgresql://postgres:1234@localhost/webrtc_customer_service"
+		\}
+call add(g:dadbods, db)
+
+let db = {
+		\"name": "flask-group-chat",
+		\"url": "sqlite:instance/flask_group_chat.sqlite"
+		\}
+call add(g:dadbods, db)
+
+let db = {
+		\"name": "",
+		\"url": ""
+		\}
+call add(g:dadbods, db)
+
+let db = {
+		\"name": "songs Admin",
+		\"url": "sqlite:songs.db"
+		\}
+call add(g:dadbods, db)
+
 
 
 " if g:db and b:db is set up -- b:db will be used.

@@ -86,6 +86,20 @@ alias devtools_web_svelteserver='pnpm add -D eslint eslint-plugin-prettier eslin
 # Docker
 alias sd='sudo -E docker'
 
+# feh
+alias fehzoom='feh --auto-zoom --force-aliasing --geometry 1280x720'
+
+# ip
+alias ip='ip --color=auto'
+
+# BindToInterface
+alias wlo1_bind="BIND_INTERFACE=wlo1 DNS_OVERRIDE_IP=1.1.1.1 DNS_EXCLUDE=127.0.0.1 LD_PRELOAD=$HOME/programs/BindToInterface/bindToInterface.so"
+alias usb0_bind="BIND_INTERFACE=usb0 DNS_OVERRIDE_IP=1.1.1.1 DNS_EXCLUDE=127.0.0.1 LD_PRELOAD=$HOME/programs/BindToInterface/bindToInterface.so"
+
+# firejail
+alias firejail_wlo1='firejail --dns=1.1.1.1 --noprofile --net=wlo1'
+alias firejail_usb0='firejail --dns=1.1.1.1 --noprofile --net=usb0'
+
 ### SCRIPT ALIASES
 alias fwhite='format_whitespace.py'
 

@@ -33,6 +33,7 @@ set showtabline=2
 
 " set manual folding for functions, conditions etc.
 " set foldmethod=manual
+set nofoldenable
 
 " Show line numbers
 set relativenumber
@@ -74,15 +75,14 @@ let g:omni_sql_no_default_maps = 1
 
 " Language-specific
 augroup langindentation
-"    autocmd Filetype go setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
-    " autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
+    autocmd!
     autocmd Filetype css setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
     autocmd Filetype scss setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
     autocmd Filetype javascript setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
     autocmd Filetype typescript setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
     autocmd Filetype svelte setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
     autocmd Filetype html setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-    au BufRead,BufNewFile *.html setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd BufRead,BufNewFile *.html setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
     autocmd Filetype json setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
     autocmd Filetype xml setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
     autocmd Filetype norg setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
@@ -99,19 +99,25 @@ fun! LongLineHighlightOn(length)
 endfunction
 
 augroup longlinehighlight
-    autocmd BufWinEnter *.html,*.svelte,*.norg call LongLineHighlightOn(120)
-    autocmd BufWinEnter *.py,*.css,*.scss,*.js,*.ts,*.rs,*.c,*.sql,*.txt call LongLineHighlightOn(90)
+    autocmd!
+    autocmd BufWinEnter *.css,*.scss call LongLineHighlightOn(90)
+    autocmd BufWinEnter * call LongLineHighlightOn(120) " every other file
+augroup END
+
+augroup breaklonglines
+    autocmd!
+    autocmd FileType * setlocal tw=120
+augroup END
+augroup autobreaklonglines
+    autocmd!
+    autocmd FileType norg setlocal fo+=t
 augroup END
 
 " Set the filetype based on the file's extension, overriding any
 " 'filetype' that has already been set
-" au BufRead,BufNewFile *.html set filetype=html.jinja.javascript
+" autocmd BufRead,BufNewFile *.html set filetype=html.jinja.javascript
 " Set which files will use highlight from start of file (fix for Javascript
 " inside HTML syntax)
-au BufRead,BufNewFile *.html syntax sync fromstart
+autocmd BufRead,BufNewFile *.html syntax sync fromstart
 
-" Fix neorg issues
-" autocmd BufWinEnter *.norg set autochdir
-
-" fix for startify recent files
-" set viminfo='100,n$HOME/.vim/files/info/viminfo
+" Automatically break long lines

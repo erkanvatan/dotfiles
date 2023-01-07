@@ -14,7 +14,8 @@ call plug#begin('~/.config/nvim/plugged')
 Plug '907th/vim-auto-save'
 Plug 'mhinz/vim-startify' "changes default vim starting screen
 
-Plug 'tpope/vim-vinegar' " plugin to enhance netrw
+Plug 'nvim-tree/nvim-web-devicons' " optional, for file icons
+Plug 'nvim-tree/nvim-tree.lua'
 Plug 'ryanoasis/vim-devicons'
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -56,7 +57,7 @@ Plug 'rust-lang/rust.vim'
 Plug 'acarapetis/vim-sh-heredoc-highlighting'
 
 " Note taking
-Plug 'nvim-neorg/neorg' | Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-neorg/neorg', { 'do': ':Neorg sync-parsers'} | Plug 'nvim-lua/plenary.nvim'
 
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 Plug 'jiangmiao/auto-pairs'
@@ -215,8 +216,8 @@ let g:ale_html_beautify_options = '--indent-size 2 --max-preserve-newlines 2 --w
 
 let g:ale_c_build_dir_names = ['build', 'bin', 'Debug', 'Release']
 let g:ale_c_cc_options = '-std=c99 -Wall -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused-result -Wwrite-strings'
-" let g:ale_c_clangformat_options = "-style='{BasedOnStyle: WebKit, ColumnLimit: 120, BreakBeforeBraces: Linux, IndentWidth: 4, IndentCaseLabels: false, PointerAlignment: Right, SpaceBeforeAssignmentOperators: true}'"
-let g:ale_c_clangformat_options = "-style='{BasedOnStyle: LLVM, ColumnLimit: 120, BreakBeforeBraces: Allman, IndentWidth: 4, IndentCaseLabels: false, PointerAlignment: Right, SpaceBeforeAssignmentOperators: true, AllowShortBlocksOnASingleLine: Never, AllowShortFunctionsOnASingleLine: None}'"
+let g:ale_c_clangformat_options = "-style='{BasedOnStyle: WebKit, ColumnLimit: 120, BreakBeforeBraces: Linux, IndentWidth: 4, IndentCaseLabels: false, PointerAlignment: Right, SpaceBeforeAssignmentOperators: true, AllowShortBlocksOnASingleLine: Never, AllowShortFunctionsOnASingleLine: None}'"
+" let g:ale_c_clangformat_options = "-style='{BasedOnStyle: LLVM, ColumnLimit: 120, BreakBeforeBraces: Allman, IndentWidth: 4, IndentCaseLabels: false, PointerAlignment: Right, SpaceBeforeAssignmentOperators: true, AllowShortBlocksOnASingleLine: Never, AllowShortFunctionsOnASingleLine: None}'"
 
 let g:ale_rust_analyzer_executable = "/home/arensonz/.config/coc/extensions/coc-rust-analyzer-data/rust-analyzer"
 let g:ale_rust_rustfmt_options = "--config wrap_comments=true,format_code_in_doc_comments=true,overflow_delimited_expr=true"
@@ -254,26 +255,10 @@ let g:coc_global_extensions = [
     \ 'coc-vimtex',
     \ 'coc-css'
     \ ]
-" change line highlighting from line number only to line only for CocList
-augroup mygroup
-  autocmd!
-  "     Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  "     Update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
-"   Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
-"   Use C to open coc config
-call SetupCommandAbbrs('C', 'CocConfig')
-"   Add `:Format` command to format current buffer.
-command! -nargs=0 Format :call CocAction('format')
-"   Add `:Fold` command to fold current buffer.
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-"   Add `:OR` command for organize imports of the current buffer.
-command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-"   Close the preview window when completion is done
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+"   coc-clangd
+"       Create a file called ".clang-format" at the root of your C project
+"       with the following content:
+"       DisableFormat: true
 
 " enable CoC diagnostics for some filetypes
 function! EnableCocDiagnosticBuffer()
@@ -352,21 +337,6 @@ let g:vimtex_compiler_latexmk = {
 let g:indent_blankline_show_first_indent_level = v:false
 let g:indent_blankline_show_current_context = v:false
 
-" netrw config
-let g:netrw_keepdir = 0
-let g:netrw_winsize = 25
-let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
-
-function! ToggleVExplorer()
-    let g:netrw_winsize = 25
-    Lexplore
-endfunction
-
-augroup AutoDeleteNetrwHiddenBuffers
-  au!
-  au FileType netrw setlocal bufhidden=wipe
-augroup end
-
 " nvim-tresitter config
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
@@ -385,18 +355,19 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 EOF
-"   set which filetypes will use treesitter folding
-"   if you want to activate folding for the current filetype
+"   set which filetypes will use treesitter folding if you want to activate folding for the current filetype
 "   call :setlocal foldmethod=expr
-set foldmethod=manual
-autocmd FileType python,c,cpp,xml,html,xhtml,lua,vim,norg setlocal foldmethod=expr
+" autocmd FileType python,c,cpp,xml,html,xhtml,lua,vim,norg setlocal foldmethod=expr
+set foldmethod=expr
 "       start with all folds open
-autocmd FileType python,c,cpp,xml,html,xhtml,lua,vim,norg normal zR
+autocmd BufReadPost,FileReadPost * normal zR
 set foldexpr=nvim_treesitter#foldexpr()
 
 " vim-cmake config
 let g:cmake_link_compile_commands = 1
 let g:cmake_root_markers = ['.git', '.svn']
+" let g:cmake_build_options = []g:cmake_generate_options
+let g:cmake_generate_options = ["-DCMAKE_C_COMPILER=/usr/bin/gcc", "-D CMAKE_CXX_COMPILER=/usr/bin/g++"]
 
 " neorg config
 lua << EOF
@@ -413,6 +384,7 @@ require('neorg').setup {
             },
         },
         ["core.export"] = {},
+        ["core.export.markdown"] = {},
         ["core.norg.qol.toc"] = {},
         ["core.norg.dirman"] = {
             config = {
@@ -442,4 +414,48 @@ require ('colorizer').setup {
     css = { css = true; }; -- Enable parsing rgb(...) functions in css.
     html = { names = false; } -- Disable parsing "names" like Blue or Gray
 }
+EOF
+
+" nvim-tree config
+lua << EOF
+-- disable netrw at the very start of your init.lua (strongly advised)
+vim.g.loaded = 1
+vim.g.loaded_netrwPlugin = 1
+
+-- OR setup with some options
+require("nvim-tree").setup({
+  hijack_cursor = true,
+  sync_root_with_cwd = true,
+  open_on_setup = true,
+
+  update_focused_file = {
+    enable = true,
+    update_root = true,
+  },
+
+  hijack_netrw = true,
+  hijack_directories = {
+    enable = true,
+    auto_open = true,
+  },
+
+  sort_by = "name",
+  view = {
+    mappings = {
+      list = {
+      }
+    },
+    adaptive_size = false,
+  },
+  renderer = {
+    group_empty = false,
+  },
+  filters = {
+    dotfiles = true,
+  },
+  git = {
+    enable = false
+  },
+})
+
 EOF

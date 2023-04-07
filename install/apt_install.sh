@@ -53,16 +53,10 @@ add-apt-repository -y ppa:jonmagon/crow-translate
 add-apt-repository -y ppa:obsproject/obs-studio
 # openshot
 add-apt-repository -y ppa:openshot.developers/ppa
-# musicbrainz picard
-add-apt-repository -y ppa:musicbrainz-developers/stable
-# qbittorrent
-add-apt-repository -y ppa:qbittorrent-team/qbittorrent-stable
 # tlp
 add-apt-repository -y ppa:linrunner/tlp
 # tlpui
 add-apt-repository -y ppa:linuxuprising/apps
-# xournalpp
-add-apt-repository -y ppa:apandada1/xournalpp-stable
 # quod libet
 add-apt-repository -y ppa:lazka/ppa
 
@@ -128,9 +122,13 @@ apt-get -qq --yes install ffmpeg
 apt-get -qq --yes install gdebi-core
 apt-get -qq --yes install tlp tlp-rdw
 apt-get -qq --yes install numlockx
-apt-get -qq --yes install w3m w3m-img
-apt-get -qq --yes install python-xlib
 apt-get -qq --yes install pgformatter
+apt-get -qq --yes install flac
+apt-get -qq --yes install xboxdrv
+apt-get -qq --yes install postgresql postgresql-contrib
+apt-get -qq --yes install hwinfo
+apt-get -qq --yes install rar
+apt-get -qq --yes install clang-format
 
 
 # GUI APPS
@@ -150,15 +148,19 @@ apt-get -qq --yes install quodlibet
 apt-get -qq --yes install zathura
 apt-get -qq --yes install thunderbird
 apt-get -qq --yes install peek
+apt-get -qq --yes install feh
+apt-get -qq --yes install chromium
+apt-get -qq --yes install gimp
 
 # installing dependencies
+
 #   pyenv
 apt-get -qq --yes install build-essential libssl-dev zlib1g-dev \
 libbz2-dev libreadline-dev libsqlite3-dev curl llvm \
 libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
 
 #   alacritty
-apt-get -qq --yes install cmake phkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev libegl1-mesa-dev
+apt-get -qq --yes install cmake pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev libxkbcommon-dev libegl1-mesa-dev
 
 #   any_term_dropdown.sh
 apt-get -qq --yes install coreutils xdotool
@@ -167,6 +169,15 @@ apt-get -qq --yes install libxcb-util-dev libxcb-cursor-dev
 #   onedrive
 apt-get -qq --yes install build-essential libcurl4-openssl-dev libsqlite3-dev \
 pkg-config git curl libnotify-dev
+
+# usbip
+apt-get -qq --yes install linux-tools-generic
+
+# PyQt5 
+apt-get -qq --yes install libxcb-xinerama0
+
+# PostgreSQL
+apt-get -qq --yes libpq-dev
 
 echo '> APT APPS INSTALL FINISHED <' 1>/dev/tty
 
@@ -194,5 +205,5 @@ fi
 echo '>>> FONT INSTALL FINISHED <<<' 1>/dev/tty
 
 # go back to user's directory
-popd >/tmp/null
+popd >/dev/null
 rm -rf $TEMP_DIR

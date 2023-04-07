@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Switch between system wide dark and light mode with each execution
 
-dark_theme='Mint-Y-Dark-Teal'
-light_theme='Mint-Y-Teal'
+dark_theme='Dracula'
+light_theme='Mint-Y'
 
 color_value="$(cat /tmp/system_theme_color 2>/dev/null)"
 

@@ -71,7 +71,7 @@ if [ ! -d "$HOME/programs/swift-map" ]; then
     chmod +x mainloop.py
 
     printf '\tadd mainloop.py to system startup applications.\n'
-    popd >/tmp/null
+    popd >/dev/null
     echo '> SWIFT-MAP INSTALL FINISHED <'
 else
     echo '# W: SWIFT-MAP ALREADY INSTALLED #'
@@ -85,13 +85,13 @@ if [ ! -d "$HOME/programs/core" ]; then
     make
     sudo make install
 
-    popd >/tmp/null
+    popd >/dev/null
     echo '> WMUTILS INSTALL FINISHED <'
 else
     echo '# W: WMUTILS ALREADY INSTALLED #'
 fi
 
-popd >/tmp/null
+popd >/dev/null
 echo '>>> INSTALLING INTO ~/programs FINISHED <<<'
 
 ### Downloading applications from their repos
@@ -113,8 +113,8 @@ if ! [ -d "$HOME/.tmux/plugins/tpm" ]; then
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm && ~/.tmux/plugins/tpm/bin/install_plugins
 else
     echo '# W: TPM (Tmux Package Manager) ALREADY INSTALLED, UPDATING #'
-    pushd $HOME/.tmux/plugins/tpm >/tmp/null && git pull && ~/.tmux/plugins/tpm/bin/install_plugins
-    popd >/tmp/null
+    pushd $HOME/.tmux/plugins/tpm >/dev/null && git pull && ~/.tmux/plugins/tpm/bin/install_plugins
+    popd >/dev/null
 fi
 
 # install nvm
@@ -228,7 +228,7 @@ echo '>>> REPOSITORIES FROM WEB FINISHED <<<'
 if ! [ -x "$(command -v discord)" ]; then
     echo '# INSTALLING LATEST DISCORD #'
     sudo -v
-    wget -O discord.deb https://discord.com/api/download?platform=linux&format=deb
+    wget -O discord.deb "https://discord.com/api/download?platform=linux&format=deb"
     sudo gdebi discord.deb
 else
     echo '# W: DISCORD ALREADY INSTALLED #'
@@ -245,13 +245,13 @@ else
 fi
 
 # install rustup
-if ! [ -x "$(command -v rustup)" ]; then
-    echo '# INSTALLING RUSTUP #'
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-    source $HOME/.cargo/env
-else
-    echo '# W: RUSTUP ALREADY INSTALLED #'
-fi
+# if ! [ -x "$(command -v rustup)" ]; then
+    # echo '# INSTALLING RUSTUP #'
+    # curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    # source $HOME/.cargo/env
+# else
+    # echo '# W: RUSTUP ALREADY INSTALLED #'
+# fi
 
 
 ### Installing applications using npm
@@ -285,9 +285,9 @@ if [ -x "$(command -v npm)" ]; then
         # npm i -g --quiet wsl-open
     # fi
 
-    if ! [ -x "$(command -v degit)" ]; then
-        npm i -g --quiet degit
-    fi
+    # if ! [ -x "$(command -v degit)" ]; then
+        # npm i -g --quiet degit
+    # fi
 
     if ! [ -x "$(command -v js-beautify)" ]; then
         npm i -g --quiet js-beautify
@@ -298,9 +298,9 @@ if [ -x "$(command -v npm)" ]; then
     fi
 
     # if the package is not executable then check using this snippet
-    if [ `npm list -g | grep -c svelte-language-server` -eq 0 ]; then
-        npm i -g --quiet svelte-language-server
-    fi
+    # if [ `npm list -g | grep -c svelte-language-server` -eq 0 ]; then
+        # npm i -g --quiet svelte-language-server
+    # fi
     echo '> NPM APPS INSTALL FINISHED <'
     echo '# UPDATING NPM APPS #'
     npm i -g --quiet npm-check-updates
@@ -338,10 +338,10 @@ echo '### PIP APPS ###'
 if [ -x "$(command -v pip3)" ]; then
     echo '# INSTALLING OR UPDATING PIP APPS #'
 
-    if [ `pip list | grep -c pynvim` -eq 0 ]; then
-        pip install pynvim
+    if [ `pip3 list | grep -c pynvim` -eq 0 ]; then
+        pip3 install pynvim
     else
-        pip install --upgrade pynvim
+        pip3 install --upgrade pynvim
     fi
     echo '> PIP APPS INSTALL FINISHED <'
 else
@@ -356,17 +356,17 @@ cargo install alacritty
 echo '>>> CARGO APPS FINISHED <<<'
 
 ### Installing rustup components
-echo '### RUSTUP COMPONENTS ###'
-rustup component add rusfmt
-echo '>>> RUSTUP COMPONENTS FINISHED <<<'
+# echo '### RUSTUP COMPONENTS ###'
+# rustup component add rusfmt
+# echo '>>> RUSTUP COMPONENTS FINISHED <<<'
 
 ### Installing and updating applications using flatpak
 echo '### FLATPAK APPS ###'
-flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-flatpak update --appstream # update repository
-flatpak install -y flathub fr.handbrake.ghb
-flatpak install -y flathub org.kde.okular
-flatpak install -y flathub org.gimp.GIMP
+# flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+# flatpak update --appstream # update repository
+# flatpak install -y flathub fr.handbrake.ghb
+# flatpak install -y flathub org.kde.okular
+# flatpak install -y flathub org.gimp.GIMP
 
 echo '> FLATPAK APPS FINISHED <'
 
@@ -405,7 +405,7 @@ python --version
 echo '>>> CHECKING INSTALLATIONS FINISHED <<<'
 
 # go back to user's directory
-popd >/tmp/null
+popd >/dev/null
 rm -rf $TEMP_DIR
 echo '# PURGED TEMP FOLDER #'
 
@@ -419,23 +419,26 @@ echo '  * Check latest Node.js version from: nvm list'
 printf '  * Update fzf by calling:\n\tcd $HOME/.fzf && git pull\n\t./install\n'
 echo '  * Update pip3 by calling: pip3 install --upgrade pip'
 echo '  * Update npm by calling: '
-echo '- install'
-echo '  * FreeFileSync: https://freefilesync.org/download.php'
+printf '  * Update npm by calling:\n\tnpm install -g npm@latest\n'
+echo '- install following apps'
 echo '  * ProtonVPN: https://protonvpn.com/support/linux-ubuntu-vpn-setup/'
 echo '  * Anki: https://apps.ankiweb.net/#download'
 echo '  * VirtualBox: https://www.virtualbox.org/wiki/Linux_Downloads'
 echo '  * Telegram: https://telegram.org/dl/desktop/linux'
-echo '  * onedrive: https://github.com/abraunegg/onedrive/blob/master/docs/INSTALL.md'
 echo '  * scrcpy: https://github.com/Genymobile/scrcpy/blob/master/BUILD.md#simple'
 echo '  * drawio: https://github.com/jgraph/drawio-desktop/releases'
 echo '  * texlive-full: https://gist.github.com/wkrea/b91e3d14f35d741cf6b05e57dfad8faf'
 echo '  * sqlectron: https://github.com/sqlectron/sqlectron-gui/releases/latest'
 echo '  * winehq: https://wiki.winehq.org/Ubuntu'
-echo '  * docker-credential-pass (into /usr/local/bin): https://github.com/docker/docker-credential-helpers/releases'
 echo '  * JMeter: https://jmeter.apache.org/download_jmeter.cgi'
 echo '  * Postman: https://dl.pstmn.io/download/latest/linux64'
 echo '  * Jetbrains Rider: https://www.jetbrains.com/rider/download/'
 echo '  * Teams Preview: https://go.microsoft.com/fwlink/p/?LinkID=2112886&culture=en-us&country=WW'
+echo '  * Ventoy: https://www.ventoy.net/en/download.html'
+echo '  * ngrok: https://ngrok.com/download'
+echo '  * xpadneo: https://github.com/atar-axis/xpadneo#prerequisites'
+echo '  * PhotoGIMP: https://github.com/Diolinux/PhotoGIMP#-how-to-install-others'
+echo '  * asus-fan-control: https://github.com/dominiksalvet/asus-fan-control'
 echo '-- zsh external plugins'
 echo '  * zsh-z: https://github.com/agkozak/zsh-z#installation'
 

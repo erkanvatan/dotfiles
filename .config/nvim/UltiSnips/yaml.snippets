@@ -1,0 +1,19 @@
+snippet docker_compose_skeleton "Base attributes for docker compose" b
+version: "${1:3.8}"
+
+services:
+
+endsnippet
+
+snippet docker_compose_service "" b
+  ${1:app}:
+    image: ${2:ubuntu}
+    command: ${3:sh -c ""}
+    ports:
+      - ${4:3000:3000}
+    working_dir: ${5:/app}
+    volumes:
+      - ${6:./:/app}
+    environment:
+      ${7:MYSQL_HOST: mysql}
+endsnippet

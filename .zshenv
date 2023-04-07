@@ -14,7 +14,7 @@ export PATH="$PATH:$HOME/.local/bin:$HOME/bin"
 export PATH="$PATH:$HOME/.cargo/bin"
 
 # source cargo for Rust lang
-. "$HOME/.cargo/env"
+# . "$HOME/.cargo/env"
 
 ### ENVIRONMENT VARIABLES
 export EDITOR='vim'

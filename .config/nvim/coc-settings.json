@@ -44,14 +44,10 @@
   "coc.preferences.extensionUpdateCheck": "weekly",
 
   "cmake.lsp.enable": true,
-  "clangd.disableDiagnostics": true,
+  "clangd.disableDiagnostics": false,
+  "clangd.compilationDatabasePath": "build/",
 
-  "svelte.enable-ts-plugin": true,
-  "svelte.plugin.svelte.diagnostics.enable": true,
-  "svelte.plugin.css.diagnostics.enable": false,
-  "svelte.plugin.typescript.diagnostics.enable": true,
   "html.autoClosingTags": false,
-  "svelte.plugin.html.tagComplete.enable": false,
 
   "rust-analyzer.diagnostics.enable": false,
   "rust-analyzer.diagnostics.enableExperimental": false,

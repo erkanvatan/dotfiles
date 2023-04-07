@@ -10,7 +10,7 @@ nnoremap <silent> <leader>bb :tabnew ~/.config/nvim/bindings.vim<CR>
 nnoremap <leader>ss :source $MYVIMRC<CR>
 
 " quit without saving
-nnoremap qq :q!<CR>
+nnoremap qq :q<CR>
 " quit after saving
 nnoremap qw :wq<CR>
 " save with Ctrl + S (might cause problems in some terminals, check my vim alias in .zshrc also)
@@ -248,6 +248,10 @@ augroup END
 
 " neorg config
 nnoremap <silent> <localleader>nm :Neorg inject-metadata<CR>
+nnoremap <silent> <localleader>t :Neorg toc left <CR> :vertical resize 50<CR>
+"   autoindent file
+" nnoremap <silent> <localleader>i :normal! gg <CR> :%normal! i<Esc><C-o>
+nnoremap <silent> <localleader>i gg=G<C-o>
 
 " nvim-tree config
 nnoremap <silent> <C-c> :NvimTreeToggle<CR>

@@ -1,0 +1,40 @@
+snippet my_table "Table fitted to the line" b
+\begin{table}[htpb]
+    \caption{${0:Caption.}}
+    \centering
+
+    \begin{adjustbox}{width=\linewidth}
+    \begin{tabular}{l m{5cm}}
+    \toprule
+        \textbf{header-1} & \textbf{header-2} \\\\ \midrule
+        Cell-1 & Cell-2 \\\\
+    \bottomrule
+    \end{tabular}
+    \end{adjustbox}\label{table:${1:table_label}}
+\end{table}
+endsnippet
+
+snippet my_fig "Figure fitted to the line" b
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=${1:0.8}\linewidth]{${2:path_to_figure.png}}
+    \caption{${3:Figure}}\label{fig:${4:my_label}}
+\end{figure}
+endsnippet
+
+	
+snippet tablerow "Table row" b
+${1:Actix Web} & ${2:Rust}  & ${2:8.894} & \%${3:100}\\\\ \midrule
+endsnippet
+
+snippet screens "Add screenshot subsubsection" b
+\subsubsection{$1}
+Şekil~\ref{fig:${2}}'de gösterilen sayfadan 
+\begin{figure}[htbp]
+    \centering
+    \frame{\includegraphics[width=\textwidth]{images/${2}.pdf}} 
+    \caption{$3.}\label{fig:${2}}
+\end{figure}
+
+endsnippet
+

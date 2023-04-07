@@ -80,7 +80,6 @@ augroup langindentation
     autocmd Filetype scss setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
     autocmd Filetype javascript setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
     autocmd Filetype typescript setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-    autocmd Filetype svelte setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
     autocmd Filetype html setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
     autocmd BufRead,BufNewFile *.html setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
     autocmd Filetype json setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
@@ -119,5 +118,3 @@ augroup END
 " Set which files will use highlight from start of file (fix for Javascript
 " inside HTML syntax)
 autocmd BufRead,BufNewFile *.html syntax sync fromstart
-
-" Automatically break long lines

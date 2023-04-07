@@ -1,0 +1,14 @@
+snippet service "Basic service example" b
+[Unit]
+Description=${1}
+After=${2:network.target}
+StartLimitIntervalSec=0
+[Service]
+Type=simple
+Restart=always
+RestartSec=${3:100ms}
+User=${4:arensonz}
+ExecStart=${5:/usr/bin/env php /path/to/server.php}
+[Install]
+WantedBy=multi-user.target
+endsnippet

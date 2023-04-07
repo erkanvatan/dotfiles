@@ -96,9 +96,17 @@ alias ip='ip --color=auto'
 alias wlo1_bind="BIND_INTERFACE=wlo1 DNS_OVERRIDE_IP=1.1.1.1 DNS_EXCLUDE=127.0.0.1 LD_PRELOAD=$HOME/programs/BindToInterface/bindToInterface.so"
 alias usb0_bind="BIND_INTERFACE=usb0 DNS_OVERRIDE_IP=1.1.1.1 DNS_EXCLUDE=127.0.0.1 LD_PRELOAD=$HOME/programs/BindToInterface/bindToInterface.so"
 
-# firejail
-alias firejail_wlo1='firejail --dns=1.1.1.1 --noprofile --net=wlo1'
-alias firejail_usb0='firejail --dns=1.1.1.1 --noprofile --net=usb0'
+
+# Rsync
+#   sync home
+alias sync_home="rsync -gloptruch --stats --delete --exclude={'/subfolders/','/Music/','/Downloads/','/Pictures/','/Videos/','/VirtualBox\ VMs/','/.local/','/.cache/','/.cargo/','/.npm/','/.nvm/','/projects/languages/rust/**/target','/projects/languages/latex/**/build','/projects/**/node_modules','/projects/languages/c/**/Debug'} /home/arensonz/ '/media/arensonz/Linux Files/Backups/aren-zenbook'"
+
+#   sync shared files
+alias sync_subfolders="rsync -gloptruch --stats --delete /home/arensonz/subfolders '/media/arensonz/Shared Files/'"
+
+alias sync_music="rsync -gloptruch --stats --delete /home/arensonz/Music '/media/arensonz/Shared Files/'"
+alias rsync_restore="rsync -gloptrch --stats"
+
 
 ### SCRIPT ALIASES
 alias fwhite='format_whitespace.py'

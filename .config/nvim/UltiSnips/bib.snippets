@@ -1,0 +1,123 @@
+snippet @article "Cite an article" b
+@article{${1:cite_key},
+  author   = "${2}",
+  title    = "${3}",
+  journal  = "${4}",
+  year     = ${5},
+  volume   = "${6}",
+  number   = "${7}",
+  pages    = "${8:1143--1148}",
+}
+endsnippet
+
+snippet @book "Cite a book" b
+@book{${1:cite_key},
+  author    = "${2}",
+  title     = "${3}",
+  publisher = "${4}",
+  address   = "${5}",
+  year      = ${6}
+}
+endsnippet
+
+snippet @inproceedings "Cite a paper that has been published in conference proceedings" b
+@inproceedings{${1:cite_key},
+  author    = "${2}",
+  title     = "${3}",
+  booktitle = "${4}",
+  series    = "${5}",
+  year      = ${6},
+  pages     = "${7}",
+  publisher = "${8}",
+  address   = "${9}"
+}
+endsnippet
+
+snippet @misc "Used if none of the other types match the source. Can be used for websites." b
+@misc{${1:cite_key},
+  title        = "${2}",
+  author       = "{$3}",
+  howpublished = {${4:https://www.nasa.gov.tr}},
+  year         = $5,
+  note         = "Accessed: ${6:2018-12-06}"
+}
+endsnippet
+
+snippet @online "Online resource" b
+@online{${1:cite_key},
+  author = {$2},
+  title = {$3},
+  year = ${4:year_published},
+  url = {${5:https://www.nasa.gov.tr}},
+  urldate = {${6:accessed}}
+}
+endsnippet
+
+snippet @techreport "Institutionally published reports. Frequently used for white papers." b
+@techreport{${1:cite_key},
+  title       = "${2}",
+  author      = "${3}",
+  institution = "${4:Salt Lake City Corporation}",
+  address     = "${5}",
+  number      = "${6:DOE-SLC-6903-1}",
+  year        = ${7},
+  month       = ${8:sep}
+}
+endsnippet
+
+snippet @manual "A technical manual for a machine software" b
+@manual{${1:cite_key},
+  title        = "${2}",
+  author       = "{$3}",
+  organization = "${4:R Foundation for Statistical Computing}",
+  address      = "${5:Vienna, Austria}",
+  year         = $6
+}
+endsnippet
+
+snippet @masterthesis "A thesis written for the Master's level degree" b
+@mastersthesis{${1:cite_key},
+  author  = "$2",
+  title   = "$3",
+  school  = "$4",
+  year    = $5,
+  address = "${6:Cambridge, MA}",
+  month   = ${7:sep}
+}
+endsnippet
+
+snippet @phdthesis "A thesis written for the PhD level degree" b
+@phdthesis{${1:cite_key},
+  author  = "$2",
+  title   = "$3",
+  school  = "$4",
+  address = "${5:Stanford, CA}",
+  year    = $6,
+  month   = ${7:jun}
+}
+endsnippet
+
+snippet @inbook "A section, such as a chapter, or a page range within a book" b
+@inbook{${1:cite_key},
+  author    = "$2",
+  title     = "$3",
+  booktitle = "$4",
+  year      = "$7",
+  publisher = "$8",
+  address   = "${9:New York, NY}",
+  pages     = "${10:187--221}"
+}
+endsnippet
+
+snippet @incollection "A titled section of a book. Such as a short story within the larger collection of short stories that make up a book." b
+@incollection{${1:cite_key},
+  author    = "$2",
+  editor    = "$3",
+  title     = "$4",
+  booktitle = "$5",
+  year      = $6,
+  publisher = "$7",
+  address   = "${8:New York, NY}",
+  pages     = "${9:1--10}"
+}
+endsnippet

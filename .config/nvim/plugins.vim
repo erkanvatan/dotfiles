@@ -154,7 +154,6 @@ let g:coc_user_config = {}
 "   coc extensions to install automatically
 " let g:coc_global_extensions = [
     " \ 'coc-bootstrap-classname',
-    " \ 'coc-clangd',
     " \ 'coc-cmake',
     " \ 'coc-css'
     " \ 'coc-cssmodules',

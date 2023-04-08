@@ -11,88 +11,88 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 
+" General Plugins
 Plug '907th/vim-auto-save'
-Plug 'mhinz/vim-startify' "changes default vim starting screen
-
+Plug 'mhinz/vim-startify' " change default vim starting screen
+Plug 'tpope/vim-surround' " change surroundings, :h surround
+Plug 'preservim/nerdcommenter' " comment/uncomment lines
+Plug 'norcalli/nvim-colorizer.lua' " colorize color names and RGB codes
+Plug 'junegunn/rainbow_parentheses.vim' " colorize matching parantheses
+Plug 'lukas-reineke/indent-blankline.nvim' " add vertical indent guides
+Plug 'jiangmiao/auto-pairs' " automatically add matching pairs for quotes, brackets, etc.
+Plug 'voldikss/vim-floaterm' " floating terminal
+Plug 'alvan/vim-closetag'  " auto close HTML tags
+Plug 'shime/vim-livedown' " live preview of markdown
+"   run `npm install -g livedown` after installation
+Plug 'michaeljsmith/vim-indent-object' " adds an object to select everything at an indent level
+Plug 'zef/vim-cycle' " ability to cycle through some group of words, easy edit
+Plug 'lambdalisue/suda.vim' " suport for sudo in neovim
+"   nvim-tree
 Plug 'nvim-tree/nvim-web-devicons' " optional, for file icons
-Plug 'nvim-tree/nvim-tree.lua'
-Plug 'ryanoasis/vim-devicons'
+Plug 'nvim-tree/nvim-tree.lua' " tree-like file browser
 
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+"   fzf
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " fuzzy file finder
 Plug 'junegunn/fzf.vim'
 Plug 'stsewd/fzf-checkout.vim'
 
-Plug 'itchyny/lightline.vim' "configurable statusline/tabline
+"   lightline
+Plug 'itchyny/lightline.vim' " configurable statusline/tabline
 Plug 'maximbaz/lightline-ale'
+Plug 'ryanoasis/vim-devicons' " lightline icons
 
-" git plugins
-Plug 'lewis6991/gitsigns.nvim'
-Plug 'tpope/vim-fugitive'
-Plug 'junegunn/gv.vim'
+"   Remote Development
+" Plug 'jamestthompson3/nvim-remote-containers'
+" Plug 'chipsenkbeil/distant.nvim', { 'branch': 'v0.2' }
 
-Plug 'tpope/vim-surround' "change surroundings like single or double quotes to different things (cs) or delete them (ds) easily, docs at :help surround
-Plug 'preservim/nerdcommenter'
-
-" Web development
-Plug 'mattn/emmet-vim' " good for html tags
-Plug 'othree/html5.vim', {'for': ['html', 'html5', 'htm']}
-Plug 'pangloss/vim-javascript' " javascript syntax highlighting
-Plug 'HerringtonDarkholme/yats.vim' " typescript syntax highlighting
-Plug 'Glench/Vim-Jinja2-Syntax' " Jinja2 syntax for Flask
-
-Plug 'norcalli/nvim-colorizer.lua'
-Plug 'junegunn/rainbow_parentheses.vim'
-Plug 'lukas-reineke/indent-blankline.nvim'
-
-" Syntax highlighting
-Plug 'vim-python/python-syntax', { 'for': 'python' }
-Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] }
-Plug 'shime/vim-livedown' " live preview of markdown
-    " run `npm install -g livedown` after installation
-Plug 'dense-analysis/ale'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'rust-lang/rust.vim'
-Plug 'acarapetis/vim-sh-heredoc-highlighting'
-
-" Note taking
-Plug 'nvim-neorg/neorg', { 'do': ':Neorg sync-parsers'} | Plug 'nvim-lua/plenary.nvim'
-
-Plug 'neoclide/coc.nvim', { 'branch': 'release' }
-Plug 'jiangmiao/auto-pairs'
-
-" Snippets
-Plug 'honza/vim-snippets'
-Plug 'SirVer/ultisnips'
-
-Plug 'voldikss/vim-floaterm' "floating terminal for vim
-Plug 'alvan/vim-closetag'  " auto close HTML tags
-
-" Themes
+"   Themes
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'lifepillar/vim-solarized8'
 
-Plug 'michaeljsmith/vim-indent-object' "adds an object to select everything at an indent level
+"   Note Taking
+Plug 'nvim-neorg/neorg', { 'do': ':Neorg sync-parsers'} | Plug 'nvim-lua/plenary.nvim' " Neovim org-like format
 
-Plug 'zef/vim-cycle' "ability to cycle through some group of words, easy edit
-Plug 'lambdalisue/suda.vim' "suport for sudo in neovim
+"   Snippets
+Plug 'honza/vim-snippets' " compilation of useful snippets
+Plug 'SirVer/ultisnips' " snippet manager
 
-" SQL
-Plug 'lifepillar/pgsql.vim' "support for PostgreSQL
-Plug 'tpope/vim-dadbod' "modern database interface for Vim
+" Programming Tools
+"   Code Linter/Fixer 
+Plug 'dense-analysis/ale' " configurable async linter/fixer for programming languages
+Plug 'neoclide/coc.nvim', { 'branch': 'release' } " load extensions like VSCode and host language servers
 
-" LaTeX
-Plug 'lervag/vimtex' "filetype plugin for LaTeX files
+"   Git Plugins
+Plug 'lewis6991/gitsigns.nvim'
+Plug 'junegunn/gv.vim' " git commit browser
+" Plug 'tpope/vim-fugitive'
 
-" C Language
+"   Syntax Highlight
+Plug 'vim-python/python-syntax', { 'for': 'python' } " python syntax highlight
+Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] } " markdown syntax highlight
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} " better parsing for syntax highlight
+" Plug 'rust-lang/rust.vim' " rust syntax highlight
+" Plug 'acarapetis/vim-sh-heredoc-highlighting' " syntax highlight for codes inside heredocs
+
+" Programming Language Support
+"   SQL
+Plug 'lifepillar/pgsql.vim' " support for PostgreSQL
+Plug 'tpope/vim-dadbod' " modern database interface for Vim
+
+"   LaTeX
+" Plug 'lervag/vimtex' " filetype plugin for LaTeX files
+
+"   C Language
 Plug 'cdelledonne/vim-cmake'
 
-" csharp
-Plug 'OmniSharp/omnisharp-vim'
+"   C# Language
+" Plug 'OmniSharp/omnisharp-vim'
 
-" remote development
-" Plug 'jamestthompson3/nvim-remote-containers'
-Plug 'chipsenkbeil/distant.nvim', { 'branch': 'v0.2' }
-
+"   Web Development
+Plug 'mattn/emmet-vim' " good for html tags
+Plug 'othree/html5.vim', {'for': ['html', 'html5', 'htm']} " html5 syntax highlight
+Plug 'pangloss/vim-javascript' " javascript syntax highlight
+Plug 'Glench/Vim-Jinja2-Syntax' " Jinja2 syntax highlight
+" Plug 'HerringtonDarkholme/yats.vim' " typescript syntax highlighting
 
 call plug#end()
 
@@ -107,7 +107,7 @@ let g:fzf_tags_command = 'ctags -R'
 let g:fzf_layout = {'up':'~80%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5} }
 let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
 
-"FZF Buffer Delete
+"   FZF Buffer Delete
 function! s:list_buffers()
   redir => list
   silent ls
@@ -150,27 +150,29 @@ let g:livedown_open = 1
 source $HOME/.config/nvim/ale-settings.vim
 
 " coc config
-"   coc extensions to install automatically
 let g:coc_user_config = {}
-let g:coc_global_extensions = [
-    \ 'coc-json',
-    \ 'coc-marketplace',
-    \ 'coc-git',
-    \ 'coc-vimlsp',
-    \ 'coc-pyright',
-    \ 'coc-eslint',
-    \ 'coc-clangd',
-    \ 'coc-cmake',
-    \ 'coc-snippets',
-    \ 'coc-emmet',
-    \ 'coc-tsserver',
-    \ 'coc-html',
-    \ 'coc-bootstrap-classname',
-    \ 'coc-cssmodules',
-    \ 'coc-db',
-    \ 'coc-vimtex',
-    \ 'coc-css'
-    \ ]
+"   coc extensions to install automatically
+" let g:coc_global_extensions = [
+    " \ 'coc-bootstrap-classname',
+    " \ 'coc-clangd',
+    " \ 'coc-cmake',
+    " \ 'coc-css'
+    " \ 'coc-cssmodules',
+    " \ 'coc-db',
+    " \ 'coc-docker',
+    " \ 'coc-emmet',
+    " \ 'coc-eslint',
+    " \ 'coc-git',
+    " \ 'coc-html',
+    " \ 'coc-json',
+    " \ 'coc-pyright',
+    " \ 'coc-rust-analyzer',
+    " \ 'coc-snippets',
+    " \ 'coc-sql',
+    " \ 'coc-tsserver',
+    " \ 'coc-vimtex',
+    " \ 'coc-vimlsp',
+    " \ ]
 "   coc-clangd
 "       Create a file called ".clang-format" at the root of your C project
 "       with the following content:
@@ -222,53 +224,51 @@ let g:user_emmet_mode='nv' " only enable emmet in normal mode
 " vim-cycle config
 autocmd FileType python call AddCycleGroup('python', ['True', 'False'])
 
-" gruvbox config
-let g:gruvbox_contrast_light = 'hard'
-
 " vimtex config
-let g:tex_flavor='latex'
-let g:vimtex_view_method = 'zathura'
-let g:vimtex_quickfix_mode=0
-set conceallevel=1
-let g:tex_conceal='abdmg'
-augroup tex_mappings
-    autocmd!
-    autocmd FileType tex,latex,context,plaintex setlocal spell  spelllang=tr,en
-augroup END
-let g:vimtex_compiler_latexmk = {
-            \ 'build_dir' : 'build',
-            \ 'options' : [
-            \   '-verbose',
-            \   '-file-line-error',
-            \   '-synctex=1',
-            \   '-interaction=nonstopmode',
-            \   '-bibtex',
-            \ ],
-            \}
-            " add the following line to options only when you want to use the `minted` syntax
-            " highlighting package
-            " \   '-shell-escape',
+" let g:tex_flavor='latex'
+" let g:vimtex_view_method = 'zathura'
+" let g:vimtex_quickfix_mode=0
+" set conceallevel=1
+" let g:tex_conceal='abdmg'
+" augroup tex_mappings
+    " autocmd!
+    " autocmd FileType tex,latex,context,plaintex setlocal spell  spelllang=tr,en
+" augroup END
+" let g:vimtex_compiler_latexmk = {
+            " \ 'build_dir' : 'build',
+            " \ 'options' : [
+            " \   '-verbose',
+            " \   '-file-line-error',
+            " \   '-synctex=1',
+            " \   '-interaction=nonstopmode',
+            " \   '-bibtex',
+            " \ ],
+            " \}
+            " " add the following line to options only when you want to use the `minted` syntax
+            " " highlighting package
+            " " \   '-shell-escape',
 
 " indent-blankline config
 let g:indent_blankline_show_first_indent_level = v:false
 let g:indent_blankline_show_current_context = v:false
 
 " nvim-tresitter config
-lua <<EOF
+lua << EOF
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "bash", "bibtex", "c", "c_sharp", "cmake", "comment", "cpp", "css", "dockerfile", "http", "java", "json", "json5", "jsonc", "latex", "lua", "make", "norg", "python", "regex", "rust", "scss", "typescript", "javascript", "vim", "yaml" },
-  sync_install = true,
-  ignore_install = {},
-  highlight = {
-    enable = true,
-    -- list of language that will be disabled
-    disable = {"html"},
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = false,
-  },
+   --  ensure_installed = { "bash", "bibtex", "c", "c_sharp", "cmake", "comment", "cpp", "css", "dockerfile", "http", "java", "json", "json5", "jsonc", "latex", "lua", "make", "norg", "python", "regex", "rust", "scss", "typescript", "javascript", "vim", "yaml" },
+    ensure_installed = { "bash", "c", "cmake", "comment", "cpp", "dockerfile", "json", "lua", "make", "python", "regex", "vim", "vimdoc", "yaml" },
+    sync_install = true,
+    ignore_install = {},
+    highlight = {
+        enable = true,
+        -- list of language that will be disabled
+        disable = {"html"},
+        -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+        -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+        -- Using this option may slow down your editor, and you may see some duplicate highlights.
+        -- Instead of true it can also be a list of languages
+        additional_vim_regex_highlighting = false,
+    },
 }
 EOF
 "   set which filetypes will use treesitter folding if you want to activate folding for the current filetype
@@ -338,61 +338,48 @@ lua << EOF
 vim.g.loaded = 1
 vim.g.loaded_netrwPlugin = 1
 
--- OR setup with some options
 require("nvim-tree").setup({
-  hijack_cursor = true,
-  sync_root_with_cwd = true,
+    hijack_cursor = true,
+    sync_root_with_cwd = true,
 
-  update_focused_file = {
-    enable = true,
-    update_root = true,
-  },
-
-  hijack_netrw = true,
-  hijack_directories = {
-    enable = true,
-    auto_open = true,
-  },
-
-  sort_by = "name",
-  view = {
-    mappings = {
-      list = {
-      }
+    update_focused_file = {
+        enable = true,
+        update_root = true,
     },
-    adaptive_size = false,
-  },
-  renderer = {
-    group_empty = false,
-  },
-  filters = {
-    dotfiles = true,
-  },
-  git = {
-    enable = false
-  },
+
+    hijack_netrw = true,
+    hijack_directories = {
+        enable = true,
+        auto_open = true,
+    },
+
+    sort_by = "name",
+    view = {
+        mappings = {
+            list = {}
+        },
+        adaptive_size = false,
+    },
+    renderer = {
+        group_empty = false,
+    },
+    filters = {
+        dotfiles = true,
+    },
+    git = {
+        enable = false
+    },
 })
 EOF
 
 " distant.nvim config
-lua << EOF
-require('distant').setup {
-    -- Applies Chip's personal settings to every machine you connect to
-    --
-    -- 1. Ensures that distant servers terminate with no connections
-    -- 2. Provides navigation bindings for remote directories
-    -- 3. Provides keybinding to jump into a remote file's parent directory
-    ['*'] = require('distant.settings').chip_default(),
-    ['docker@172.17.0.3'] = {
-        lsp = {
-            root_dir = "/home/docker/catkin_ws"
-        },
-        ssh = {
-            user = 'docker'
-        },
-        distant = {
-            bin = '/home/docker/bin/distant',
-        },
-    },
-}
-EOF
+" lua << EOF
+" require('distant').setup {
+    " -- Applies Chip's personal settings to every machine you connect to
+    " --
+    " -- 1. Ensures that distant servers terminate with no connections
+    " -- 2. Provides navigation bindings for remote directories
+    " -- 3. Provides keybinding to jump into a remote file's parent directory
+    " ['*'] = require('distant.settings').chip_default(),
+" }
+" EOF

@@ -17,6 +17,7 @@ alias ll="ls -lh"
 export PS1="\[\033[1;32m\]\u \[\033[31m\]\W $ \[\033[0m\]"
 
 ### TERMINAL FIRST OPEN
+export SHELL=/bin/bash
 
 ### PROGRAM ALIASES
 # fzf

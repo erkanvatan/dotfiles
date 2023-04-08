@@ -41,7 +41,7 @@ set nocursorline
 set nocursorcolumn
 
  "set python3 path
-let g:python3_host_prog='~/.pyenv/versions/3.10.2/bin/python3.10'
+let g:python3_host_prog='/usr/bin/python3'
 
 
 " set default sql syntax

@@ -18,39 +18,48 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 ################
-# TERMINAL START
+# ENVIRONMENT VARIABLES
 ################
+export BROWSER='firefox'
+# FZF
+#   set fd as the default source
+export FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude "{node_modules,.git}"'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+#   default options
+export FZF_DEFAULT_OPTS='--layout=reverse'
 
-### WSL2 CONFIG
-# Change WSL2 directory colors for readability
-#   Change ls colours
-# export CLICOLOR=1
-# export LS_COLORS='rs=0:no=00:mi=00:mh=00:ln=01;36:or=01;31:di=01;34:ow=04;01;34:st=34:tw=04;34:pi=01;33:so=01;33:do=01;33:bd=01;33:cd=01;33:su=01;35:sg=01;35:ca=01;35:ex=01;32:'
-#   Make cd use the ls colours
-# zstyle ':completion:*' list-colors "${(@s.:.)LS_COLORS}"
+# grep
+export GREP_COLORS='0;31'
 
-# Aliases
-# alias explorer='/mnt/c/Windows/explorer.exe .'
+# locales
+export LC_ALL="en_US.UTF-8"
 
-# Set browser
-# alias firefox="/mnt/c/Firefox/firefox.exe"
+################
+# PROGRAM ALIASES
+################
+# batcat (bat)
+alias bat='batcat --theme=TwoDark'
 
-alias usage='du -sk * | sort -n | perl -ne '\''($s,$f)=split(m{\t});for (qw(K M G)) {if($s<1024) {printf("%.1f",$s);print "$_\t$f"; last};$s=$s/1024}'\'
-
-### PROGRAM ALIASES
-# translate-shell
-alias td='trans :tr'
-
-# fzf
-alias fzfp="fzf --preview 'batcat --style=numbers --color=always {} | head -500'"
-
-# Make history command show all history
-alias history='fc -l 1'
+# BindToInterface
+alias wlo1_bind="BIND_INTERFACE=wlo1 DNS_OVERRIDE_IP=1.1.1.1 DNS_EXCLUDE=127.0.0.1 LD_PRELOAD=$HOME/programs/BindToInterface/bindToInterface.so"
+alias usb0_bind="BIND_INTERFACE=usb0 DNS_OVERRIDE_IP=1.1.1.1 DNS_EXCLUDE=127.0.0.1 LD_PRELOAD=$HOME/programs/BindToInterface/bindToInterface.so"
 
 # config --bare git repository
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
 
-# Git aliases
+# du
+alias usage='du -sk * | sort -n | perl -ne '\''($s,$f)=split(m{\t});for (qw(K M G)) {if($s<1024) {printf("%.1f",$s);print "$_\t$f"; last};$s=$s/1024}'\'
+
+# fd-find (fd)
+alias fd='fdfind'
+
+# fzf
+alias fzfp="fzf --preview 'batcat --style=numbers --color=always {} | head -500'"
+
+# feh
+alias fehzoom='feh --auto-zoom --force-aliasing --geometry 1280x720'
+
+# git
 alias gs='git status'
 alias gsh='git stash'
 alias gc='git commit'
@@ -64,57 +73,49 @@ alias gb='git branch'
 alias gpl='git pull'
 alias gph='git push'
 
+# history:  show all history
+alias history='fc -l 1'
+
+# ip
+alias ip='ip --color=auto'
+
 # neovim
 alias vim="stty stop '' -ixoff; nvim" # disable Ctrl + S mapping of the terminal before running nvim
 alias nvim="stty stop '' -ixoff; nvim" # disable Ctrl + S mapping of the terminal before running nvim
 
-# fd-find (fd)
-alias fd='fdfind'
-
-# batcat (bat)
-alias bat='batcat --theme=TwoDark'
-
-# pip3
-alias pip='pip3'
-
-# NPM
+# npm
 #   add fixer/linter dependencies
 alias devtools_web_vanilla='pnpm add -D eslint prettier eslint-plugin-prettier eslint-config-prettier stylelint stylelint-config-standard'
 alias devtools_web_svelte_eslint='pnpm add -D eslint eslint-plugin-svelte3 eslint-plugin-import typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin @rollup/plugin-typescript @tsconfig/svelte stylelint stylelint-config-recommended-scss stylelint-config-html postcss postcss-html sass prettier prettier-plugin-svelte'
 alias devtools_web_svelteserver='pnpm add -D eslint eslint-plugin-prettier eslint-config-prettier typescript @rollup/plugin-typescript @tsconfig/svelte stylelint stylelint-config-recommended-scss stylelint-config-html postcss postcss-html sass prettier prettier-plugin-svelte'
 
-# Docker
-alias sd='sudo -E docker'
+# pip3
+alias pip='pip3'
 
-# feh
-alias fehzoom='feh --auto-zoom --force-aliasing --geometry 1280x720'
-
-# ip
-alias ip='ip --color=auto'
-
-# BindToInterface
-alias wlo1_bind="BIND_INTERFACE=wlo1 DNS_OVERRIDE_IP=1.1.1.1 DNS_EXCLUDE=127.0.0.1 LD_PRELOAD=$HOME/programs/BindToInterface/bindToInterface.so"
-alias usb0_bind="BIND_INTERFACE=usb0 DNS_OVERRIDE_IP=1.1.1.1 DNS_EXCLUDE=127.0.0.1 LD_PRELOAD=$HOME/programs/BindToInterface/bindToInterface.so"
-
-
-# Rsync
-#   sync home
+# rsync
 alias sync_home="rsync -gloptruch --stats --delete --exclude={'/subfolders/','/Music/','/Downloads/','/Pictures/','/Videos/','/VirtualBox\ VMs/','/.local/','/.cache/','/.cargo/','/.npm/','/.nvm/','/projects/languages/rust/**/target','/projects/languages/latex/**/build','/projects/**/node_modules','/projects/languages/c/**/Debug'} /home/arensonz/ '/media/arensonz/Linux Files/Backups/aren-zenbook'"
-
-#   sync shared files
 alias sync_subfolders="rsync -gloptruch --stats --delete /home/arensonz/subfolders '/media/arensonz/Shared Files/'"
-
 alias sync_music="rsync -gloptruch --stats --delete /home/arensonz/Music '/media/arensonz/Shared Files/'"
 alias rsync_restore="rsync -gloptrch --stats"
 
+# translate-shell
+alias td='trans :tr'
 
-### SCRIPT ALIASES
+################
+# SCRIPT ALIASES
+################
 alias fwhite='format_whitespace.py'
+alias dotfile_add='dotfile_add.sh'
+alias dotfile_edit='dotfile_edit.sh'
 
-### REMINDER/CORRECTOR ALIASES
+################
+# REMINDER ALIASES
+################
 # alias rm='echo "Use trash instead of rm (use \\\\rm -i if you want to skip this warning.)"'
 
-### CONFIGS
+################
+# ZSH CONFIGS
+################
 # Activate tab completion
 autoload -Uz compinit
 compinit
@@ -129,11 +130,15 @@ DISABLE_CORRECTION="true"
 # Overwrite existing files with > and >>.
 setopt CLOBBER
 
-### FUNCTIONS
+################
+# FUNCTIONS
+################
 # mkdir and cd to that directory
 function mkdircd () { mkdir -p "$@" && eval cd "\"\$$#\""; }
 
-### MODULE INITIALIZATION
+################
+# MODULE INITIALIZATION
+################
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -168,3 +173,6 @@ export PATH="$PNPM_HOME:$PATH"
 
 # dotnet
 export PATH="$HOME/.dotnet/tools:$PATH"
+
+# source cargo for Rust lang
+# . "$HOME/.cargo/env"

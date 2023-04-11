@@ -39,7 +39,7 @@ let g:ale_linters = {
 \   'rust': ['analyzer'],
 \   'latex': ['chktex'],
 \   'c': ['cc'],
-\   'cpp': ['cc']
+\   'cpp': []
 \}
 
 "   Set fixers by file type

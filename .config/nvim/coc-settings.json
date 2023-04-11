@@ -5,7 +5,7 @@
       "filetypes": [ "c", "cc", "cpp", "c++", "objc", "objcpp" ],
       "rootPatterns": [
         ".ccls",
-        "compile_commands.json",
+        "build/compile_commands.json",
         ".git/",
         ".hg/"
       ],
@@ -16,6 +16,13 @@
         "highlight": {
           "lsRanges": true
         },
+        "client": {
+          "snippetSupport": true
+        },
+        "compilationDatabaseDirectory": "build",
+        "clang": { 
+          "extraArgs": [ "-std=c++11", "-Wall" ] 
+        }
       }
     },
   },
@@ -64,8 +71,6 @@
   "coc.preferences.extensionUpdateCheck": "weekly",
 
   "cmake.lsp.enable": true,
-  "clangd.disableDiagnostics": false,
-  "clangd.compilationDatabasePath": "build/",
 
   "html.autoClosingTags": false,
 

@@ -47,6 +47,13 @@ nnoremap <silent> <C-Right> :vertical resize +2<CR>
 " Zoom into one pane
 nnoremap <silent> <leader>z :tabnew %<CR>
 
+" 'cd' towards the directory in which the current file is edited
+" but only change the path for the current window
+nnoremap <leader>cd :lcd %:h<CR>
+
+" See changes before saving file
+nnoremap <leader>df :w !diff % -<CR>
+
 " COC (language server) bindings
 source $HOME/.config/nvim/coc_bindings.vim
 
@@ -257,6 +264,3 @@ nnoremap <silent> <localleader>i gg=G<C-o>
 nnoremap <silent> <C-c> :NvimTreeToggle<CR>
 nnoremap <silent> <leader>pv :NvimTreeFindFile!<CR>
 
-" 'cd' towards the directory in which the current file is edited
-" but only change the path for the current window
-nnoremap <leader>cd :lcd %:h<CR>

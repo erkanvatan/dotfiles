@@ -48,6 +48,10 @@ let g:python3_host_prog='/usr/bin/python3'
 let g:sql_type_default = 'pgsql'
 " let g:sql_type_default = 'mysql'
 
+" set node path
+"   fixes 'node not executable' error when running Neovim from GNOME Application Menu 
+" let g:coc_node_path = '~/.nvm/versions/node/v18.13.0/bin/node'
+
 set ignorecase
 set smartcase
 set mouse=nvchr

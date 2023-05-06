@@ -36,7 +36,7 @@ set nocursorcolumn
 "-----------
 
 " quit without saving
-nnoremap qq :q!<CR>
+nnoremap qq :q<CR>
 
 " quit after saving
 nnoremap qw :wq<CR>

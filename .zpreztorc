@@ -30,20 +30,22 @@ zstyle ':prezto:load' pmodule-dirs $HOME/.zprezto-contrib
 # Set the Prezto modules to load (browse modules).
 # The order matters.
 zstyle ':prezto:load' pmodule \
+  'environment' \
   'tmux' \
   'command-not-found' \
-  'environment' \
   'terminal' \
   'history' \
   'directory' \
   'spectrum' \
   'utility' \
+  'zsh-z' \
+  'archive' \
+  'rsync' \
   'completion' \
   'syntax-highlighting' \
   'history-substring-search' \
   'autosuggestions' \
-  'prompt' \
-  'zsh-z'
+  'prompt'
 
 #
 # Autosuggestions

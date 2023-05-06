@@ -76,7 +76,7 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} " better parsing for
 " Programming Language Support
 "   SQL
 Plug 'lifepillar/pgsql.vim' " support for PostgreSQL
-Plug 'tpope/vim-dadbod' " modern database interface for Vim
+" Plug 'tpope/vim-dadbod' " modern database interface for Vim
 
 "   LaTeX
 " Plug 'lervag/vimtex' " filetype plugin for LaTeX files
@@ -152,26 +152,25 @@ source $HOME/.config/nvim/ale-settings.vim
 " coc config
 let g:coc_user_config = {}
 "   coc extensions to install automatically
-" let g:coc_global_extensions = [
-    " \ 'coc-bootstrap-classname',
-    " \ 'coc-cmake',
-    " \ 'coc-css'
-    " \ 'coc-cssmodules',
-    " \ 'coc-db',
-    " \ 'coc-docker',
-    " \ 'coc-emmet',
-    " \ 'coc-eslint',
-    " \ 'coc-git',
-    " \ 'coc-html',
-    " \ 'coc-json',
-    " \ 'coc-pyright',
-    " \ 'coc-rust-analyzer',
-    " \ 'coc-snippets',
-    " \ 'coc-sql',
-    " \ 'coc-tsserver',
-    " \ 'coc-vimtex',
-    " \ 'coc-vimlsp',
-    " \ ]
+let g:coc_global_extensions = [
+    \ 'coc-bootstrap-classname',
+    \ 'coc-cmake',
+    \ 'coc-css',
+    \ 'coc-cssmodules',
+    \ 'coc-docker',
+    \ 'coc-emmet',
+    \ 'coc-eslint',
+    \ 'coc-git',
+    \ 'coc-html',
+    \ 'coc-json',
+    \ 'coc-pyright',
+    \ 'coc-rust-analyzer',
+    \ 'coc-snippets',
+    \ 'coc-sql',
+    \ 'coc-tsserver',
+    \ 'coc-vimtex',
+    \ 'coc-vimlsp',
+    \ ]
 "   coc-clangd
 "       Create a file called ".clang-format" at the root of your C project
 "       with the following content:
@@ -254,7 +253,8 @@ let g:indent_blankline_show_current_context = v:false
 " nvim-tresitter config
 lua << EOF
 require'nvim-treesitter.configs'.setup {
-   --  ensure_installed = { "bash", "bibtex", "c", "c_sharp", "cmake", "comment", "cpp", "css", "dockerfile", "http", "java", "json", "latex", "lua", "make", "norg", "python", "regex", "rust", "scss", "typescript", "javascript", "vim", "yaml" },
+   -- Additional parsers:
+   -- :TSInstall bibtex c_sharp css http html java latex norg rust scss sql typescript javascript
     ensure_installed = { "bash", "c", "cmake", "comment", "cpp", "dockerfile", "json", "lua", "make", "python", "regex", "vim", "vimdoc", "yaml" },
     -- Install parsers synchronously (only applied to `ensure_installed`)
     sync_install = false,
@@ -295,15 +295,15 @@ require('neorg').setup {
             config = {
             },
         },
-        ["core.norg.concealer"] = {
+        ["core.concealer"] = {
             config = {
                 icon_preset = "diamond",
             },
         },
         ["core.export"] = {},
         ["core.export.markdown"] = {},
-        ["core.norg.qol.toc"] = {},
-        ["core.norg.dirman"] = {
+        ["core.qol.toc"] = {},
+        ["core.dirman"] = {
             config = {
                 workspaces = {
                     personal_ws = "~/Documents/neorg/personal",

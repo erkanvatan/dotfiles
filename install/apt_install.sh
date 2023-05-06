@@ -129,6 +129,7 @@ apt-get -qq --yes install postgresql postgresql-contrib
 apt-get -qq --yes install hwinfo
 apt-get -qq --yes install rar
 apt-get -qq --yes install clang-format
+apt-get -qq --yes install colordiff
 
 
 # GUI APPS

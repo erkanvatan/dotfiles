@@ -2,13 +2,8 @@
   "languageserver": {
     "ccls": {
       "command": "ccls",
-      "filetypes": [ "c", "cc", "cpp", "c++", "objc", "objcpp" ],
-      "rootPatterns": [
-        ".ccls",
-        "build/compile_commands.json",
-        ".git/",
-        ".hg/"
-      ],
+      "filetypes": [ "c", "cc", "cpp", "cuda", "c++", "objc", "objcpp" ],
+      "rootPatterns": [".ccls-root", "Debug/compile_commands.json"],
       "initializationOptions": {
         "cache": {
           "directory": "/tmp/ccls"
@@ -19,7 +14,7 @@
         "client": {
           "snippetSupport": true
         },
-        "compilationDatabaseDirectory": "build",
+        "compilationDatabaseDirectory": "Debug",
         "clang": { 
           "extraArgs": [ "-std=c++11", "-Wall" ] 
         }
@@ -44,7 +39,7 @@
   "python.linting.enabled": false,
   "python.analysis.typeCheckingMode": "off",
 
-  "html.enable": true,
+  "html.format.enable": false,
   "html.filetypes": [
     "html",
     "handlebars",
@@ -54,6 +49,9 @@
     "jinja.html",
     "htmljinja"
   ],
+  "html.validate.styles": false,
+  "html.validate.scripts": false,
+  "html.autoClosingTags": false,
 
   "eslint.enable": true,
   "tsserver.enable": true,
@@ -72,10 +70,7 @@
 
   "cmake.lsp.enable": true,
 
-  "html.autoClosingTags": false,
-
   "rust-analyzer.diagnostics.enable": false,
-  "rust-analyzer.diagnostics.enableExperimental": false,
 
   "sql.database": "postgresql"
 }

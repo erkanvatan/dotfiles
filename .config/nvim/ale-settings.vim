@@ -1,6 +1,9 @@
 " ALE config (Asynchronous Lint Engine)
-"   auto close error-list when it's the last buffer open
-autocmd QuitPre * if empty(&bt) | lclose | endif
+augroup ale_group
+    autocmd!
+    " auto close error-list when it's the last buffer open
+    autocmd QuitPre * if empty(&bt) | lclose | endif
+augroup END
 
 let g:ale_sign_error = '❌'
 let g:ale_sign_warning = '⚠️'
@@ -58,11 +61,21 @@ let g:ale_fixers = {
 \   'c': ['clang-format'],
 \   'cpp': ['clang-format']
 \}
-autocmd FileType python let b:ale_warn_about_trailing_whitespace = 0
-"   Disable ale diagnostics for some filetypes
-"       Cannot disable eslint for svelte without disabling eslint for
-"       javascript and typescript
-" autocmd FileType svelte let b:ale_linters = {'javascript': [], 'typescript': [], 'svelte': ['stylelint'], 'css': ['stylelint'], 'scss': ['stylelint']}
+augroup ale_settings_by_filetype
+    autocmd!
+    autocmd FileType python let b:ale_warn_about_trailing_whitespace = 0
+    autocmd FileType json let g:indentLine_conceallevel = 0
+augroup END
+
+augroup ale_disable_by_filetype
+    autocmd!
+    " autocmd FileType svelte let b:ale_linters = {'javascript': [], 'typescript': [], 'svelte': ['stylelint'], 'css': ['stylelint'], 'scss': ['stylelint']}
+    "       Cannot disable eslint for svelte without disabling eslint for
+    "       javascript and typescript
+    
+    " Disable ALE lsp for specific files
+    "autocmd FileType python let b:ale_disable_lsp = 1
+augroup END
 
 " Disable line too long warning for flake8
 let g:ale_python_flake8_options = '--max-line-length 120'
@@ -88,4 +101,3 @@ let g:ale_javascript_prettier_use_local_config = 1
 
 let g:ale_scss_stylelint_use_global = 1
 
-autocmd FileType json let g:indentLine_conceallevel = 0

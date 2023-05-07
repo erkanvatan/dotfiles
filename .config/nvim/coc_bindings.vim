@@ -1,6 +1,16 @@
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
+augroup coc_nvim_group
+    autocmd!
+    " Highlight the symbol and its references when holding the cursor.
+    autocmd CursorHold * silent call CocActionAsync('highlight')
+    " Update signature help on jump placeholder.
+    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+    " Close the preview window when completion is done
+    autocmd CompleteDone * if pumvisible() == 0 | pclose | endif
+augroup END
+
 function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
@@ -47,8 +57,6 @@ function! ShowDocumentation()
 endfunction
 
 
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Symbol renaming.
 "   If your language server formats code after textEdit, this can cause it to auto
@@ -63,8 +71,6 @@ augroup coc_formatexpr_filetype
   autocmd!
   " Setup formatexpr specified filetype(s).
   autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
 " Applying codeAction to the selected region.
@@ -112,5 +118,3 @@ command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.org
 
 "   Use C to open coc config
 call SetupCommandAbbrs('C', 'CocConfig')
-"   Close the preview window when completion is done
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif

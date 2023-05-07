@@ -248,8 +248,8 @@ nnoremap <leader>cg :CMakeGenerate<CR>
 nnoremap <leader>cb :CMakeBuild<CR>
 nnoremap <leader>co :CMakeOpen<CR>
 
-"   autoclose vim-cmake window after successfull build
 augroup vim_cmake_group
+    " autoclose vim-cmake window after successfull build
     autocmd! User CMakeBuildSucceeded CMakeClose
 augroup END
 

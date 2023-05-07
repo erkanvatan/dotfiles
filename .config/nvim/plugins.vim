@@ -6,8 +6,6 @@ if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-" Disable ALE lsp for specific files
-"autocmd FileType python let b:ale_disable_lsp = 1
 
 call plug#begin('~/.config/nvim/plugged')
 
@@ -134,7 +132,10 @@ let g:startify_session_persistence = 1
 "   Add spaces after comment delimiters by default
 let g:NERDCreateDefaultMappings = 0
 let g:NERDSpaceDelims = 1
-autocmd FileType python let g:NERDDefaultAlign = 'left'
+augroup nerdcommenter_group
+    autocmd!
+    autocmd FileType python let g:NERDDefaultAlign = 'left'
+augroup END
 
 " vim-markdown config
 let g:vim_markdown_folding_disabled = 1
@@ -193,8 +194,11 @@ let g:python_highlight_all = 1
 " rainbow_parentheses config
 let g:rainbow#max_level = 16
 let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
-"   Auto activate RainbowParentheses
-autocmd FileType * RainbowParentheses
+augroup rainbow_parantheses_group
+    autocmd!
+    " Auto activate RainbowParentheses
+    autocmd FileType * RainbowParentheses
+augroup END
 
 " vim-floaterm config
 "   Go back to the NORMAL mode using <C-\><C-N>
@@ -205,9 +209,6 @@ let g:floaterm_height=0.9
 " vim-auto-save config
 let g:auto_save_silent = 1  " do not display the auto-save notification
 let g:auto_save = 0 " auto-save off by default
-"   FileTypes to enable auto_save
-"autocmd FileType python let b:auto_save = 1
-
 let g:auto_save_events = ["InsertLeave", "TextChanged"] " set events to trigger auto-save
 
 " vim-closetag config
@@ -220,7 +221,10 @@ let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
 let g:user_emmet_mode='nv' " only enable emmet in normal mode
 
 " vim-cycle config
-autocmd FileType python call AddCycleGroup('python', ['True', 'False'])
+augroup vim_cycle_group
+    autocmd!
+    autocmd FileType python call AddCycleGroup('python', ['True', 'False'])
+augroup END
 
 " vimtex config
 " let g:tex_flavor='latex'
@@ -273,11 +277,12 @@ require'nvim-treesitter.configs'.setup {
     },
 }
 EOF
-"   set which filetypes will use treesitter folding if you want to activate folding for the current filetype
+"   set which filetypes will use treesitter folding 
 "   WARNING: This causes slowdown in ALEFix
-"
-"   call :setlocal foldmethod=expr
 " autocmd FileType python,c,cpp,xml,html,xhtml,lua,vim,norg setlocal foldmethod=expr
+
+"   if you want to activate folding for the current filetype call 
+"       :setlocal foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
 
 " vim-cmake config
@@ -319,7 +324,10 @@ require('neorg').setup {
 EOF
 
 " auto-pairs config
-autocmd FileType norg let g:AutoPairsMapSpace = 0
+augroup auto_pairs_group
+    autocmd!
+    autocmd FileType norg let g:AutoPairsMapSpace = 0
+augroup END
 
 " gitsigns.nvim config
 lua << EOF

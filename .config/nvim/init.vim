@@ -77,8 +77,8 @@ set smartindent
 " Disable sql-complete
 let g:omni_sql_no_default_maps = 1
 
-" Language-specific
-augroup langindentation
+" Set language-specific indentation
+augroup lang_indentation_by_filetype
     autocmd!
     autocmd Filetype css setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
     autocmd Filetype scss setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
@@ -101,24 +101,33 @@ fun! LongLineHighlightOn(length)
     endif
 endfunction
 
-augroup longlinehighlight
+augroup set_longlinehighlight_by_extension
     autocmd!
     autocmd BufWinEnter *.css,*.scss call LongLineHighlightOn(90)
     autocmd BufWinEnter * call LongLineHighlightOn(120) " every other file
 augroup END
 
-augroup breaklonglines
+augroup long_line_break_settings
     autocmd!
     autocmd FileType * setlocal tw=120
 augroup END
-augroup autobreaklonglines
+
+augroup auto_long_line_break_by_filetype
     autocmd!
     autocmd FileType norg setlocal fo+=t
 augroup END
 
 " Set the filetype based on the file's extension, overriding any
 " 'filetype' that has already been set
-" autocmd BufRead,BufNewFile *.html set filetype=html.jinja.javascript
+augroup set_filetype_by_extension
+    autocmd!
+    " autocmd BufRead,BufNewFile *.html set filetype=html.jinja.javascript
+    autocmd BufNewFile,BufRead *.launch set filetype=xml
+augroup END
+
 " Set which files will use highlight from start of file (fix for Javascript
 " inside HTML syntax)
-autocmd BufRead,BufNewFile *.html syntax sync fromstart
+augroup highlight_from_start
+    autocmd!
+    autocmd BufRead,BufNewFile *.html syntax sync fromstart
+augroup END

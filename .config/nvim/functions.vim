@@ -3,7 +3,6 @@ function! ChangeBackground()
     if system("cat /tmp/system_theme_color") =~ 'light'
         echo "light"
         set background=light  " for the light version of the theme
-        " autocmd vimenter * ++nested colorscheme solarized8_high
         colorscheme solarized8_high
         let g:lightline.colorscheme = 'solarized'
     else

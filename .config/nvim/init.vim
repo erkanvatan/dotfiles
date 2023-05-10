@@ -89,6 +89,7 @@ augroup lang_indentation_by_filetype
     autocmd Filetype json setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
     autocmd Filetype xml setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
     autocmd Filetype norg setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd Filetype cmake setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 augroup END
 
 

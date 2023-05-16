@@ -41,8 +41,8 @@ let g:ale_linters = {
 \   'scss': ['stylelint'],
 \   'rust': ['analyzer'],
 \   'latex': ['chktex'],
-\   'c': ['cc'],
-\   'cpp': ['ccls']
+\   'c': [],
+\   'cpp': []
 \}
 
 "   Set fixers by file type
@@ -83,14 +83,14 @@ let g:ale_python_autopep8_options = '--max-line-length 120'
 let g:ale_html_beautify_options = '--indent-size 2 --max-preserve-newlines 2 --wrap-line-length 120'
 
 "   c options
-let g:ale_c_cc_options = '-std=c99 -Wall -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused-result -Wwrite-strings'
+" let g:ale_c_cc_options = '-std=c11 -Wall -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused-result -Wwrite-strings'
 "   c and cpp shared options
-let g:ale_c_build_dir_names = ['build', 'bin', 'Debug', 'Release']
+" let g:ale_c_build_dir_names = ['build', 'bin', 'Debug', 'Release']
 let g:ale_c_clangformat_options = "-style='{BasedOnStyle: WebKit, ColumnLimit: 120, BreakBeforeBraces: Linux, IndentWidth: 4, IndentCaseLabels: false, PointerAlignment: Right, SpaceBeforeAssignmentOperators: true, AllowShortBlocksOnASingleLine: Never, AllowShortFunctionsOnASingleLine: None}'"
 " let g:ale_c_clangformat_options = "-style='{BasedOnStyle: LLVM, ColumnLimit: 120, BreakBeforeBraces: Allman, IndentWidth: 4, IndentCaseLabels: false, PointerAlignment: Right, SpaceBeforeAssignmentOperators: true, AllowShortBlocksOnASingleLine: Never, AllowShortFunctionsOnASingleLine: None}'"
 
 "   cpp options
-let g:ale_cpp_cc_options = '-std=c++11 -Wall'
+" let g:ale_cpp_cc_options = '-std=c++11 -Wall'
 
 let g:ale_rust_analyzer_executable = "/home/arensonz/.config/coc/extensions/coc-rust-analyzer-data/rust-analyzer"
 let g:ale_rust_rustfmt_options = "--config wrap_comments=true,format_code_in_doc_comments=true,overflow_delimited_expr=true"

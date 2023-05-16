@@ -176,6 +176,8 @@ let g:coc_global_extensions = [
 "       Create a file called ".clang-format" at the root of your C project
 "       with the following content:
 "       DisableFormat: true
+"   coc-ccls
+"       How to fix missing system header files: https://stackoverflow.com/a/75861388
 
 " enable CoC diagnostics for some filetypes
 function! EnableCocDiagnosticBuffer()
@@ -185,7 +187,7 @@ endfunction
 
 augroup enable_coc_diagnostic
     autocmd!
-    autocmd FileType typescript,sql,python,json call EnableCocDiagnosticBuffer()
+    autocmd FileType typescript,sql,python,json,c,cc,cpp,c++,cuda,objcpp call EnableCocDiagnosticBuffer()
 augroup end
 
 " python syntax

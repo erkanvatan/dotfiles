@@ -5,7 +5,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 
 file(GLOB TARGET_C "${CMAKE_SOURCE_DIR}/*.c")
 project(${3:out} VERSION ${4:1.0})
-set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -std=c99 -Wall -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused-result -Wwrite-strings")
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -Wall -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused-result -Wwrite-strings")
 add_executable(${3} \$\{TARGET_C\})
 
 target_include_directories($3 PUBLIC \$\{CMAKE_CURRENT_SOURCE_DIR\}/include)

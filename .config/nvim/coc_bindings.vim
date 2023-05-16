@@ -27,11 +27,15 @@ inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
-"   Use <c-space> to trigger completion.
+"   Use <c-M-space> to trigger completion.
+
+"   The suggestion box for function parameters is signatureHelp. 
+"   If you want to reopen it, you need to trigger triggerCharacters in your function, usually is ( and ,. 
+"   The triggerCharacters is defined by LS.
 if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
+  inoremap <silent><expr> <c-M-space> coc#refresh()
 else
-  inoremap <silent><expr> <c-@> coc#refresh()
+  inoremap <silent><expr> <c-M-@> coc#refresh()
 endif
 
 " Use `[c` and `]c` to navigate diagnostics

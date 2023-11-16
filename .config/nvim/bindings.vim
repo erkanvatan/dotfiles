@@ -28,6 +28,10 @@ vnoremap <Leader>yy "+y
 nnoremap <Leader>pp "+p
 vnoremap <Leader>pp "+p
 
+" Quickly insert an empty new line without entering insert mode
+nnoremap <Leader>o o<Esc>k
+nnoremap <Leader>O O<Esc>j
+
 " Change vim window focus
 map <C-h> <C-w>h
 map <C-l> <C-w>l
@@ -256,6 +260,9 @@ augroup END
 " neorg config
 nnoremap <silent> <localleader>nm :Neorg inject-metadata<CR>
 nnoremap <silent> <localleader>t :Neorg toc left <CR> :vertical resize 50<CR>
+nnoremap <silent> <localleader>a i
+"   insert anchor
+nnoremap <silent> <localleader>a i<C-v>{<C-v>}<Esc>h"+p
 "   autoindent file
 " nnoremap <silent> <localleader>i :normal! gg <CR> :%normal! i<Esc><C-o>
 nnoremap <silent> <localleader>i gg=G<C-o>
@@ -264,3 +271,36 @@ nnoremap <silent> <localleader>i gg=G<C-o>
 nnoremap <silent> <C-c> :NvimTreeToggle<CR>
 nnoremap <silent> <leader>pv :NvimTreeFindFile!<CR>
 
+" debugprint.nvim config
+lua << EOF
+vim.keymap.set("n", "<Leader>dpp", function()
+    return require('debugprint').debugprint()
+end, {
+    expr = true,
+})
+vim.keymap.set("n", "<Leader>dpP", function()
+    return require('debugprint').debugprint({ above = true })
+end, {
+    expr = true,
+})
+vim.keymap.set({"n", "v"}, "<Leader>dpv", function()
+    return require('debugprint').debugprint({ variable = true })
+end, {
+    expr = true,
+})
+vim.keymap.set({"n", "v"}, "<Leader>dpV", function()
+    return require('debugprint').debugprint({ above = true, variable = true })
+end, {
+    expr = true,
+})
+vim.keymap.set("n", "<Leader>dpo", function()
+    return require('debugprint').debugprint({ motion = true })
+end, {
+    expr = true,
+})
+vim.keymap.set("n", "<Leader>dpO", function()
+    return require('debugprint').debugprint({ above = true, motion = true })
+end, {
+    expr = true,
+})
+EOF

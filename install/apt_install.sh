@@ -130,6 +130,8 @@ apt-get -qq --yes install hwinfo
 apt-get -qq --yes install rar
 apt-get -qq --yes install clang-format
 apt-get -qq --yes install colordiff
+apt-get -qq --yes install cppcheck
+apt-get -qq --yes install debian-goodies
 
 
 # GUI APPS

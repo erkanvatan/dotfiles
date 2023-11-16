@@ -72,7 +72,8 @@ augroup ale_disable_by_filetype
     " autocmd FileType svelte let b:ale_linters = {'javascript': [], 'typescript': [], 'svelte': ['stylelint'], 'css': ['stylelint'], 'scss': ['stylelint']}
     "       Cannot disable eslint for svelte without disabling eslint for
     "       javascript and typescript
-    
+     autocmd FileType html.javascript.jinja let b:ale_linters = {'html': [], 'css': ['stylelint'], 'scss': ['stylelint'], 'javascript': ['eslint'], 'typescript': ['eslint']}
+
     " Disable ALE lsp for specific files
     "autocmd FileType python let b:ale_disable_lsp = 1
 augroup END
@@ -86,8 +87,7 @@ let g:ale_html_beautify_options = '--indent-size 2 --max-preserve-newlines 2 --w
 " let g:ale_c_cc_options = '-std=c11 -Wall -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused-result -Wwrite-strings'
 "   c and cpp shared options
 " let g:ale_c_build_dir_names = ['build', 'bin', 'Debug', 'Release']
-let g:ale_c_clangformat_options = "-style='{BasedOnStyle: WebKit, ColumnLimit: 120, BreakBeforeBraces: Linux, IndentWidth: 4, IndentCaseLabels: false, PointerAlignment: Right, SpaceBeforeAssignmentOperators: true, AllowShortBlocksOnASingleLine: Never, AllowShortFunctionsOnASingleLine: None}'"
-" let g:ale_c_clangformat_options = "-style='{BasedOnStyle: LLVM, ColumnLimit: 120, BreakBeforeBraces: Allman, IndentWidth: 4, IndentCaseLabels: false, PointerAlignment: Right, SpaceBeforeAssignmentOperators: true, AllowShortBlocksOnASingleLine: Never, AllowShortFunctionsOnASingleLine: None}'"
+let g:ale_c_clangformat_options = "-style='{BasedOnStyle: WebKit, ColumnLimit: 120, BreakBeforeBraces: Stroustrup, IndentWidth: 4, IndentCaseLabels: false, PointerAlignment: Left, SpaceBeforeAssignmentOperators: true, AllowShortBlocksOnASingleLine: Never, AllowShortFunctionsOnASingleLine: None, AlwaysBreakTemplateDeclarations: Yes}'"
 
 "   cpp options
 " let g:ale_cpp_cc_options = '-std=c++11 -Wall'
@@ -101,3 +101,4 @@ let g:ale_javascript_prettier_use_local_config = 1
 
 let g:ale_scss_stylelint_use_global = 1
 
+let g:ale_html_tidy_options = "-config /home/arensonz/projects/web/dotfiles/jinja/.tidyrc"

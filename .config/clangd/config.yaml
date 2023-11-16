@@ -1,0 +1,6 @@
+CompileFlags:
+  Add:
+    - --include-directory=/usr/include
+    - --include-directory=/usr/include/x86_64-linux-gnu
+    - --include-directory=/usr/include/c++/11
+    - --include-directory=/usr/include/x86_64-linux-gnu/c++/11

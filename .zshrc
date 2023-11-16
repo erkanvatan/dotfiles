@@ -47,6 +47,21 @@ alias usb0_bind="BIND_INTERFACE=usb0 DNS_OVERRIDE_IP=1.1.1.1 DNS_EXCLUDE=127.0.0
 # config --bare git repository
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
 
+# docker
+alias dc='docker container'
+alias dcls='docker container ls'
+alias dcst='docker container start'
+alias dcsp='docker container stop'
+alias dcrm='docker container rm'
+alias dco='docker compose'
+alias dcou='docker compose up'
+alias dcod='docker compose down'
+alias dcol='docker compose logs'
+alias de='docker exec'
+alias deit='docker exec -it'
+alias di='docker image'
+alias dils='docker image ls'
+
 # du
 alias usage='du -sk * | sort -n | perl -ne '\''($s,$f)=split(m{\t});for (qw(K M G)) {if($s<1024) {printf("%.1f",$s);print "$_\t$f"; last};$s=$s/1024}'\'
 
@@ -100,6 +115,9 @@ alias rsync_restore="rsync -gloptrch --stats"
 
 # translate-shell
 alias td='trans :tr'
+
+# yt-dlp
+alias yt_dlp_audio='yt-dlp --ignore-errors --output "%(title)s.%(ext)s" --extract-audio --audio-format mp3'
 
 ################
 # SCRIPT ALIASES

@@ -28,6 +28,7 @@ window:
   # Set this to `None` to use the default theme variant.
   # gtk_theme_variant: dark
   opacity: 0.92
+  # opacity: 0.5
   # decorations: none
 
 scrolling:
@@ -52,7 +53,7 @@ font:
     family: MesloLGS NF
 
   # Point size
-  size: 10.0
+  size: 9.0
 
 # If `true`, bold text is drawn using the bright color variants.
 draw_bold_text_with_bright_colors: false

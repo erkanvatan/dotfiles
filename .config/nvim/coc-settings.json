@@ -2,7 +2,8 @@
   "languageserver": {
     "ccls": {
       "command": "ccls",
-      "filetypes": [ "c", "cc", "cpp", "cuda", "c++", "objc", "objcpp" ],
+      "filetypes": [],
+      "_comment_filetypes": [ "c", "cc", "cpp", "cuda", "c++", "objc", "objcpp" ],
       "rootPatterns": [
         ".ccls",
         "Debug/compile_commands.json",
@@ -26,6 +27,7 @@
       }
     },
   },
+
   "suggest.completionItemKindLabels": {
     "text": "t",
     "method": "m",
@@ -60,7 +62,7 @@
 
   "eslint.enable": true,
   "tsserver.enable": true,
-  "tsserver.npm": "/usr/bin/npm",
+  "tsserver.npm": "~/.nvm/versions/node/v18.13.0/bin/npm",
 
   "snippets.extends": {
       "python": ["django"]
@@ -77,5 +79,8 @@
 
   "rust-analyzer.diagnostics.enable": false,
 
-  "sql.database": "postgresql"
+  "sql.database": "postgresql",
+
+  "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/16.0.2/clangd_16.0.2/bin/clangd",
+  "clangd.compilationDatabaseCandidates": ["${workspaceFolder}/Debug"]
 }

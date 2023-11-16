@@ -9,6 +9,9 @@ source $HOME/.config/nvim/lightline.vim
 source $HOME/.config/nvim/bindings.vim
 source $HOME/.config/nvim/functions.vim
 source $HOME/.config/nvim/mydadbods.vim
+if !empty(glob("$HOME/.config/nvim/gitignore.vim"))
+    source $HOME/.config/nvim/gitignore.vim
+endif
 
 " Colors
 syntax on   " Enable syntax highlighting
@@ -19,6 +22,10 @@ set background=dark   " for the dark version of the theme
 colorscheme dracula
 let g:lightline.colorscheme = 'dracula'
  " call ChangeBackground()
+
+" Shrink the window for time-outable commands
+set timeoutlen=800
+" set ttimeoutlen=800
 
 " Recommended by CoC
 set hidden
@@ -37,6 +44,7 @@ set nofoldenable
 
 " Show line numbers
 set relativenumber
+set number
 set nocursorline
 set nocursorcolumn
 
@@ -49,7 +57,7 @@ let g:sql_type_default = 'pgsql'
 " let g:sql_type_default = 'mysql'
 
 " set node path
-"   fixes 'node not executable' error when running Neovim from GNOME Application Menu 
+"   fixes 'node not executable' error when running Neovim from GNOME Application Menu
 " let g:coc_node_path = '~/.nvm/versions/node/v18.13.0/bin/node'
 
 set ignorecase
@@ -94,18 +102,18 @@ augroup END
 
 
 " Set long line length marker
-highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+highlight OverLength ctermbg=LightBlue ctermfg=black guibg=LightBlue guifg=black 
 
 fun! LongLineHighlightOn(length)
-    if !exists("w:llh")
-        let w:llh = matchadd("OverLength", '\%' . (a:length + 1) . 'v.*')
-    endif
+    " if !exists("w:llh")
+    let w:llh = matchadd("OverLength", '\%' . (a:length + 1) . 'v.*')
+    " endif
 endfunction
 
 augroup set_longlinehighlight_by_extension
     autocmd!
     autocmd BufWinEnter *.css,*.scss call LongLineHighlightOn(90)
-    autocmd BufWinEnter * call LongLineHighlightOn(120) " every other file
+    autocmd Filetype * if &ft != 'floaterm' && &ft != 'fzf' | call LongLineHighlightOn(120) | endif " every other file
 augroup END
 
 augroup long_line_break_settings
@@ -122,8 +130,14 @@ augroup END
 " 'filetype' that has already been set
 augroup set_filetype_by_extension
     autocmd!
-    " autocmd BufRead,BufNewFile *.html set filetype=html.jinja.javascript
+    autocmd BufRead,BufNewFile *.html set filetype=html.javascript.jinja
     autocmd BufNewFile,BufRead *.launch set filetype=xml
+augroup END
+
+augroup partial_syntax_by_extension
+    autocmd!
+    autocmd BufRead,BufNewFile *.html call SyntaxRange#Include('{%', '%}', 'jinja')
+    autocmd BufRead,BufNewFile *.html call SyntaxRange#Include('{{', '}}', 'jinja')
 augroup END
 
 " Set which files will use highlight from start of file (fix for Javascript

@@ -55,9 +55,12 @@ Plug 'honza/vim-snippets' " compilation of useful snippets
 Plug 'SirVer/ultisnips' " snippet manager
 
 " Programming Tools
-"   Code Linter/Fixer 
+"   Code Linter/Fixer
 Plug 'dense-analysis/ale' " configurable async linter/fixer for programming languages
 Plug 'neoclide/coc.nvim', { 'branch': 'release' } " load extensions like VSCode and host language servers
+
+"   Debugging
+Plug 'andrewferrier/debugprint.nvim'
 
 "   Git Plugins
 Plug 'lewis6991/gitsigns.nvim'
@@ -90,6 +93,7 @@ Plug 'mattn/emmet-vim' " good for html tags
 Plug 'othree/html5.vim', {'for': ['html', 'html5', 'htm']} " html5 syntax highlight
 Plug 'pangloss/vim-javascript' " javascript syntax highlight
 Plug 'Glench/Vim-Jinja2-Syntax' " Jinja2 syntax highlight
+Plug 'inkarkat/vim-SyntaxRange'
 " Plug 'HerringtonDarkholme/yats.vim' " typescript syntax highlighting
 
 call plug#end()
@@ -125,7 +129,6 @@ command! BD call fzf#run(fzf#wrap({
 
 " vim-startify config
 let g:startify_session_dir = '~/.config/nvim/session'
-let g:startify_bookmarks = ['~/projects', '~/Documents/neorg/personal', '~/Documents/neorg/work', '~/subfolders/ytu_repo/bitirme_projesi' ,'~/subfolders/ytu_repo/_tum_donem_notlarim/4x2']
 let g:startify_session_persistence = 1
 
 " nerdcommenter config
@@ -279,11 +282,11 @@ require'nvim-treesitter.configs'.setup {
     },
 }
 EOF
-"   set which filetypes will use treesitter folding 
+"   set which filetypes will use treesitter folding
 "   WARNING: This causes slowdown in ALEFix
 " autocmd FileType python,c,cpp,xml,html,xhtml,lua,vim,norg setlocal foldmethod=expr
 
-"   if you want to activate folding for the current filetype call 
+"   if you want to activate folding for the current filetype call
 "       :setlocal foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
 
@@ -300,6 +303,9 @@ require('neorg').setup {
         ["core.defaults"] = {},
         ["core.keybinds"] = {
             config = {
+                hook = function(keybinds)
+                    keybinds.unmap("norg", "n", "<C-Space>")
+                end,
             },
         },
         ["core.concealer"] = {
@@ -324,12 +330,25 @@ require('neorg').setup {
     }
 }
 EOF
+"   set highlight groups
+augroup set_neorg_highlight
+    autocmd!
+    autocmd Bufread,BufNewFile *.norg highlight @neorg.markup.italic gui=italic
+    autocmd Bufread,BufNewFile *.norg highlight @neorg.lists.unordered.1.prefix gui=bold guifg=Yellow
+    autocmd Bufread,BufNewFile *.norg highlight @neorg.lists.unordered.2.prefix gui=bold guifg=Orange
+    autocmd Bufread,BufNewFile *.norg highlight @neorg.lists.unordered.3.prefix gui=bold guifg=SlateBlue
+    autocmd Bufread,BufNewFile *.norg highlight @neorg.lists.unordered.4.prefix gui=bold guifg=Yellow
+    autocmd Bufread,BufNewFile *.norg highlight @neorg.lists.unordered.5.prefix gui=bold guifg=Orange
+    autocmd Bufread,BufNewFile *.norg highlight @neorg.lists.unordered.6.prefix gui=bold guifg=SlateBlue
+augroup END
 
 " auto-pairs config
 augroup auto_pairs_group
     autocmd!
     autocmd FileType norg let g:AutoPairsMapSpace = 0
 augroup END
+"   fix coc-snippets inserting newline when selecting a snippet with enter
+let g:AutoPairsMapCR = 0
 
 " gitsigns.nvim config
 lua << EOF
@@ -367,10 +386,16 @@ require("nvim-tree").setup({
 
     sort_by = "name",
     view = {
-        mappings = {
-            list = {}
+        float = {
+            enable = true,
+            quit_on_focus_loss = true,
+            open_win_config = {
+                width = 30,  -- set a ratio such as 0.5 or 0.8
+                height = 100, -- now only numbers larger than 1 are allowed
+            },
         },
-        adaptive_size = false,
+        adaptive_size = true,
+        preserve_window_proportions = true,
     },
     renderer = {
         group_empty = false,
@@ -395,3 +420,9 @@ EOF
     " ['*'] = require('distant.settings').chip_default(),
 " }
 " EOF
+
+" debugprint.nvim config
+lua << EOF
+require('debugprint').setup()
+    create_keymaps = false
+EOF

@@ -37,6 +37,21 @@ alias bat='batcat --theme=TwoDark'
 # config --bare git repository
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
 
+# docker
+alias dc='docker container'
+alias dcls='docker container ls'
+alias dcst='docker container start'
+alias dcsp='docker container stop'
+alias dcrm='docker container rm'
+alias dco='docker compose'
+alias dcou='docker compose up'
+alias dcod='docker compose down'
+alias dcol='docker compose logs'
+alias de='docker exec'
+alias deit='docker exec -it'
+alias di='docker image'
+alias dils='docker image ls'
+
 # du
 alias usage='du -sk * | sort -n | perl -ne '\''($s,$f)=split(m{\t});for (qw(K M G)) {if($s<1024) {printf("%.1f",$s);print "$_\t$f"; last};$s=$s/1024}'\'
 

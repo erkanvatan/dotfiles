@@ -58,6 +58,9 @@ nnoremap <leader>cd :lcd %:h<CR>
 " See changes before saving file
 nnoremap <leader>df :w !diff % -<CR>
 
+nnoremap <silent> <M-t> :call ToggleBackground()<CR>
+
+" PLUGINS
 " COC (language server) bindings
 source $HOME/.config/nvim/coc_bindings.vim
 

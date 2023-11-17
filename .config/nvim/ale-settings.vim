@@ -64,7 +64,6 @@ let g:ale_fixers = {
 augroup ale_settings_by_filetype
     autocmd!
     autocmd FileType python let b:ale_warn_about_trailing_whitespace = 0
-    autocmd FileType json let g:indentLine_conceallevel = 0
 augroup END
 
 augroup ale_disable_by_filetype
@@ -72,27 +71,24 @@ augroup ale_disable_by_filetype
     " autocmd FileType svelte let b:ale_linters = {'javascript': [], 'typescript': [], 'svelte': ['stylelint'], 'css': ['stylelint'], 'scss': ['stylelint']}
     "       Cannot disable eslint for svelte without disabling eslint for
     "       javascript and typescript
-     autocmd FileType html.javascript.jinja let b:ale_linters = {'html': [], 'css': ['stylelint'], 'scss': ['stylelint'], 'javascript': ['eslint'], 'typescript': ['eslint']}
+     autocmd FileType html.javascript.jinja let b:ale_linters =
+        \ {'html': [], 'css': ['stylelint'], 'scss': ['stylelint'], 'javascript': ['eslint'], 'typescript': ['eslint']}
 
     " Disable ALE lsp for specific files
-    "autocmd FileType python let b:ale_disable_lsp = 1
+    autocmd FileType typescript,sql,json,c,cc,c++,cpp let g:ale_lint_on_text_changed = 0
+        \ | let g:ale_lint_on_insert_leave = 0
+        \ | let g:ale_lint_on_save = 0
+        \ | let g:ale_lint_on_enter = 0
 augroup END
 
 " Disable line too long warning for flake8
-let g:ale_python_flake8_options = '--max-line-length 120'
+let g:ale_python_flake8_options = '--max-line-length 120 --ignore=E501'
 let g:ale_python_autopep8_options = '--max-line-length 120'
 let g:ale_html_beautify_options = '--indent-size 2 --max-preserve-newlines 2 --wrap-line-length 120'
 
-"   c options
-" let g:ale_c_cc_options = '-std=c11 -Wall -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef -Wunused-result -Wwrite-strings'
-"   c and cpp shared options
-" let g:ale_c_build_dir_names = ['build', 'bin', 'Debug', 'Release']
 let g:ale_c_clangformat_options = "-style='{BasedOnStyle: WebKit, ColumnLimit: 120, BreakBeforeBraces: Stroustrup, IndentWidth: 4, IndentCaseLabels: false, PointerAlignment: Left, SpaceBeforeAssignmentOperators: true, AllowShortBlocksOnASingleLine: Never, AllowShortFunctionsOnASingleLine: None, AlwaysBreakTemplateDeclarations: Yes}'"
 
-"   cpp options
-" let g:ale_cpp_cc_options = '-std=c++11 -Wall'
-
-let g:ale_rust_analyzer_executable = "/home/arensonz/.config/coc/extensions/coc-rust-analyzer-data/rust-analyzer"
+let g:ale_rust_analyzer_executable = "$HOME/.config/coc/extensions/coc-rust-analyzer-data/rust-analyzer"
 let g:ale_rust_rustfmt_options = "--config wrap_comments=true,format_code_in_doc_comments=true,overflow_delimited_expr=true"
 
 let g:ale_javascript_prettier_use_local_config = 1
@@ -101,4 +97,4 @@ let g:ale_javascript_prettier_use_local_config = 1
 
 let g:ale_scss_stylelint_use_global = 1
 
-let g:ale_html_tidy_options = "-config /home/arensonz/projects/web/dotfiles/jinja/.tidyrc"
+let g:ale_html_tidy_options = "-config $HOME/projects/web/dotfiles/jinja/.tidyrc"

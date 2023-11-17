@@ -45,7 +45,8 @@ Plug 'ryanoasis/vim-devicons' " lightline icons
 
 "   Themes
 Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'lifepillar/vim-solarized8'
+Plug 'rakr/vim-one'
+Plug 'tinted-theming/base16-vim' " https://tinted-theming.github.io/base16-gallery/
 
 "   Note Taking
 Plug 'nvim-neorg/neorg', { 'do': ':Neorg sync-parsers'} | Plug 'nvim-lua/plenary.nvim' " Neovim org-like format
@@ -65,7 +66,7 @@ Plug 'andrewferrier/debugprint.nvim'
 "   Git Plugins
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'junegunn/gv.vim' " git commit browser
-" Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 
 "   Syntax Highlight
 Plug 'vim-python/python-syntax', { 'for': 'python' } " python syntax highlight
@@ -77,7 +78,7 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} " better parsing for
 " Programming Language Support
 "   SQL
 Plug 'lifepillar/pgsql.vim' " support for PostgreSQL
-" Plug 'tpope/vim-dadbod' " modern database interface for Vim
+Plug 'tpope/vim-dadbod' " modern database interface for Vim
 
 "   LaTeX
 " Plug 'lervag/vimtex' " filetype plugin for LaTeX files
@@ -97,12 +98,6 @@ Plug 'inkarkat/vim-SyntaxRange'
 " Plug 'HerringtonDarkholme/yats.vim' " typescript syntax highlighting
 
 call plug#end()
-
-function! SetupCommandAbbrs(from, to)
-  exec 'cnoreabbrev <expr> '.a:from
-        \ .' ((getcmdtype() ==# ":" && getcmdline() ==# "'.a:from.'")'
-        \ .'? ("'.a:to.'") : ("'.a:from.'"))'
-endfunction
 
 " fzf config
 let g:fzf_tags_command = 'ctags -R'
@@ -161,6 +156,7 @@ let g:coc_global_extensions = [
     \ 'coc-cmake',
     \ 'coc-css',
     \ 'coc-cssmodules',
+    \ 'coc-clangd',
     \ 'coc-docker',
     \ 'coc-emmet',
     \ 'coc-eslint',
@@ -175,6 +171,7 @@ let g:coc_global_extensions = [
     \ 'coc-vimtex',
     \ 'coc-vimlsp',
     \ ]
+"   coc-vimtex
 "   coc-clangd
 "       Create a file called ".clang-format" at the root of your C project
 "       with the following content:
@@ -190,7 +187,7 @@ endfunction
 
 augroup enable_coc_diagnostic
     autocmd!
-    autocmd FileType typescript,sql,python,json,c,cc,cpp,c++,cuda,objcpp call EnableCocDiagnosticBuffer()
+    autocmd FileType typescript,sql,json,c,cc,cpp,c++,python call EnableCocDiagnosticBuffer()
 augroup end
 
 " python syntax

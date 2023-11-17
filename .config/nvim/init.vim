@@ -1,9 +1,31 @@
-set shell=$SHELL
-set encoding=UTF-8
-set t_Co=256                         " Enable 256 colors
-set termguicolors                    " Enable GUI colors for the terminal to get truecolor
+" Set Vim options
+set termguicolors " Enable GUI colors for the terminal to get truecolor
+" set t_Co=256 " Enable 256 colors
+" set t_8f=^[[38;2;%lu;%lu;%lum " set foreground color
+" set t_8b=^[[48;2;%lu;%lu;%lum " set background color
+set shell=$SHELL " Set shell to use for ! commands
+set encoding=UTF-8 " Set character encoding
+set timeoutlen=800 " Shrink the window for time-outable commands
+set showtabline=2 " Always show tab line
+set nofoldenable " Start with all folds open
+set mouse=nvchr " Enable mouse for all modes except insert mode
+set scrolloff=4 " Set number of screen lines to always keep above and below the cursor
+set undofile " Enable undo history
+set undodir=~/.config/nvim/undodir " Select the directory to keep undofiles
+set splitright " Open vertical splits to right
+set splitbelow " Open horizontal splits to below
+set conceallevel=0 " Do not conceal text (e.g. Neorg symbols)
+set ignorecase " By default ignore case when searching
+set smartcase " If intentionally uppercase letters are used in search then override ignorecase
 
-" Importing other configs
+" Define global Vim variables
+let g:python3_host_prog = '/usr/bin/python3'
+let g:sql_type_default = 'pgsql'
+" Fix 'node not executable' error when running Neovim from GNOME Application Menu
+" let g:coc_node_path = '~/.nvm/versions/node/v18.13.0/bin/node'
+let g:omni_sql_no_default_maps = 1 " Disable sql-complete
+
+" Import other config files
 source $HOME/.config/nvim/plugins.vim
 source $HOME/.config/nvim/lightline.vim
 source $HOME/.config/nvim/bindings.vim
@@ -14,65 +36,34 @@ if !empty(glob("$HOME/.config/nvim/gitignore.vim"))
 endif
 
 " Colors
-syntax on   " Enable syntax highlighting
-set t_8f=^[[38;2;%lu;%lu;%lum        " set foreground color
-set t_8b=^[[48;2;%lu;%lu;%lum        " set background color
+syntax on " Enable syntax highlighting
 
-set background=dark   " for the dark version of the theme
+"   Set initial theme colors
+set background=dark
 colorscheme dracula
 let g:lightline.colorscheme = 'dracula'
- " call ChangeBackground()
 
-" Shrink the window for time-outable commands
-set timeoutlen=800
-" set ttimeoutlen=800
+"   Set long line length marker colors
+augroup set_longlinehighlight_by_extension
+    autocmd!
+    autocmd BufWinEnter *.css,*.scss call LongLineHighlightOn(90)
+    autocmd BufWinEnter * if &ft != 'floaterm' && &ft != 'fzf' | call LongLineHighlightOn(120) | endif " every other file
+augroup END
 
-" Recommended by CoC
+" Configs recommended by CoC
 set hidden
 set updatetime=300
-set nobackup    " Disables backup files
-set nowritebackup   " Disables backup files
+set nobackup " Disables backup files
+set nowritebackup " Disables backup files
 set cmdheight=1 " height of command-line at the bottom
 set shortmess+=c
 set signcolumn=yes "always show sign column, otherwise it will shift text
 
-set showtabline=2
-
-" set manual folding for functions, conditions etc.
-" set foldmethod=manual
-set nofoldenable
-
-" Show line numbers
+" Line numbers
 set relativenumber
 set number
 set nocursorline
 set nocursorcolumn
-
- "set python3 path
-let g:python3_host_prog='/usr/bin/python3'
-
-
-" set default sql syntax
-let g:sql_type_default = 'pgsql'
-" let g:sql_type_default = 'mysql'
-
-" set node path
-"   fixes 'node not executable' error when running Neovim from GNOME Application Menu
-" let g:coc_node_path = '~/.nvm/versions/node/v18.13.0/bin/node'
-
-set ignorecase
-set smartcase
-set mouse=nvchr
-set scrolloff=4 " number of screen lines to always keep above and below the cursor
-
-set undofile
-set undodir=~/.config/nvim/undodir
-
-set inccommand=nosplit
-set splitright
-set splitbelow
-
-set conceallevel=0
 
 " Whitespace configs
 set tabstop=4
@@ -81,44 +72,18 @@ set shiftwidth=4
 set expandtab
 set smarttab
 set smartindent
-
-" Disable sql-complete
-let g:omni_sql_no_default_maps = 1
-
-" Set language-specific indentation
+"   Set language-specific indentation
 augroup lang_indentation_by_filetype
     autocmd!
-    autocmd Filetype css setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-    autocmd Filetype scss setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-    autocmd Filetype javascript setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-    autocmd Filetype typescript setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-    autocmd Filetype html setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd Filetype css,scss,javascript,typescript,html,json,xml,norg,cmake
+        \ setlocal tabstop=2 shiftwidth=2 softtabstop=2
     autocmd BufRead,BufNewFile *.html setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-    autocmd Filetype json setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-    autocmd Filetype xml setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-    autocmd Filetype norg setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-    autocmd Filetype cmake setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 augroup END
 
-
-" Set long line length marker
-highlight OverLength ctermbg=LightBlue ctermfg=black guibg=LightBlue guifg=black 
-
-fun! LongLineHighlightOn(length)
-    " if !exists("w:llh")
-    let w:llh = matchadd("OverLength", '\%' . (a:length + 1) . 'v.*')
-    " endif
-endfunction
-
-augroup set_longlinehighlight_by_extension
-    autocmd!
-    autocmd BufWinEnter *.css,*.scss call LongLineHighlightOn(90)
-    autocmd Filetype * if &ft != 'floaterm' && &ft != 'fzf' | call LongLineHighlightOn(120) | endif " every other file
-augroup END
-
+" Line breaks
 augroup long_line_break_settings
     autocmd!
-    autocmd FileType * setlocal tw=120
+    autocmd FileType * setlocal textwidth=120
 augroup END
 
 augroup auto_long_line_break_by_filetype
@@ -136,8 +101,8 @@ augroup END
 
 augroup partial_syntax_by_extension
     autocmd!
-    autocmd BufRead,BufNewFile *.html call SyntaxRange#Include('{%', '%}', 'jinja')
-    autocmd BufRead,BufNewFile *.html call SyntaxRange#Include('{{', '}}', 'jinja')
+    autocmd BufRead,BufNewFile *.html call SyntaxRange#Include('{%', '%}', 'jinja') |
+        \ call SyntaxRange#Include('{{', '}}', 'jinja')
 augroup END
 
 " Set which files will use highlight from start of file (fix for Javascript

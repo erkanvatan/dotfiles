@@ -1,11 +1,18 @@
 " https://gist.github.com/fgarcia/9704429#file-long_lines-vim
 " https://stackoverflow.com/q/395114
-function! LongLineHighlightOn(length)
+function! LongLineHighlightOn()
     if exists("w:llh")
         call matchdelete(w:llh)
     endif
+
     highlight OverLength ctermbg=LightBlue ctermfg=black guibg=LightBlue guifg=black
-    let w:llh = matchadd("OverLength", '\%' . (a:length + 1) . 'v')
+    if &ft ==? 'css' || &ft ==? 'scss'
+        let l:length = 90
+        let w:llh = matchadd("OverLength", '\%' . (l:length + 1) . 'v')
+    elseif &ft != 'floaterm' && &ft != 'fzf'
+        let l:length = 120
+        let w:llh = matchadd("OverLength", '\%' . (l:length + 1) . 'v')
+    endif
 endfunction
 
 function! ToggleBackground()
@@ -29,17 +36,11 @@ function! ToggleBackground()
         let g:lightline.colorscheme = 'dracula'
     endif
 
-    if &ft ==? 'css' || &ft ==? 'scss'
-        call LongLineHighlightOn(90)
-    elseif &ft != 'floaterm' && &ft != 'fzf'
-        call LongLineHighlightOn(120)
-    endif
-
     try
+        call LongLineHighlightOn()
         call lightline#init()
         call lightline#colorscheme()
         call lightline#update()
     catch
     endtry
-
 endfunction

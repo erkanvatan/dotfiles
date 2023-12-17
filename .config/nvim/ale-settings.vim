@@ -86,7 +86,8 @@ let g:ale_python_flake8_options = '--max-line-length 120 --ignore=E501'
 let g:ale_python_autopep8_options = '--max-line-length 120'
 let g:ale_html_beautify_options = '--indent-size 2 --max-preserve-newlines 2 --wrap-line-length 120'
 
-let g:ale_c_clangformat_options = "-style='{BasedOnStyle: WebKit, ColumnLimit: 120, BreakBeforeBraces: Stroustrup, IndentWidth: 4, IndentCaseLabels: false, PointerAlignment: Left, SpaceBeforeAssignmentOperators: true, AllowShortBlocksOnASingleLine: Never, AllowShortFunctionsOnASingleLine: None, AlwaysBreakTemplateDeclarations: Yes}'"
+" let g:ale_c_clangformat_options = "-style='{BasedOnStyle: WebKit, ColumnLimit: 120, BreakBeforeBraces: Stroustrup, IndentWidth: 4, IndentCaseLabels: false, PointerAlignment: Left, SpaceBeforeAssignmentOperators: true, AllowShortBlocksOnASingleLine: Never, AllowShortFunctionsOnASingleLine: None, AlwaysBreakTemplateDeclarations: Yes}'"
+let g:ale_c_clangformat_options = "-style='{BasedOnStyle: WebKit, ColumnLimit: 120, BreakBeforeBraces: Stroustrup, IndentWidth: 4, IndentCaseLabels: false, PointerAlignment: Left, SpaceBeforeAssignmentOperators: true, AllowShortBlocksOnASingleLine: Never, AllowShortFunctionsOnASingleLine: InlineOnly, AlwaysBreakTemplateDeclarations: Yes}'"
 
 let g:ale_rust_analyzer_executable = "$HOME/.config/coc/extensions/coc-rust-analyzer-data/rust-analyzer"
 let g:ale_rust_rustfmt_options = "--config wrap_comments=true,format_code_in_doc_comments=true,overflow_delimited_expr=true"

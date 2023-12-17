@@ -58,7 +58,10 @@ nnoremap <leader>cd :lcd %:h<CR>
 " See changes before saving file
 nnoremap <leader>df :w !diff % -<CR>
 
+" Toggle background theme between light and dark
 nnoremap <silent> <M-t> :call ToggleBackground()<CR>
+" Enable long line highlight
+nnoremap <silent> <leader>llh :call LongLineHighlightOn()<CR>
 
 " PLUGINS
 " COC (language server) bindings
@@ -306,4 +309,15 @@ vim.keymap.set("n", "<Leader>dpO", function()
 end, {
     expr = true,
 })
+EOF
+
+" refactoring.nvim config
+lua << EOF
+-- prompt for a refactor to apply when the remap is triggered
+vim.keymap.set(
+    {"n", "x"},
+    "<leader>rr",
+    function() require('refactoring').select_refactor() end
+)
+-- Note that not all refactor support both normal and visual mode
 EOF

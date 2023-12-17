@@ -91,6 +91,7 @@ nmap <leader>qf  <Plug>(coc-fix-current)
 
 " Remap keys for applying refactor code actions
 nmap <silent> <leader>re <Plug>(coc-codeaction-refactor)
+nmap <silent> <leader>ri :CocCommand workspace.inspectEdit<CR>
 xmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
 nmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
 
@@ -134,3 +135,6 @@ function! SetupCommandAbbrs(from, to)
 endfunction
 "   Use C to open coc config
 call SetupCommandAbbrs('C', 'CocConfig')
+
+" coc-list
+"   <C-o> to enter normal mode

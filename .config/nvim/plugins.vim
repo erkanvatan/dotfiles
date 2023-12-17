@@ -75,6 +75,10 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} " better parsing for
 " Plug 'rust-lang/rust.vim' " rust syntax highlight
 " Plug 'acarapetis/vim-sh-heredoc-highlighting' " syntax highlight for codes inside heredocs
 
+" Refactoring
+Plug 'ThePrimeagen/refactoring.nvim'
+Plug 'Badhi/nvim-treesitter-cpp-tools'
+
 " Programming Language Support
 "   SQL
 Plug 'lifepillar/pgsql.vim' " support for PostgreSQL
@@ -163,6 +167,7 @@ let g:coc_global_extensions = [
     \ 'coc-git',
     \ 'coc-html',
     \ 'coc-json',
+    \ 'coc-lists',
     \ 'coc-pyright',
     \ 'coc-rust-analyzer',
     \ 'coc-snippets',
@@ -422,4 +427,47 @@ EOF
 lua << EOF
 require('debugprint').setup()
     create_keymaps = false
+EOF
+
+" refactoring.nvim config
+"   Usage: `:Refactor e<TAB>`
+"   Keybind: `<leader>rr`
+lua << EOF
+require('refactoring').setup({
+    -- prompt for return type
+    prompt_func_return_type = {
+        cpp = true,
+        c = true,
+    },
+    -- prompt for function parameters
+    prompt_func_param_type = {
+        cpp = true,
+        c = true,
+    },
+})
+EOF
+
+" nvim-treesitter-cpp-tools config
+lua << EOF
+require 'nt-cpp-tools'.setup({
+    preview = {
+        quit = 'q', -- optional keymapping for quit preview
+        accept = '<tab>' -- optional keymapping for accept preview
+    },
+    header_extension = 'h', -- optional
+    source_extension = 'cpp', -- optional
+    custom_define_class_function_commands = { -- optional
+        TSCppImplWrite = {
+            output_handle = require'nt-cpp-tools.output_handlers'.get_add_to_cpp()
+        }
+        --[[
+        <your impl function custom command name> = {
+            output_handle = function (str, context) 
+                -- string contains the class implementation
+                -- do whatever you want to do with it
+            end
+        }
+        ]]
+    }
+})
 EOF

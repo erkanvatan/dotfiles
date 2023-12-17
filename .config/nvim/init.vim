@@ -35,6 +35,7 @@ if !empty(glob("$HOME/.config/nvim/gitignore.vim"))
     source $HOME/.config/nvim/gitignore.vim
 endif
 
+
 " Colors
 syntax on " Enable syntax highlighting
 
@@ -44,10 +45,9 @@ colorscheme dracula
 let g:lightline.colorscheme = 'dracula'
 
 "   Set long line length marker colors
-augroup set_longlinehighlight_by_extension
+augroup set_longlinehighlight
     autocmd!
-    autocmd BufWinEnter *.css,*.scss call LongLineHighlightOn(90)
-    autocmd BufWinEnter * if &ft != 'floaterm' && &ft != 'fzf' | call LongLineHighlightOn(120) | endif " every other file
+    autocmd FileType * call LongLineHighlightOn()
 augroup END
 
 " Configs recommended by CoC

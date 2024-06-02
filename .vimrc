@@ -12,7 +12,7 @@
 " # _EDITOR_CONFIGS_
 " ------------------
 
-if !empty(glob("$HOME/.vimrc.gitignore"))
+if !has('nvim') && !empty(glob("$HOME/.vimrc.gitignore"))
     source $HOME/.vimrc.gitignore
 endif
 
@@ -62,6 +62,8 @@ augroup END
 
 " Colors
 set termguicolors
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 set background=dark
 
 " Line numbers
@@ -108,32 +110,42 @@ set signcolumn=yes " Always show sign column, otherwise it will shift text
 " 2. Download plugins with :PlugInstall
 " 3. Downloaded plugins are located in ~/.vim/plugged
 
-call plug#begin('~/.vim/plugged')
+if !has('nvim')
+    " If plugin manager vim-plug isn't installed, install it automatically
+    if empty(glob('~/.vim/autoload/plug.vim'))
+        echo "Downloading junegunn/vim-plug to manage plugins..."
+        silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+            \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    endif
 
-Plug '907th/vim-auto-save'
-Plug 'mhinz/vim-startify' " change default vim starting screen
-Plug 'tpope/vim-surround' " change surroundings, :h surround
-Plug 'preservim/nerdcommenter' " comment/uncomment lines
-Plug 'junegunn/rainbow_parentheses.vim' " colorize matching parantheses
-Plug 'jiangmiao/auto-pairs' " automatically add matching pairs for quotes, brackets, etc.
-Plug 'voldikss/vim-floaterm' " floating terminal
-Plug 'alvan/vim-closetag'  " auto close HTML tags
-Plug 'michaeljsmith/vim-indent-object' " adds an object to select everything at an indent level
-Plug 'zef/vim-cycle' " ability to cycle through some group of words, easy edit
-Plug 'lambdalisue/suda.vim' " suport for sudo in neovim
-Plug 'itchyny/lightline.vim' " configurable statusline/tabline
-Plug 'ryanoasis/vim-devicons' " lightline icons
-Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'vim-python/python-syntax', { 'for': 'python' } " python syntax highlight
-Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] } " markdown syntax highlight
-Plug 'tpope/vim-fugitive'
-" Plug 'cdelledonne/vim-cmake'
+    call plug#begin('~/.vim/plugged')
 
-" Extra Vim plugins
-Plug 'tpope/vim-vinegar'
-Plug 'tpope/vim-sensible'
+    Plug '907th/vim-auto-save'
+    Plug 'mhinz/vim-startify' " change default vim starting screen
+    Plug 'tpope/vim-surround' " change surroundings, :h surround
+    Plug 'preservim/nerdcommenter' " comment/uncomment lines
+    Plug 'junegunn/rainbow_parentheses.vim' " colorize matching parantheses
+    Plug 'jiangmiao/auto-pairs' " automatically add matching pairs for quotes, brackets, etc.
+    Plug 'voldikss/vim-floaterm' " floating terminal
+    Plug 'alvan/vim-closetag'  " auto close HTML tags
+    Plug 'michaeljsmith/vim-indent-object' " adds an object to select everything at an indent level
+    Plug 'zef/vim-cycle' " ability to cycle through some group of words, easy edit
+    Plug 'lambdalisue/suda.vim' " suport for sudo in neovim
+    Plug 'itchyny/lightline.vim' " configurable statusline/tabline
+    Plug 'ryanoasis/vim-devicons' " lightline icons
+    Plug 'dracula/vim', { 'as': 'dracula' }
+    Plug 'vim-python/python-syntax', { 'for': 'python' } " python syntax highlight
+    Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] } " markdown syntax highlight
+    Plug 'tpope/vim-fugitive'
+    " Plug 'cdelledonne/vim-cmake'
 
-call plug#end()
+    " Extra Vim plugins
+    Plug 'tpope/vim-vinegar'
+    Plug 'tpope/vim-sensible'
+
+    call plug#end()
+endif
 
 " -------------------
 " # _PLUGIN_SETTINGS_

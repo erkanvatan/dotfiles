@@ -11,6 +11,14 @@ augroup coc_nvim_group
     autocmd CompleteDone * if pumvisible() == 0 | pclose | endif
 augroup END
 
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
 function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'

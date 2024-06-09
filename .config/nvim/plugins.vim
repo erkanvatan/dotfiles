@@ -128,21 +128,6 @@ command! BD call fzf#run(fzf#wrap({
 
 " vim-startify config
 let g:startify_session_dir = '~/.config/nvim/session'
-let g:startify_session_persistence = 1
-
-" nerdcommenter config
-"   Add spaces after comment delimiters by default
-let g:NERDCreateDefaultMappings = 0
-let g:NERDSpaceDelims = 1
-augroup nerdcommenter_group
-    autocmd!
-    autocmd FileType python let g:NERDDefaultAlign = 'left'
-augroup END
-
-" vim-markdown config
-let g:vim_markdown_folding_disabled = 1
-let g:vim_markdown_conceal = 0
-let g:vim_markdown_conceal_code_blocks = 0
 
 " vim-livedown config
 let g:livedown_port = 8001
@@ -195,67 +180,8 @@ augroup enable_coc_diagnostic
     autocmd FileType typescript,sql,json,c,cc,cpp,c++,python call EnableCocDiagnosticBuffer()
 augroup end
 
-" python syntax
-let g:python_highlight_all = 1
-
-" rainbow_parentheses config
-let g:rainbow#max_level = 16
-let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
-augroup rainbow_parantheses_group
-    autocmd!
-    " Auto activate RainbowParentheses
-    autocmd FileType * RainbowParentheses
-augroup END
-
-" vim-floaterm config
-"   Go back to the NORMAL mode using <C-\><C-N>
-let g:floaterm_gitcommit='floaterm'
-let g:floaterm_width=0.9
-let g:floaterm_height=0.9
-
-" vim-auto-save config
-let g:auto_save_silent = 1  " do not display the auto-save notification
-let g:auto_save = 0 " auto-save off by default
-let g:auto_save_events = ["InsertLeave", "TextChanged"] " set events to trigger auto-save
-
-" vim-closetag config
-"   These are the file types where this plugin is enabled.
-let g:closetag_filetypes = 'html,xhtml,phtml,xml'
-let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.xml'
-let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
-
 " emmet-vim config
 let g:user_emmet_mode='nv' " only enable emmet in normal mode
-
-" vim-cycle config
-augroup vim_cycle_group
-    autocmd!
-    autocmd FileType python call AddCycleGroup('python', ['True', 'False'])
-augroup END
-
-" vimtex config
-" let g:tex_flavor='latex'
-" let g:vimtex_view_method = 'zathura'
-" let g:vimtex_quickfix_mode=0
-" set conceallevel=1
-" let g:tex_conceal='abdmg'
-" augroup tex_mappings
-    " autocmd!
-    " autocmd FileType tex,latex,context,plaintex setlocal spell  spelllang=tr,en
-" augroup END
-" let g:vimtex_compiler_latexmk = {
-            " \ 'build_dir' : 'build',
-            " \ 'options' : [
-            " \   '-verbose',
-            " \   '-file-line-error',
-            " \   '-synctex=1',
-            " \   '-interaction=nonstopmode',
-            " \   '-bibtex',
-            " \ ],
-            " \}
-            " " add the following line to options only when you want to use the `minted` syntax
-            " " highlighting package
-            " " \   '-shell-escape',
 
 " indent-blankline config
 let g:indent_blankline_show_first_indent_level = v:false
@@ -291,12 +217,6 @@ EOF
 "   if you want to activate folding for the current filetype call
 "       :setlocal foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
-
-" vim-cmake config
-let g:cmake_link_compile_commands = 1
-let g:cmake_root_markers = ['.git', '.svn']
-" let g:cmake_build_options = []
-let g:cmake_generate_options = ["-D CMAKE_C_COMPILER=/usr/bin/gcc", "-D CMAKE_CXX_COMPILER=/usr/bin/g++"]
 
 " neorg config
 lua << EOF
@@ -343,14 +263,6 @@ augroup set_neorg_highlight
     autocmd Bufread,BufNewFile *.norg highlight @neorg.lists.unordered.5.prefix gui=bold guifg=Orange
     autocmd Bufread,BufNewFile *.norg highlight @neorg.lists.unordered.6.prefix gui=bold guifg=SlateBlue
 augroup END
-
-" auto-pairs config
-augroup auto_pairs_group
-    autocmd!
-    autocmd FileType norg let g:AutoPairsMapSpace = 0
-augroup END
-"   fix coc-snippets inserting newline when selecting a snippet with enter
-let g:AutoPairsMapCR = 0
 
 " gitsigns.nvim config
 lua << EOF

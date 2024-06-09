@@ -12,13 +12,21 @@
 " # _EDITOR_CONFIGS_
 " ------------------
 
-if !has('nvim') && !empty(glob("$HOME/.vimrc.gitignore"))
-    source $HOME/.vimrc.gitignore
+" ## Set .config dir to use based on editor (vim vs nvim)
+if !has('nvim')
+    let s:config_dir = $HOME . "/.config/vim"
+else
+    let s:config_dir = $HOME . "/.config/nvim"
 endif
 
-let mapleader="\<Space>"
+" ## Import settings not tracked by Git
+if !has('nvim') && !empty(glob("$HOME/.vimrc.gitignore"))
+    source $HOME/.vimrc.gitignore
+elseif has('nvim') && !empty(glob("$HOME/.config/nvim/gitignore.vim"))
+    source $HOME/.config/nvim/gitignore.vim
+endif
 
-" Set Vim options
+" ## General options
 set novisualbell " Disable screen flashes
 set encoding=UTF-8 " Set character encoding
 set timeoutlen=800 " Shrink the window for time-outable commands
@@ -26,7 +34,7 @@ set nofoldenable " Start with all folds open
 set mouse=nvchr " Enable mouse for all modes except insert mode
 set scrolloff=4 " Set number of screen lines to always keep above and below the cursor
 set undofile " Enable undo history
-set undodir=~/.config/vim/undodir " Select the directory to keep undofiles
+let &undodir = s:config_dir . "/undodir" " Select the directory to keep undofiles
 set splitright " Open vertical splits to right
 set splitbelow " Open horizontal splits to below
 set conceallevel=0 " Do not conceal text (e.g. Neorg symbols)
@@ -34,6 +42,7 @@ set ignorecase " By default ignore case when searching
 set smartcase " If intentionally uppercase letters are used in search then override ignorecase
 set hlsearch " Keep search highlight
 set list " Show whitespace characters
+set showcmd " show keypresses in status line
 
 augroup editor_configs_vim_options
     autocmd!
@@ -60,26 +69,26 @@ augroup editor_configs_vim_options
     autocmd BufRead,BufNewFile *.html syntax sync fromstart
 augroup END
 
-" Colors
-set termguicolors
-let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+" ## Colors
+set termguicolors " enable true-color support
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum" " set foreground color
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum" " set background color
 set background=dark
 
-" Line numbers
+" ## Line numbers
 set relativenumber
 set number
 set nocursorline
 set nocursorcolumn
 
-" Whitespace configs
+" ## Whitespace settings
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set expandtab
 set smartindent
 
-"   Set language-specific indendation
+" ### Set language-specific indendation
 augroup lang_indentation_by_filetype
     autocmd!
     autocmd Filetype css,scss,javascript,typescript,html,json,xml,norg,cmake
@@ -89,10 +98,10 @@ augroup lang_indentation_by_filetype
     autocmd BufRead,BufNewFile *.html setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 augroup END
 
-" Visual settings
+" ## Visual settings
 set showtabline=2 " Always show tab line
 
-" Configs recommended by CoC
+" ## Configs recommended by CoC
 set hidden
 set updatetime=300
 set nobackup " Disable backup files
@@ -145,6 +154,9 @@ if !has('nvim')
     Plug 'tpope/vim-sensible'
 
     call plug#end()
+else
+    " Source Neovim plugins
+    source $HOME/.config/nvim/plugins.vim
 endif
 
 " -------------------
@@ -177,10 +189,12 @@ endif
 " ## _vim_auto_save_
 " ------------------
 
+" ### Settings
 let g:auto_save_silent = 1  " do not display the auto-save notification
 let g:auto_save = 0 " auto-save off by default
 let g:auto_save_events = ["InsertLeave", "TextChanged"] " set events to trigger auto-save
-" ---------------
+
+" ### Keybindings
 noremap <M-s> :AutoSaveToggle<CR>
 inoremap <M-s> <ESC>:AutoSaveToggle<CR>a
 
@@ -188,15 +202,15 @@ inoremap <M-s> <ESC>:AutoSaveToggle<CR>a
 " ## _vim_startify_
 " -----------------
 
-let g:startify_bookmarks = ['~/Documents', '~/Music']
-let g:startify_session_dir = '~/.config/nvim/session'
+" ### Settings
+let g:startify_session_dir = s:config_dir . '/session'
 let g:startify_session_persistence = 1
 
 " -----------------
 " ## _vim_surround_
 " -----------------
 
-" --------------
+" ### Keybindings
 " Works with parentheses(), brackets [], quotes (double or single), XML tags <q> </q>  and more
 " NOTE: Use vS) instead of vS( to surround without space
 " Example:
@@ -206,12 +220,11 @@ let g:startify_session_persistence = 1
 " cst<p>     : To change the surrounding tag to <p>
 " vS         : In visual mode, S surrounds the selected (vSt for tag)
 
-" _vim_indent_object_keybindings_
-
 " ------------------
 " ## _nerdcommenter_
 " ------------------
 
+" ### Settings
 " Add spaces after comment delimiters by default
 let g:NERDCreateDefaultMappings = 0
 let g:NERDSpaceDelims = 1
@@ -220,7 +233,7 @@ augroup nerdcommenter_group
     autocmd FileType python let g:NERDDefaultAlign = 'left'
 augroup END
 
-
+" ### Keybindings
 " [count]<leader>cc          : make lines commented
 " [count]<leader>c<space>    : toggle line's comment status (commented/uncommented)
 map <leader>cc <plug>NERDCommenterComment
@@ -232,6 +245,7 @@ map <leader>cm <plug>NERDCommenterMinimal
 " ## _rainbow_parantheses_vim_
 " ----------------------------
 
+" ### Settings
 let g:rainbow#max_level = 16
 let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
 augroup rainbow_parantheses_group
@@ -240,21 +254,22 @@ augroup rainbow_parantheses_group
     autocmd FileType * RainbowParentheses
 augroup END
 
-" -------------------------
-
+" ### Keybindings
 nnoremap <leader>tr :RainbowParentheses!!<CR>
 
 " ---------------
 " ## _auto_pairs_
 " ---------------
 
+" ### Settings
 augroup auto_pairs_group
     autocmd!
     autocmd FileType norg let g:AutoPairsMapSpace = 0
 augroup END
 " fix coc-snippets inserting newline when selecting a snippet with enter
 let g:AutoPairsMapCR = 0
-" ------------
+
+" ### Keybindings
 " <M-p> : Toggle auto-pairs
 " <M-e> : Insert () or {} or [] before something then hit <M-e> to fast wrap
 " <M-n> : Jump to next closed pair
@@ -265,12 +280,14 @@ let g:AutoPairsMapCR = 0
 " ## _vim_floaterm_
 " -----------------
 
+" ### Settings
 " Go back to the NORMAL mode using <C-\><C-N>
 let g:floaterm_gitcommit='floaterm'
 let g:floaterm_width=0.9
 let g:floaterm_height=0.9
 let g:floaterm_autoclose=2
-" --------------
+
+" ### Keybindings
 let g:floaterm_keymap_toggle = '<C-f>'
 let g:floaterm_keymap_next   = '<F9>'
 let g:floaterm_keymap_prev   = '<F8>'
@@ -280,11 +297,13 @@ let g:floaterm_keymap_new    = '<F10>'
 " ## _vim_closetag_
 " -----------------
 
+" ### Settings
 " These are the file types where this plugin is enabled.
 let g:closetag_filetypes = 'html,xhtml,phtml,xml'
 let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.xml'
 let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
-" --------------
+
+" ### Keybindings
 " Shortcut for closing tags, default is '>'
 let g:closetag_shortcut = '>'
 
@@ -292,7 +311,7 @@ let g:closetag_shortcut = '>'
 " ## _vim_indent_object_
 " ----------------------
 
-" -------------------
+" ### Keybindings
 " Defines two new text objects to select only current indentation level
 " <count>ai 	An Indentation level and line above.
 " <count>ii 	Inner Indentation level (no line above).
@@ -302,11 +321,13 @@ let g:closetag_shortcut = '>'
 " ## _vim_cycle_
 " --------------
 
+" ### Settings
 augroup vim_cycle_group
     autocmd!
     autocmd FileType python call AddCycleGroup('python', ['True', 'False'])
 augroup END
-" -----------
+
+" ### Keybindings
 " Move cursor on a word and hit <C-A> or <C-X> to toggle between pair of
 "   words or even increment-decrement a number
 
@@ -318,6 +339,7 @@ augroup END
 " ## _lightline_vim_
 " ------------------
 
+" ### Settings
 function! CocCurrentFunction()
     return get(b:, 'coc_current_function', '')
 endfunction
@@ -368,18 +390,21 @@ let g:lightline = {
 " ## _dracula_
 " ------------
 
+" ### Settings
 colorscheme dracula
 
 " ------------------
 " ## _python_syntax_
 " ------------------
 
+" ### Settings
 let g:python_highlight_all = 1
 
 " -----------------
 " ## _vim_markdown_
 " -----------------
 
+" ### Settings
 let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_conceal = 0
 let g:vim_markdown_conceal_code_blocks = 0
@@ -388,7 +413,7 @@ let g:vim_markdown_conceal_code_blocks = 0
 " ## _vim_fugitive_
 " -----------------
 
-" --------------
+" ### Keybindings
 "   Enter :Git and then do g? to checkout all hotkeys
 "   After :Git use cc to enter commit buffer
 "   to add the file under cursor to .gitignore use {anynumber}gI
@@ -402,10 +427,21 @@ nnoremap <leader>gf :diffget //2<CR>
 " ## _vim_cmake_
 " --------------
 
+" ### Settings
 let g:cmake_link_compile_commands = 1
 let g:cmake_root_markers = ['.git', '.svn']
 " let g:cmake_build_options = []
 let g:cmake_generate_options = ["-D CMAKE_C_COMPILER=/usr/bin/gcc", "-D CMAKE_CXX_COMPILER=/usr/bin/g++"]
+
+augroup vim_cmake_group
+    " autoclose vim-cmake window after successfull build
+    autocmd! User CMakeBuildSucceeded CMakeClose
+augroup END
+
+" ### Keybindings
+nnoremap <leader>cg :CMakeGenerate<CR>
+nnoremap <leader>cb :CMakeBuild<CR>
+nnoremap <leader>co :CMakeOpen<CR>
 
 " ----------------
 " ## _vim_vinegar_
@@ -505,13 +541,20 @@ augroup END
 " # _KEYBINDINGS_
 " ---------------
 
-" quit without saving
+" Set leader keys
+let mapleader="\<Space>"
+let maplocalleader = "\<CR>"
+
+" Source $MYVIMRC
+nnoremap <leader>ss :source $MYVIMRC<CR>
+
+" Quit without saving
 nnoremap qq :q<CR>
 
-" quit after saving
+" Quit after saving
 nnoremap qw :wq<CR>
 
-" save with Ctrl + S
+" Save with Ctrl + S
 noremap <C-s> :w<CR>
 inoremap <C-s> <ESC>:w<CR>a
 
@@ -559,7 +602,9 @@ vnoremap > >gv
 nnoremap <Leader>fb :buffers<CR>
 
 " Open netrw
-nnoremap <C-c> :Lexplore 30<CR>
+if !has('nvim')
+    nnoremap <C-c> :Lexplore 30<CR>
+endif
 
 " Move in quickfix list (copen)
 nnoremap <silent> [q :cprevious<CR>
@@ -567,3 +612,6 @@ nnoremap <silent> ]q :cnext<CR>
 
 " Clear highlighting of 'hlsearch' and call :diffupdate
 nnoremap <silent> <leader>h :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><leader>h
+
+" Toggle background theme between light and dark
+nnoremap <silent> <M-t> :call ToggleBackground()<CR>

@@ -1,1 +1,1 @@
-/home/arensonz/.vimrc
+../../.vimrc

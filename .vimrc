@@ -130,6 +130,8 @@ if !has('nvim')
 
     call plug#begin('~/.vim/plugged')
 
+    " ## Plugins shared with Neovim
+    Plug 'tpope/vim-sensible'
     Plug '907th/vim-auto-save'
     Plug 'mhinz/vim-startify' " change default vim starting screen
     Plug 'tpope/vim-surround' " change surroundings, :h surround
@@ -148,10 +150,10 @@ if !has('nvim')
     Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] } " markdown syntax highlight
     Plug 'tpope/vim-fugitive'
     " Plug 'cdelledonne/vim-cmake'
+    Plug 'ntpeters/vim-better-whitespace'
 
-    " Extra Vim plugins
+    " ## Vim only plugins
     Plug 'tpope/vim-vinegar'
-    Plug 'tpope/vim-sensible'
 
     call plug#end()
 else
@@ -183,6 +185,7 @@ endif
 " 18. _vim_cmake_
 " 19. _vim_vinegar_
 " 20. _vim_sensible_
+" 21. _vim_better_whitespace_
 
 
 " ------------------
@@ -450,6 +453,14 @@ nnoremap <leader>co :CMakeOpen<CR>
 " -----------------
 " ## _vim_sensible_
 " -----------------
+
+" -----------------------
+" _vim_better_whitespace_
+" -----------------------
+
+" ### Settings
+let g:better_whitespace_enabled=1
+highlight ExtraWhitespace ctermbg=LightRed guibg='#FFB86C'
 
 " -------------
 " # _FUNCTIONS_

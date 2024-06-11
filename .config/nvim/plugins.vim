@@ -24,8 +24,9 @@ if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.config/nvim/plugged')
-" ## Plugins shared with Vim
 
+" ## Plugins shared with Vim
+Plug 'tpope/vim-sensible'
 Plug '907th/vim-auto-save'
 Plug 'mhinz/vim-startify' " change default vim starting screen
 Plug 'tpope/vim-surround' " change surroundings, :h surround
@@ -44,9 +45,9 @@ Plug 'vim-python/python-syntax', { 'for': 'python' } " python syntax highlight
 Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] } " markdown syntax highlight
 Plug 'tpope/vim-fugitive'
 Plug 'cdelledonne/vim-cmake'
+Plug 'ntpeters/vim-better-whitespace'
 
 " ## Extra Vim plugins
-
 Plug 'shime/vim-livedown' " live preview of markdown
 "   run `npm install -g livedown` after installation
 
@@ -72,7 +73,7 @@ Plug 'Glench/Vim-Jinja2-Syntax' " Jinja2 syntax highlight
 Plug 'inkarkat/vim-SyntaxRange'
 " Plug 'HerringtonDarkholme/yats.vim' " typescript syntax highlighting
 
-" ## Neovim plugins
+" ## Neovim only plugins
 Plug 'norcalli/nvim-colorizer.lua' " colorize color names and RGB codes
 Plug 'lukas-reineke/indent-blankline.nvim' " add vertical indent guides
 Plug 'nvim-tree/nvim-web-devicons' " optional, for file icons

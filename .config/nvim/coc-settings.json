@@ -1,37 +1,33 @@
 {
-  "languageserver": {
-    "ccls": {
-      "command": "ccls",
-      "filetypes": [],
-      "_comment_filetypes": [ "c", "cc", "cpp", "cuda", "c++", "objc", "objcpp" ],
-      "rootPatterns": [
-        ".ccls",
-        "Debug/compile_commands.json",
-        ".git/",
-        ".hg/"
-      ],
-      "initializationOptions": {
-        "cache": {
-          "directory": "/tmp/ccls"
-        },
-        "highlight": {
-          "lsRanges": true
-        },
-        "client": {
-          "snippetSupport": true
-        },
-        "compilationDatabaseDirectory": "Debug",
-        "clang": {
-          "extraArgs": [ "-I/usr/include", "-I/usr/include/x86_64-linux-gnu", "-I/usr/include/c++/11", "-I/usr/include/x86_64-linux-gnu/c++/11"]
-        }
-      }
-    },
-  },
+  "coc.preferences.extensionUpdateCheck": "weekly",
 
   "suggest.completionItemKindLabels": {
     "text": "t",
     "method": "m",
-    "function": "f"
+    "function": "f",
+    "enum": "E",
+    "struct": "S",
+    "snippet": "S",
+    "class": "C",
+    "constructor": "Ct",
+    "interface": "I",
+    "module": "M",
+    "typeParameter": "T",
+    "field": "m_",
+    "property": "m_",
+    "enumMember": "m_E",
+    "variable": "v",
+    "constant": "k",
+    "unit": "U",
+    "color": "clr",
+    "value": "val",
+    "keyword": "key",
+    "file": "file",
+    "reference": "ref",
+    "folder": "fldr",
+    "event": "evnt",
+    "operator": "op",
+    "default": ""
   },
   "suggest.autoTrigger": "always",
   "suggest.minTriggerInputLength": 3,
@@ -42,6 +38,19 @@
   "diagnostic.checkCurrentLine": true,
   "diagnostic.messageTarget": "echo",
   "diagnostic.signPriority": 9999999,
+
+  "snippets.userSnippetsDirectory": "~/.config/nvim/UltiSnips",
+  "snippets.ultisnips.directories": [
+    "UltiSnips"
+  ],
+  "snippets.ultisnips.pythonPrompt": false,
+  "snippets.loadFromExtensions": true,
+
+  "inlayHint.enable": true,
+  "inlayHint.enableParameter": false,
+
+  "languageserver": {
+  },
 
   "python.linting.enabled": false,
   "python.analysis.typeCheckingMode": "off",
@@ -64,23 +73,19 @@
   "tsserver.enable": true,
   "tsserver.npm": "~/.nvm/versions/node/v18.13.0/bin/npm",
 
-  "snippets.extends": {
-      "python": ["django"]
-  },
-  "snippets.userSnippetsDirectory": "~/.config/nvim/UltiSnips",
-  "snippets.ultisnips.directories": [
-    "UltiSnips"
-  ],
-  "snippets.loadFromExtensions": true,
-
-  "coc.preferences.extensionUpdateCheck": "weekly",
-
   "cmake.lsp.enable": true,
 
   "rust-analyzer.diagnostics.enable": false,
 
   "sql.database": "postgresql",
 
-  "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/16.0.2/clangd_16.0.2/bin/clangd",
-  "clangd.compilationDatabaseCandidates": ["${workspaceFolder}/Debug"]
+  "clangd.arguments": ["--header-insertion=never"],
+  "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/18.1.3/clangd_18.1.3/bin/clangd",
+  "clangd.compilationDatabaseCandidates": [
+    "${workspaceFolder}/debug",
+    "${workspaceFolder}/Debug",
+    "${workspaceFolder}/build-aarch64",
+    "${workspaceFolder}/build",
+    "${workspaceFolder}/Build"
+  ]
 }

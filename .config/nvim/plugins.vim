@@ -46,6 +46,7 @@ Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] } " markdown syntax 
 Plug 'tpope/vim-fugitive'
 Plug 'cdelledonne/vim-cmake'
 Plug 'ntpeters/vim-better-whitespace'
+Plug 'igankevich/mesonic' " meson build system integration
 
 " ## Extra Vim plugins
 Plug 'shime/vim-livedown' " live preview of markdown
@@ -305,10 +306,11 @@ let g:coc_user_config = {}
 " CoC extensions to install automatically
 let g:coc_global_extensions = [
     \ 'coc-bootstrap-classname',
+    \ 'coc-clang-format-style-options',
+    \ 'coc-clangd',
     \ 'coc-cmake',
     \ 'coc-css',
     \ 'coc-cssmodules',
-    \ 'coc-clangd',
     \ 'coc-docker',
     \ 'coc-emmet',
     \ 'coc-eslint',
@@ -318,11 +320,13 @@ let g:coc_global_extensions = [
     \ 'coc-lists',
     \ 'coc-pyright',
     \ 'coc-rust-analyzer',
+    \ 'coc-sh',
     \ 'coc-snippets',
     \ 'coc-sql',
+    \ 'coc-toml',
     \ 'coc-tsserver',
-    \ 'coc-vimtex',
     \ 'coc-vimlsp',
+    \ 'coc-yaml',
     \ ]
 " coc-clangd
 "   Create a file called ".clang-format" at the root of your C project
@@ -388,15 +392,15 @@ inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " Use <c-M-space> to trigger completion.
-"   The suggestion box for function parameters is signatureHelp. 
-"   If you want to reopen it, you need to trigger triggerCharacters in your function, usually is ( and ,. 
+"   The suggestion box for function parameters is signatureHelp.
+"   If you want to reopen it, you need to trigger triggerCharacters in your function, usually is ( and ,.
 "   The triggerCharacters is defined by LS.
 inoremap <silent><expr> <c-M-space> coc#refresh()
 
 " Use `[c` and `]c` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-nmap <silent> [c <Plug>(coc-diagnostic-prev)
-nmap <silent> ]c <Plug>(coc-diagnostic-next)
+nmap <silent> [d <Plug>(coc-diagnostic-prev)
+nmap <silent> ]d <Plug>(coc-diagnostic-next)
 
 " Jump bindings, to go back to previous location use Ctrl+O
 nmap <silent> gd <Plug>(coc-definition)
@@ -593,8 +597,21 @@ nnoremap <leader>tc :ColorizerToggle<CR>
 " --------------------------
 
 " ### Settings
-let g:indent_blankline_show_first_indent_level = v:false
-let g:indent_blankline_show_current_context = v:false
+lua << EOF
+require'ibl'.setup {
+    scope = {
+        show_start = false,
+        show_end = false
+    }
+}
+
+local hooks = require 'ibl.hooks'
+
+hooks.register(
+    hooks.type.WHITESPACE,
+    hooks.builtin.hide_first_space_indent_level
+)
+EOF
 
 " ----------------------
 " ## _nvim_web_devicons_
@@ -605,8 +622,11 @@ let g:indent_blankline_show_current_context = v:false
 " ------------------
 
 " ### Settings
+highlight NvimTreeNormalFloat guibg='#282A36'
+
 lua << EOF
--- disable netrw at the very start of your init.lua (strongly advised)
+-- Disable netrw at the very start of your init.lua (strongly advised)
+-- Disabling netrw also disables scp remote editing capability. You can instead use hijack_netrw option
 vim.g.loaded = 1
 vim.g.loaded_netrwPlugin = 1
 
@@ -616,13 +636,21 @@ require("nvim-tree").setup({
 
     update_focused_file = {
         enable = true,
-        update_root = true,
+        update_root = false,
     },
 
+    actions = {
+        change_dir = {
+            enable = true,
+            global = true,
+        }
+    },
+
+    disable_netrw = false,
     hijack_netrw = true,
     hijack_directories = {
-        enable = true,
-        auto_open = true,
+        enable = false,
+        auto_open = false,
     },
 
     sort_by = "name",
@@ -631,18 +659,21 @@ require("nvim-tree").setup({
             enable = true,
             quit_on_focus_loss = true,
             open_win_config = {
-                width = 30,  -- set a ratio such as 0.5 or 0.8
-                height = 100, -- now only numbers larger than 1 are allowed
+                border = "rounded",
+                width = 40, -- in character cells
+                height = 55,
+                row = 1,
+                col = 0,
             },
         },
-        adaptive_size = true,
-        preserve_window_proportions = true,
+        adaptive_size = false,
+        preserve_window_proportions = false,
     },
     renderer = {
-        group_empty = false,
+        group_empty = true,
     },
     filters = {
-        dotfiles = true,
+        dotfiles = false,
     },
     git = {
         enable = false
@@ -773,13 +804,28 @@ EOF
 " ### Settings
 lua << EOF
 require'nvim-treesitter.configs'.setup {
-   -- Additional parsers:
-   -- :TSInstall bibtex c_sharp css http html java latex norg rust scss sql typescript javascript
-    ensure_installed = { "bash", "c", "cmake", "comment", "cpp", "dockerfile", "json", "lua", "make", "python", "regex", "vim", "vimdoc", "yaml" },
+    -- Additional parsers:
+    -- :TSInstall bibtex c_sharp css http html java latex norg rust scss sql typescript javascript
+    ensure_installed = {
+        "bash",
+        "c",
+        "cmake",
+        "comment",
+        "cpp",
+        "dockerfile",
+        "json",
+        "lua",
+        "make",
+        "python",
+        "regex",
+        "vim",
+        "vimdoc",
+        "yaml"
+    },
     -- Install parsers synchronously (only applied to `ensure_installed`)
     sync_install = false,
     -- Automatically install missing parsers when entering buffer
-    auto_install = true,
+    auto_install = false,
     ignore_install = {},
     highlight = {
         enable = true,
@@ -854,7 +900,7 @@ require 'nt-cpp-tools'.setup({
         }
         --[[
         <your impl function custom command name> = {
-            output_handle = function (str, context) 
+            output_handle = function (str, context)
                 -- string contains the class implementation
                 -- do whatever you want to do with it
             end
@@ -880,6 +926,10 @@ command! BD call fzf#run(fzf#wrap({
   \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
 \ }))
 
+" Don't consider filename as a match in :Rg command
+command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case "
+    \ .shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
+
 " ### Functions
 function! s:list_buffers()
   redir => list
@@ -897,15 +947,20 @@ endfunction
 " Open entries in split panes with TAB
 " Open entries in different tabs with Ctrl + T
 
-nmap <leader>ff :Files<cr>
-nmap <leader>ft :BTags<cr>
-nmap <leader>fT :Tags<cr>
-nmap <leader>fl :BLines<cr>
-nmap <leader>fL :Lines<cr>
-nmap <leader>fg :GFiles?<cr>
-nmap <leader>fb :Buffers<cr>
-nmap <leader>fc :BCommits<cr>
-nmap <leader>fC :Commits<cr>
+" :Maps     : Show list of normal mode bindings
+
+nnoremap <leader>ff :Files!<CR>
+nnoremap <leader>ft :BTags!<CR>
+nnoremap <leader>fT :Tags!<CR>
+nnoremap <leader>fl :BLines!<CR>
+nnoremap <leader>fL :Lines<CR>
+nnoremap <leader>fb :Buffers!<CR>
+nnoremap <leader>fg :Rg!<CR>
+" Git Bindings
+nnoremap <leader>gf :GFiles!?<CR>
+nnoremap <leader>gF :GFiles!<CR>
+nnoremap <leader>gc :BCommits!<CR>
+nnoremap <leader>gC :Commits!<CR>
 
 " Change default bindings
 let g:fzf_action = {

@@ -1,4 +1,4 @@
-#https://www.jetbrains.com/rider/download/!/usr/bin/env bash
+#!/usr/bin/env bash
 
 ####################################
 # You should run this file as SUDO #
@@ -95,7 +95,7 @@ else
 fi
 
 apt-get -qq --yes install grep
-# apt-get -qq --yes install ripgrep
+apt-get -qq --yes install ripgrep
 apt-get -qq --yes install tidy
 apt-get -qq --yes install translate-shell
 apt-get -qq --yes install trash-cli
@@ -132,6 +132,8 @@ apt-get -qq --yes install clang-format
 apt-get -qq --yes install colordiff
 apt-get -qq --yes install cppcheck
 apt-get -qq --yes install debian-goodies
+apt-get -qq --yes install exa
+apt-get -qq --yes install picocom
 
 
 # GUI APPS

@@ -6,5 +6,7 @@
 #   sudo ln -s  /etc/apm/scripts.d/launch_swiftmap.sh /etc/apm/resume.d/launch_swiftmap.sh
 
 if [ -d "$HOME/programs/swift-map" ]; then
-    $HOME/programs/swift-map/mainloop.py nosleep
+    pkill -f ".*swift-map/mainloop.py"
+    # TODO: change keyboard layout to refrest available keys
+    exec $HOME/programs/swift-map/mainloop.py nosleep
 fi

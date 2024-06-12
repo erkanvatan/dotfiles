@@ -82,11 +82,13 @@ alias gm='git merge'
 alias gd='git diff'
 alias gco='git checkout'
 alias gl='git log --oneline'
+alias gll='git log'
 alias glg='git log --oneline --all --decorate --graph'
 alias ga='git add'
 alias gb='git branch'
 alias gpl='git pull'
 alias gph='git push'
+alias gccount='echo "Commit count: " && git shortlog -s | awk '"'"'{ s += $1 } END { print s }'"'"''
 
 # history:  show all history
 alias history='fc -l 1'
@@ -94,15 +96,25 @@ alias history='fc -l 1'
 # ip
 alias ip='ip --color=auto'
 
-# neovim
-alias vim="stty stop '' -ixoff; nvim" # disable Ctrl + S mapping of the terminal before running nvim
-alias nvim="stty stop '' -ixoff; nvim" # disable Ctrl + S mapping of the terminal before running nvim
+# ls
+alias ls='exa -Fag --group-directories-first'
+alias ll='ls -l'
+alias lsh='exa -Fg --group-directories-first'
+alias llh='lsh -l'
+
+# Neovim
+# disable Ctrl + S mapping of the terminal before running nvim
+alias vim="stty stop '' -ixoff; nvim"
+alias nvim="stty stop '' -ixoff; nvim"
 
 # npm
 #   add fixer/linter dependencies
 alias devtools_web_vanilla='pnpm add -D eslint prettier eslint-plugin-prettier eslint-config-prettier stylelint stylelint-config-standard'
 alias devtools_web_svelte_eslint='pnpm add -D eslint eslint-plugin-svelte3 eslint-plugin-import typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin @rollup/plugin-typescript @tsconfig/svelte stylelint stylelint-config-recommended-scss stylelint-config-html postcss postcss-html sass prettier prettier-plugin-svelte'
 alias devtools_web_svelteserver='pnpm add -D eslint eslint-plugin-prettier eslint-config-prettier typescript @rollup/plugin-typescript @tsconfig/svelte stylelint stylelint-config-recommended-scss stylelint-config-html postcss postcss-html sass prettier prettier-plugin-svelte'
+
+# picocom
+alias picocom='picocom -b 115200 -f n -y n -d 8 -p 1 -e q /dev/ttyUSB0'
 
 # pip3
 alias pip='pip3'
@@ -115,6 +127,9 @@ alias rsync_restore="rsync -gloptrch --stats"
 
 # translate-shell
 alias td='trans :tr'
+
+# xclip
+alias clip_cmd='xargs echo -n | xclip -sel clip'
 
 # yt-dlp
 alias yt_dlp_audio='yt-dlp --ignore-errors --output "%(title)s.%(ext)s" --extract-audio --audio-format mp3'
@@ -180,7 +195,7 @@ eval "$(pyenv virtualenv-init -)"
 #   Set pipx default python interpreter
 export PIPX_DEFAULT_PYTHON="$HOME/.pyenv/versions/$(pyenv version-name)/bin/python"
 #   Load pipx completions
-eval "$(register-python-argcomplete pipx)"
+eval "$(register-python-argcomplete3 pipx)"
 
 # tabtab source for packages
 # uninstall by removing these lines

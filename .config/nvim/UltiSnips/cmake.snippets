@@ -2,14 +2,13 @@ snippet cmake_c_template "CMakeLists template for C language" b
 cmake_minimum_required(VERSION 3.10)
 set(CMAKE_C_STANDARD ${2:99})
 set(CMAKE_C_STANDARD_REQUIRED ON)
-
-file(GLOB TARGET_C "${CMAKE_SOURCE_DIR}/*.c")
-project(${3:out} VERSION ${4:1.0})
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -pedantic-errors -Werror -Wall -Wextra -Wconversion -Wsign-conversion -Wshadow -Wundef -Wunused-result -Wpointer-arith -Wwrite-strings -Wstrict-prototypes")
+
+project(${3:out} VERSION ${4:1.0})
+file(GLOB TARGET_C "${CMAKE_SOURCE_DIR}/*.c")
 add_executable(${3} \$\{TARGET_C\})
 
 target_include_directories($3 PUBLIC \$\{CMAKE_CURRENT_SOURCE_DIR\}/include)
-
 endsnippet
 
 snippet cmake_cpp_template "CMakeLists template for C++ language" b
@@ -17,12 +16,11 @@ cmake_minimum_required(VERSION 3.10)
 set(CMAKE_CXX_STANDARD ${1:20})
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_EXTENSIONS OFF)
-
-file(GLOB TARGET_CPP "${CMAKE_SOURCE_DIR}/*.cpp")
-project(${2:out} VERSION ${3:1.0})
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -pedantic-errors -Werror -Wall -Wextra -Wconversion -Wsign-conversion -Wshadow -Wundef -Wunused-result -Wpointer-arith -Wwrite-strings -Weffc++")
+
+project(${2:out} VERSION ${3:1.0})
+file(GLOB TARGET_CPP "${CMAKE_SOURCE_DIR}/*.cpp")
 add_executable(${2} \$\{TARGET_CPP\})
 
 target_include_directories($2 PUBLIC \$\{CMAKE_CURRENT_SOURCE_DIR\}/include)
-
 endsnippet

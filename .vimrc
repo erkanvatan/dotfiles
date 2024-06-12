@@ -12,9 +12,13 @@
 " # _EDITOR_CONFIGS_
 " ------------------
 
+" Set leader keys (must be on top because plugins use it)
+let mapleader="\<Space>"
+let maplocalleader = "\<CR>"
+
 " ## Set .config dir to use based on editor (vim vs nvim)
 if !has('nvim')
-    let s:config_dir = $HOME . "/.config/vim"
+    let s:config_dir = $HOME . "/.vim"
 else
     let s:config_dir = $HOME . "/.config/nvim"
 endif
@@ -54,6 +58,7 @@ augroup editor_configs_vim_options
 
     " Set in which file types should lines auto break
     autocmd FileType norg setlocal fo+=t
+    autocmd FileType toml setlocal fo-=t
 
     " Set the filetype based on the file extension, overriding any
     " 'filetype' that has already been set
@@ -67,6 +72,7 @@ augroup editor_configs_vim_options
     " Set which files will use highlight from start of file (fix for Javascript
     " inside HTML syntax)
     autocmd BufRead,BufNewFile *.html syntax sync fromstart
+
 augroup END
 
 " ## Colors
@@ -151,6 +157,7 @@ if !has('nvim')
     Plug 'tpope/vim-fugitive'
     " Plug 'cdelledonne/vim-cmake'
     Plug 'ntpeters/vim-better-whitespace'
+    Plug 'igankevich/mesonic' " meson build system integration
 
     " ## Vim only plugins
     Plug 'tpope/vim-vinegar'
@@ -352,7 +359,7 @@ function! GitStatus() abort
 endfunction
 
 function! LightlineFilename()
-  let filename = expand('%:t') !=# '' ? expand('%:t') : '[No Name]'
+  let filename = expand('%:t') !=# '' ? expand('%:p:.') : '[No Name]'
   let modified = &modified ? ' +' : ''
   return filename . modified
 endfunction
@@ -434,7 +441,7 @@ nnoremap <leader>gf :diffget //2<CR>
 let g:cmake_link_compile_commands = 1
 let g:cmake_root_markers = ['.git', '.svn']
 " let g:cmake_build_options = []
-let g:cmake_generate_options = ["-D CMAKE_C_COMPILER=/usr/bin/gcc", "-D CMAKE_CXX_COMPILER=/usr/bin/g++"]
+let g:cmake_generate_options = ["-D CMAKE_C_COMPILER=/usr/bin/gcc-12", "-D CMAKE_CXX_COMPILER=/usr/bin/g++-12"]
 
 augroup vim_cmake_group
     " autoclose vim-cmake window after successfull build
@@ -552,9 +559,6 @@ augroup END
 " # _KEYBINDINGS_
 " ---------------
 
-" Set leader keys
-let mapleader="\<Space>"
-let maplocalleader = "\<CR>"
 
 " Source $MYVIMRC
 nnoremap <leader>ss :source $MYVIMRC<CR>
@@ -626,3 +630,13 @@ nnoremap <silent> <leader>h :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR
 
 " Toggle background theme between light and dark
 nnoremap <silent> <M-t> :call ToggleBackground()<CR>
+
+if !has('nvim')
+    " inoremap ,, <C-x><C-o><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>" : ""<CR>
+    " inoremap ,; <C-n><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>" : ""<CR>
+    " inoremap ,: <C-x><C-f><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>" : ""<CR>
+    " inoremap ,= <C-x><C-l><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>" : ""<CR>
+
+    inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : exists("g:loaded_snips") ? "\<C-r>=TriggerSnippet()\<CR>" : "\<Tab>"
+    inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : exists("g:loaded_snips") ? "\<C-r>=BackwardsSnippet()\<CR>" : "\<S-Tab>"
+endif

@@ -11,7 +11,7 @@ fi
 # ENVIRONMENT VARIABLES
 ################
 export BROWSER='firefox'
-export EDITOR='nvim'
+export EDITOR='vim'
 # FZF
 #   set fd as the default source
 export FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude "{node_modules,.git}"'
@@ -26,7 +26,7 @@ export LC_ALL='en_US.UTF-8'
 export PS1="\[\033[1;32m\]\u \[\033[31m\]\W $ \[\033[0m\]"
 export PAGER='less'
 export SHELL='/bin/bash'
-export VISUAL='nvim'
+export VISUAL='vim'
 
 ################
 # PROGRAM ALIASES
@@ -69,11 +69,13 @@ alias gm='git merge'
 alias gd='git diff'
 alias gco='git checkout'
 alias gl='git log --oneline'
+alias gll='git log'
 alias glg='git log --oneline --all --decorate --graph'
 alias ga='git add'
 alias gb='git branch'
 alias gpl='git pull'
 alias gph='git push'
+alias gccount='echo "Commit count: " && git shortlog -s | awk '"'"'{ s += $1 } END { print s }'"'"''
 
 # history: show all history
 alias history='fc -l 1'
@@ -82,13 +84,17 @@ alias history='fc -l 1'
 alias ip='ip --color=auto'
 
 # ls
-alias ls='ls --color'
-alias la='ll -A'
-alias ll='ls -lh'
+alias ls='exa -Fag --group-directories-first'
+alias ll='ls -l'
+alias lsh='exa -Fg --group-directories-first'
+alias llh='lsh -l'
+alias picocom='picocom -b 115200 -f n -y n -d 8 -p 1 -e q /dev/ttyUSB0'
+alias clip_cmd='xargs echo -n | xclip -sel clip'
 
 # neovim
-alias vim="stty stop '' -ixoff; nvim" # disable Ctrl + S mapping of the terminal before running nvim
-alias nvim="stty stop '' -ixoff; nvim" # disable Ctrl + S mapping of the terminal before running nvim
+#   disable Ctrl + S mapping of the terminal before running nvim
+alias vim="stty stop '' -ixoff; nvim"
+alias nvim="stty stop '' -ixoff; nvim"
 
 # pip3
 alias pip='pip3'

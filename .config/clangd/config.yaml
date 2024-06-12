@@ -4,3 +4,9 @@ CompileFlags:
     - --include-directory=/usr/include/x86_64-linux-gnu
     - --include-directory=/usr/include/c++/12
     - --include-directory=/usr/include/x86_64-linux-gnu/c++/12
+InlayHints:
+    Enabled: No
+    BlockEnd: No
+    Designators: No
+    ParameterNames: No
+    DeducedTypes: No

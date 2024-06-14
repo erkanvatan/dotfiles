@@ -65,6 +65,7 @@ Plug 'tpope/vim-dadbod' " modern database interface for Vim
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " fuzzy file finder
 Plug 'junegunn/fzf.vim'
 Plug 'stsewd/fzf-checkout.vim'
+Plug 'liuchengxu/vista.vim' " tags and lsp symbols viewer
 
 " ### Web Development
 Plug 'mattn/emmet-vim' " good for html tags
@@ -121,6 +122,7 @@ call plug#end()
 " 27. _nvim_treesitter_cpp_tools_
 " 28. _fzf_vim_
 " 29. _fzf_checkout_vim_
+" 30. _vista_vim_
 
 " -----------------
 " ## _vim_livedown_
@@ -981,3 +983,16 @@ let g:fzf_action = {
 " alt + enter to track a remote branch locally
 
 nnoremap <leader>gc :GBranches<CR>
+
+" --------------
+" ## _vista_vim_
+" --------------
+
+" ### Settings
+let g:vista_default_executive = 'coc' " TODO: check other executives
+let g:vista_fzf_preview = ['right:50%']
+let g:vista#renderer#enable_icon = 1
+let g:vista_sidebar_width = 60
+
+" ### Keybindings
+nnoremap <silent> <C-t> :Vista!!<CR>

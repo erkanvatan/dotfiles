@@ -467,7 +467,7 @@ nnoremap <leader>co :CMakeOpen<CR>
 
 " ### Settings
 let g:better_whitespace_enabled=1
-highlight ExtraWhitespace ctermbg=LightRed guibg='#FFB86C'
+highlight ExtraWhitespace ctermbg=LightRed ctermfg=black guibg='#FFB86C' guifg=black
 
 " -------------
 " # _FUNCTIONS_
@@ -631,12 +631,18 @@ nnoremap <silent> <leader>h :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR
 " Toggle background theme between light and dark
 nnoremap <silent> <M-t> :call ToggleBackground()<CR>
 
+" Set bindings for default Vim autocompletion support
+" :help ins-completion
+" <C-n>         : start word completion from file
+" <C-x><C-o>    : start omni completion
 if !has('nvim')
-    " inoremap ,, <C-x><C-o><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>" : ""<CR>
-    " inoremap ,; <C-n><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>" : ""<CR>
-    " inoremap ,: <C-x><C-f><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>" : ""<CR>
-    " inoremap ,= <C-x><C-l><C-r>=pumvisible() ? "\<lt>Down>\<lt>C-p>\<lt>Down>" : ""<CR>
-
-    inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : exists("g:loaded_snips") ? "\<C-r>=TriggerSnippet()\<CR>" : "\<Tab>"
-    inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : exists("g:loaded_snips") ? "\<C-r>=BackwardsSnippet()\<CR>" : "\<S-Tab>"
+    " Exit pum without inserting with <Esc>
+    inoremap <expr> <Esc> pumvisible() ? "\<C-e>" : "\<Esc>"
+    " Select with <CR>
+    inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
+    " Use <Tab> and <S-Tab> to view completion suggestions
+    inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : exists("g:loaded_snips")
+        \ ? "\<C-r>=TriggerSnippet()\<CR>" : "\<Tab>"
+    inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : exists("g:loaded_snips")
+        \ ? "\<C-r>=BackwardsSnippet()\<CR>" : "\<S-Tab>"
 endif

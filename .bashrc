@@ -34,8 +34,11 @@ export VISUAL='vim'
 # batcat (bat)
 alias bat='batcat --theme=TwoDark'
 
-# config --bare git repository
+# config --bare git repository for dotfiles
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
+alias config_edit="(export GIT_DIR=$HOME/.dotfiles; export GIT_WORK_TREE=$HOME; $EDITOR)"
+alias config_fzf_add='dotfile_add.sh'
+alias config_fzf_edit='dotfile_edit.sh'
 
 # docker
 alias dc='docker container'
@@ -103,8 +106,6 @@ alias pip='pip3'
 # SCRIPT ALIASES
 ################
 alias fwhite='format_whitespace.py'
-alias dotfile_add='dotfile_add.sh'
-alias dotfile_edit='dotfile_edit.sh'
 
 ################
 # REMINDER ALIASES

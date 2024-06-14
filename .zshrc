@@ -44,8 +44,11 @@ alias bat='batcat --theme=TwoDark'
 alias wlo1_bind="BIND_INTERFACE=wlo1 DNS_OVERRIDE_IP=1.1.1.1 DNS_EXCLUDE=127.0.0.1 LD_PRELOAD=$HOME/programs/BindToInterface/bindToInterface.so"
 alias usb0_bind="BIND_INTERFACE=usb0 DNS_OVERRIDE_IP=1.1.1.1 DNS_EXCLUDE=127.0.0.1 LD_PRELOAD=$HOME/programs/BindToInterface/bindToInterface.so"
 
-# config --bare git repository
+# config --bare git repository for dotfiles
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
+alias config_edit="(export GIT_DIR=$HOME/.dotfiles; export GIT_WORK_TREE=$HOME; $EDITOR)"
+alias config_fzf_add='dotfile_add.sh'
+alias config_fzf_edit='dotfile_edit.sh'
 
 # docker
 alias dc='docker container'
@@ -138,8 +141,6 @@ alias yt_dlp_audio='yt-dlp --ignore-errors --output "%(title)s.%(ext)s" --extrac
 # SCRIPT ALIASES
 ################
 alias fwhite='format_whitespace.py'
-alias dotfile_add='dotfile_add.sh'
-alias dotfile_edit='dotfile_edit.sh'
 
 ################
 # REMINDER ALIASES

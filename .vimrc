@@ -145,7 +145,6 @@ if !has('nvim')
     Plug 'mhinz/vim-startify' " change default vim starting screen
     Plug 'tpope/vim-surround' " change surroundings, :h surround
     Plug 'preservim/nerdcommenter' " comment/uncomment lines
-    Plug 'junegunn/rainbow_parentheses.vim' " colorize matching parantheses
     Plug 'jiangmiao/auto-pairs' " automatically add matching pairs for quotes, brackets, etc.
     Plug 'voldikss/vim-floaterm' " floating terminal
     Plug 'alvan/vim-closetag'  " auto close HTML tags
@@ -182,24 +181,23 @@ endif
 " 02. _vim_startify_
 " 03. _vim_surround_
 " 04. _nerdcommenter_
-" 05. _rainbow_parantheses_vim_
-" 06. _auto_pairs_
-" 07. _vim_floaterm_
-" 08. _vim_closetag_
-" 09. _vim_indent_object_
-" 10. _vim_cycle_
-" 11. _suda_vim_
-" 12. _lightline_vim_
-" 13. _vim_devicons_
-" 14. _dracula_
-" 15. _python_syntax_
-" 16. _vim_markdown_
-" 17. _vim_fugitive_
-" 18. _vim_cmake_
-" 19. _vim_vinegar_
-" 20. _vim_sensible_
-" 21. _vim_better_whitespace_
-" 22. _undotree_
+" 05. _auto_pairs_
+" 06. _vim_floaterm_
+" 07. _vim_closetag_
+" 08. _vim_indent_object_
+" 09. _vim_cycle_
+" 10. _suda_vim_
+" 11. _lightline_vim_
+" 12. _vim_devicons_
+" 13. _dracula_
+" 14. _python_syntax_
+" 15. _vim_markdown_
+" 16. _vim_fugitive_
+" 17. _vim_cmake_
+" 18. _vim_vinegar_
+" 19. _vim_sensible_
+" 20. _vim_better_whitespace_
+" 21. _undotree_
 
 
 " ------------------
@@ -257,22 +255,6 @@ map <leader>cc <plug>NERDCommenterComment
 map <leader>cu <plug>NERDCommenterUncomment
 map <leader>ct <plug>NERDCommenterToggle
 map <leader>cm <plug>NERDCommenterMinimal
-
-" ----------------------------
-" ## _rainbow_parantheses_vim_
-" ----------------------------
-
-" ### Settings
-let g:rainbow#max_level = 16
-let g:rainbow#pairs = [['(', ')'], ['[', ']'], ['{', '}']]
-augroup rainbow_parantheses_group
-    autocmd!
-    " Auto activate RainbowParentheses
-    autocmd FileType * RainbowParentheses
-augroup END
-
-" ### Keybindings
-nnoremap <leader>tr :RainbowParentheses!!<CR>
 
 " ---------------
 " ## _auto_pairs_
@@ -523,12 +505,12 @@ function! ToggleBackground()
     if &background =~? 'dark'
         echo "Changing to light theme"
         set background=light  " for the light version of the theme
-        colorscheme base16-gruvbox-light-hard
-        let g:lightline.colorscheme = 'Tomorrow'
+        " colorscheme base16-gruvbox-light-hard
+        " let g:lightline.colorscheme = 'Tomorrow'
         " colorscheme base16-catppuccin-latte
         " let g:lightline.colorscheme = 'Tomorrow'
-        " colorscheme base16-tomorrow
-        " let g:lightline.colorscheme = 'Tomorrow'
+        colorscheme base16-tomorrow
+        let g:lightline.colorscheme = 'Tomorrow'
         " colorscheme base16-da-one-paper
         " let g:lightline.colorscheme = 'Tomorrow'
     else

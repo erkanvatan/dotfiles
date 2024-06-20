@@ -31,7 +31,6 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'mhinz/vim-startify' " change default vim starting screen
     Plug 'tpope/vim-surround' " change surroundings, :h surround
     Plug 'preservim/nerdcommenter' " comment/uncomment lines
-    Plug 'junegunn/rainbow_parentheses.vim' " colorize matching parantheses
     Plug 'jiangmiao/auto-pairs' " automatically add matching pairs for quotes, brackets, etc.
     Plug 'voldikss/vim-floaterm' " floating terminal
     Plug 'alvan/vim-closetag'  " auto close HTML tags
@@ -88,6 +87,7 @@ Plug 'lewis6991/gitsigns.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} " better parsing for syntax highlight
 Plug 'ThePrimeagen/refactoring.nvim'
 Plug 'Badhi/nvim-treesitter-cpp-tools'
+Plug 'HiPhish/rainbow-delimiters.nvim'
 
 call plug#end()
 
@@ -126,6 +126,7 @@ call plug#end()
 " 29. _fzf_checkout_vim_
 " 30. _vista_vim_
 " 31. _vimspector_
+" 32. _rainbow_delimiters_nvim_
 
 " -----------------
 " ## _vim_livedown_
@@ -1018,5 +1019,44 @@ nmap <Leader>di <Plug>VimspectorBalloonEval
 " for visual mode, the visually selected text
 xmap <Leader>di <Plug>VimspectorBalloonEval
 
-" Exit VimspectorBalloon with Esc instead of <C-l>
-nnoremap <expr> <Esc> ? "\<C-e>" : "\<Esc>"
+
+" ----------------------------
+" ## _rainbow_delimiters_nvim_
+" ----------------------------
+
+" ### Settings
+let g:rainbow_delimiters = {
+    \ 'strategy': {
+        \ '': rainbow_delimiters#strategy.global,
+        \ 'vim': rainbow_delimiters#strategy.local,
+    \ },
+    \ 'query': {
+        \ '': 'rainbow-delimiters',
+        \ 'lua': 'rainbow-blocks',
+    \ },
+    \ 'priority': {
+        \ '': 110,
+        \ 'lua': 210,
+    \ },
+    \ 'highlight': [
+        \ 'RainbowDelimiterRed',
+        \ 'RainbowDelimiterOrange',
+        \ 'RainbowDelimiterYellow',
+        \ 'RainbowDelimiterCyan',
+        \ 'RainbowDelimiterGreen',
+        \ 'RainbowDelimiterViolet',
+        \ 'RainbowDelimiterBlue',
+    \ ],
+\ }
+
+" Link highlight groups to Dracula colors if Dracula is installed
+if hlexists('DraculaRed')
+    highlight link RainbowDelimiterRed DraculaFg
+    highlight link RainbowDelimiterOrange DraculaOrange
+    highlight link RainbowDelimiterYellow DraculaYellow
+    highlight link RainbowDelimiterCyan DraculaCyan
+    highlight link RainbowDelimiterGreen DraculaGreen
+    highlight link RainbowDelimiterViolet DraculaPink
+endif
+" ### Keybindings
+nnoremap <silent> <Leader>tr :call rainbow_delimiters#toggle(0)<CR>

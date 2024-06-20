@@ -1,0 +1,78 @@
+# Configuration for Alacritty, the GPU enhanced terminal emulator.
+# Check full config options from: https://alacritty.org/config-alacritty.html
+
+# NOTE: GPU-accelerated terminal emulators open as blank screen in virtual machines
+# (encountered in VirtualBox Ubuntu 22.04 machine). To solve this bug, run the program with:
+#   LIBGL_ALWAYS_SOFTWARE=1 alacritty
+
+# -----------------------
+# ALACRITTY.TOML CONTENTS
+# -----------------------
+
+
+# 01. _TERMINAL_CONFIGS_
+# 02. _KEYBINDINGS_
+
+# ------------------
+# _TERMINAL_CONFIGS_
+# ------------------
+
+import = [ "~/.config/alacritty/dracula.toml" ]
+
+[env]
+TERM = "xterm-256color"
+
+[window]
+opacity = 0.92
+# decorations = "None"
+startup_mode = "Maximized"
+
+[scrolling]
+history = 10000
+
+[font]
+size = 10
+
+[font.normal]
+family = "MesloLGS NF"
+
+[selection]
+save_to_clipboard = true
+
+[cursor]
+style = "Block"
+unfocused_hollow = true
+
+# -------------
+# _KEYBINDINGS_
+# -------------
+
+[[keyboard.bindings]]
+key = "V"
+mods = "Control|Alt"
+action = "Paste"
+
+[[keyboard.bindings]]
+key = "C"
+mods = "Control|Alt"
+action = "Copy"
+
+[[keyboard.bindings]]
+key = "Numpad0"
+mods = "Control"
+action = "ResetFontSize"
+
+[[keyboard.bindings]]
+key = "F12"
+mods = "Control"
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = "NumpadSubtract"
+mods = "Control"
+action = "DecreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Space"
+mods = "Alt"
+chars = "\u0000"

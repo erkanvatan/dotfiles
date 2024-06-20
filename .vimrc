@@ -152,6 +152,7 @@ if !has('nvim')
     Plug 'itchyny/lightline.vim' " configurable statusline/tabline
     Plug 'ryanoasis/vim-devicons' " lightline icons
     Plug 'dracula/vim', { 'as': 'dracula' }
+    Plug 'tinted-theming/base16-vim' " color theme, https://tinted-theming.github.io/base16-gallery/
     Plug 'vim-python/python-syntax', { 'for': 'python' } " python syntax highlight
     Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] } " markdown syntax highlight
     Plug 'tpope/vim-fugitive'
@@ -514,8 +515,6 @@ function! ToggleBackground()
         set background=light  " for the light version of the theme
         colorscheme base16-gruvbox-light-hard
         let g:lightline.colorscheme = 'Tomorrow'
-        " colorscheme one
-        " let g:lightline.colorscheme = 'one'
         " colorscheme base16-catppuccin-latte
         " let g:lightline.colorscheme = 'Tomorrow'
         " colorscheme base16-tomorrow
@@ -645,4 +644,15 @@ if !has('nvim')
         \ ? "\<C-r>=TriggerSnippet()\<CR>" : "\<Tab>"
     inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : exists("g:loaded_snips")
         \ ? "\<C-r>=BackwardsSnippet()\<CR>" : "\<S-Tab>"
+endif
+
+" Fix meta keybindings in Vim
+if !has('nvim')
+    execute "set <M-a>=\ea"
+    execute "set <M-e>=\ee"
+    execute "set <M-n>=\en"
+    execute "set <M-p>=\ep"
+    execute "set <M-s>=\es"
+    execute "set <M-t>=\et"
+    execute "set <M-u>=\eu"
 endif

@@ -41,6 +41,7 @@ Plug 'lambdalisue/suda.vim' " suport for sudo in neovim
 Plug 'itchyny/lightline.vim' " configurable statusline/tabline
 Plug 'ryanoasis/vim-devicons' " lightline icons
 Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'tinted-theming/base16-vim' " color theme, https://tinted-theming.github.io/base16-gallery/
 Plug 'vim-python/python-syntax', { 'for': 'python' } " python syntax highlight
 Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] } " markdown syntax highlight
 Plug 'tpope/vim-fugitive'
@@ -53,8 +54,6 @@ Plug 'shime/vim-livedown' " live preview of markdown
 "   run `npm install -g livedown` after installation
 
 Plug 'maximbaz/lightline-ale' " ale integration for lightline
-Plug 'rakr/vim-one' " color theme
-Plug 'tinted-theming/base16-vim' " color theme, https://tinted-theming.github.io/base16-gallery/
 Plug 'honza/vim-snippets' " compilation of useful snippets
 Plug 'SirVer/ultisnips' " snippet manager
 Plug 'dense-analysis/ale' " configurable async linter/fixer for programming languages
@@ -993,6 +992,7 @@ let g:vista_default_executive = 'coc' " TODO: check other executives
 let g:vista_fzf_preview = ['right:50%']
 let g:vista#renderer#enable_icon = 1
 let g:vista_sidebar_width = 60
+let g:vista_echo_cursor = 0
 
 " ### Keybindings
 nnoremap <silent> <C-t> :Vista!!<CR>

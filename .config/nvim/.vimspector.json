@@ -1,0 +1,55 @@
+{
+  "configurations": {
+    "base": {
+      "breakpoints": {
+        "exception": {
+          "all": "",
+          "cpp_throw": "",
+          "cpp_catch": ""
+        }
+      },
+      "filetypes": [ "cpp", "c", "objc", "rust" ],
+      "configuration": {
+        "externalConsole": true,
+        "cwd": "${workspaceRoot}/build"
+      }
+    },
+
+    "GDB": {
+      "default": true,
+      "extends": "base",
+      "adapter": "vscode-cpptools",
+      "variables": {
+        "ProgramName": "${workspaceRoot}/build/${fileBasenameNoExtension}"
+      },
+      "configuration": {
+        "MIMode": "gdb",
+        "MIDebuggerPath": "/usr/bin/gdb",
+        "request": "launch",
+        "program": "${program_name:${ProgramName\\}}",
+        "args": [
+          "--help"
+        ],
+        "environment": []
+      }
+    },
+
+    "LLDB": {
+      "extends": "base",
+      "adapter": "CodeLLDB",
+      "variables": {
+        "ProgramName": "${workspaceRoot}/build/${fileBasenameNoExtension}"
+      },
+      "configuration": {
+        "MIMode": "lldb",
+        "MIDebuggerPath": "/usr/bin/lldb",
+        "request": "launch",
+        "program": "${program_name:${ProgramName\\}}",
+        "args": [
+          "--help"
+        ],
+        "environment": []
+      }
+    }
+  }
+}

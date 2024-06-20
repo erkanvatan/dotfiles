@@ -67,6 +67,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " fuzzy file finder
 Plug 'junegunn/fzf.vim'
 Plug 'stsewd/fzf-checkout.vim'
 Plug 'liuchengxu/vista.vim' " tags and lsp symbols viewer
+Plug 'puremourning/vimspector' " A multi-language debugging system for Vim
 
 " ### Web Development
 Plug 'mattn/emmet-vim' " good for html tags
@@ -124,6 +125,7 @@ call plug#end()
 " 28. _fzf_vim_
 " 29. _fzf_checkout_vim_
 " 30. _vista_vim_
+" 31. _vimspector_
 
 " -----------------
 " ## _vim_livedown_
@@ -321,6 +323,7 @@ let g:coc_global_extensions = [
     \ 'coc-html',
     \ 'coc-json',
     \ 'coc-lists',
+    \ 'coc-marketplace',
     \ 'coc-pyright',
     \ 'coc-rust-analyzer',
     \ 'coc-sh',
@@ -998,3 +1001,22 @@ let g:vista_echo_cursor = 0
 
 " ### Keybindings
 nnoremap <silent> <C-t> :Vista!!<CR>
+
+" ---------------
+" ## _vimspector_
+" ---------------
+
+" ### Settings
+let g:vimspector_enable_mappings = 'HUMAN'
+" ### Keybindings
+" :h vimspector-human-mode
+
+" mnemonic 'di' = 'debug inspect'
+" use change window focus keys to close the balloon
+" for normal mode - the word under the cursor
+nmap <Leader>di <Plug>VimspectorBalloonEval
+" for visual mode, the visually selected text
+xmap <Leader>di <Plug>VimspectorBalloonEval
+
+" Exit VimspectorBalloon with Esc instead of <C-l>
+nnoremap <expr> <Esc> ? "\<C-e>" : "\<Esc>"

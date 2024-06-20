@@ -1,0 +1,44 @@
+{
+  "adapters": {
+    "cpptools-remote": {
+      "command": [
+        "${gadgetDir}/vscode-cpptools/debugAdapters/bin/OpenDebugAD7"
+      ],
+      "name": "cppdbg",
+      "configuration": {
+        "type": "cppdbg" },
+      "launch": {
+        "remote": {
+          "host": "${host}",
+          "account": "${account}",
+
+          "runCommand": [
+            "gdbserver",
+            "--once",
+            "--no-startup-with-shell",
+            "--disable-randomization",
+            "0.0.0.0:${port}",
+            "%CMD%"
+          ]
+        },
+        "delay": "1000m"
+      }
+    }
+  },
+  "configurations": {
+    "remote_launch": {
+      "adapter": "cpptools-remote",
+      "remote-cmdLine": [ "$HOME/projects/clang-unformat/build/clang-unformat" ],
+      "remote-request": "launch",
+      "configuration": {
+        "request": "launch",
+
+        "program": "$HOME/projects/clang-unformat/build/clang-unformat",
+        "cwd": "${workspaceRoot}/build",
+        "MIMode": "gdb",
+        "miDebuggerServerAddress": "${host}:${port}",
+        "sourceFileMap#json": "{\"${RemoteRoot}\": \"${workspaceRoot}\"}"
+      }
+    }
+  }
+}

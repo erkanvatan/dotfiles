@@ -306,9 +306,6 @@ let g:floaterm_autoclose=2
 
 " ### Keybindings
 let g:floaterm_keymap_toggle = '<C-f>'
-let g:floaterm_keymap_next   = '<F9>'
-let g:floaterm_keymap_prev   = '<F8>'
-let g:floaterm_keymap_new    = '<F10>'
 
 " -----------------
 " ## _vim_closetag_

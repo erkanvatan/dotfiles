@@ -38,6 +38,9 @@ set nofoldenable " Start with all folds open
 set mouse=nvchr " Enable mouse for all modes except insert mode
 set scrolloff=4 " Set number of screen lines to always keep above and below the cursor
 set undofile " Enable undo history
+if !isdirectory(s:config_dir . "/undodir")
+    :call mkdir(s:config_dir . "/undodir")
+endif
 let &undodir = s:config_dir . "/undodir" " Select the directory to keep undofiles
 set splitright " Open vertical splits to right
 set splitbelow " Open horizontal splits to below
@@ -156,9 +159,11 @@ if !has('nvim')
     Plug 'vim-python/python-syntax', { 'for': 'python' } " python syntax highlight
     Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] } " markdown syntax highlight
     Plug 'tpope/vim-fugitive'
-    " Plug 'cdelledonne/vim-cmake'
+    Plug 'cdelledonne/vim-cmake'
     Plug 'ntpeters/vim-better-whitespace'
     Plug 'igankevich/mesonic' " meson build system integration
+    Plug 'mbbill/undotree' " the undo history visualizer for VIM
+    Plug 'tpope/vim-repeat' " enable repeating supported plugin maps with "."
 
     " ## Vim only plugins
     Plug 'tpope/vim-vinegar'
@@ -194,6 +199,7 @@ endif
 " 19. _vim_vinegar_
 " 20. _vim_sensible_
 " 21. _vim_better_whitespace_
+" 22. _undotree_
 
 
 " ------------------
@@ -469,6 +475,13 @@ nnoremap <leader>co :CMakeOpen<CR>
 " ### Settings
 let g:better_whitespace_enabled=1
 highlight ExtraWhitespace ctermbg=LightRed ctermfg=black guibg='#FFB86C' guifg=black
+
+" ----------
+" _undotree_
+" ----------
+
+" ### Keybindings
+nnoremap <M-u> :UndotreeToggle<CR>
 
 " -------------
 " # _FUNCTIONS_

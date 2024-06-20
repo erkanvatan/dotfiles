@@ -25,29 +25,31 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 
-" ## Plugins shared with Vim
-Plug 'tpope/vim-sensible'
-Plug '907th/vim-auto-save'
-Plug 'mhinz/vim-startify' " change default vim starting screen
-Plug 'tpope/vim-surround' " change surroundings, :h surround
-Plug 'preservim/nerdcommenter' " comment/uncomment lines
-Plug 'junegunn/rainbow_parentheses.vim' " colorize matching parantheses
-Plug 'jiangmiao/auto-pairs' " automatically add matching pairs for quotes, brackets, etc.
-Plug 'voldikss/vim-floaterm' " floating terminal
-Plug 'alvan/vim-closetag'  " auto close HTML tags
-Plug 'michaeljsmith/vim-indent-object' " adds an object to select everything at an indent level
-Plug 'zef/vim-cycle' " ability to cycle through some group of words, easy edit
-Plug 'lambdalisue/suda.vim' " suport for sudo in neovim
-Plug 'itchyny/lightline.vim' " configurable statusline/tabline
-Plug 'ryanoasis/vim-devicons' " lightline icons
-Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'tinted-theming/base16-vim' " color theme, https://tinted-theming.github.io/base16-gallery/
-Plug 'vim-python/python-syntax', { 'for': 'python' } " python syntax highlight
-Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] } " markdown syntax highlight
-Plug 'tpope/vim-fugitive'
-Plug 'cdelledonne/vim-cmake'
-Plug 'ntpeters/vim-better-whitespace'
-Plug 'igankevich/mesonic' " meson build system integration
+    " ## Plugins shared with Vim
+    Plug 'tpope/vim-sensible'
+    Plug '907th/vim-auto-save'
+    Plug 'mhinz/vim-startify' " change default vim starting screen
+    Plug 'tpope/vim-surround' " change surroundings, :h surround
+    Plug 'preservim/nerdcommenter' " comment/uncomment lines
+    Plug 'junegunn/rainbow_parentheses.vim' " colorize matching parantheses
+    Plug 'jiangmiao/auto-pairs' " automatically add matching pairs for quotes, brackets, etc.
+    Plug 'voldikss/vim-floaterm' " floating terminal
+    Plug 'alvan/vim-closetag'  " auto close HTML tags
+    Plug 'michaeljsmith/vim-indent-object' " adds an object to select everything at an indent level
+    Plug 'zef/vim-cycle' " ability to cycle through some group of words, easy edit
+    Plug 'lambdalisue/suda.vim' " suport for sudo in neovim
+    Plug 'itchyny/lightline.vim' " configurable statusline/tabline
+    Plug 'ryanoasis/vim-devicons' " lightline icons
+    Plug 'dracula/vim', { 'as': 'dracula' }
+    Plug 'tinted-theming/base16-vim' " color theme, https://tinted-theming.github.io/base16-gallery/
+    Plug 'vim-python/python-syntax', { 'for': 'python' } " python syntax highlight
+    Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] } " markdown syntax highlight
+    Plug 'tpope/vim-fugitive'
+    Plug 'cdelledonne/vim-cmake'
+    Plug 'ntpeters/vim-better-whitespace'
+    Plug 'igankevich/mesonic' " meson build system integration
+    Plug 'mbbill/undotree' " the undo history visualizer for VIM
+    Plug 'tpope/vim-repeat' " enable repeating supported plugin maps with "."
 
 " ## Extra Vim plugins
 Plug 'shime/vim-livedown' " live preview of markdown

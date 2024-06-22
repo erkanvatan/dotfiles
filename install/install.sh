@@ -321,7 +321,6 @@ if [ -x "$(command -v pipx)" ]; then
     pipx install jedi-language-server
     pipx install pycodestyle
     pipx install pipreqs
-    pipx install cmake-language-server
     echo '> PIPX APPS INSTALL FINISHED <'
 
     echo '# UPDATING PIPX APPS #'
@@ -353,6 +352,7 @@ echo '>>> PIP APPS FINISHED <<<'
 ### Installing and updating applications using cargo
 echo '### CARGO APPS ###'
 cargo install alacritty
+cargo install neocmakelsp
 echo '>>> CARGO APPS FINISHED <<<'
 
 ### Installing rustup components
@@ -423,23 +423,9 @@ printf '  * Update npm by calling:\n\tnpm install -g npm@latest\n'
 echo '- install following apps'
 echo '  * ProtonVPN: https://protonvpn.com/support/linux-ubuntu-vpn-setup/'
 echo '  * Anki: https://apps.ankiweb.net/#download'
-echo '  * VirtualBox: https://www.virtualbox.org/wiki/Linux_Downloads'
 echo '  * Telegram: https://telegram.org/dl/desktop/linux'
-echo '  * scrcpy: https://github.com/Genymobile/scrcpy/blob/master/BUILD.md#simple'
-echo '  * drawio: https://github.com/jgraph/drawio-desktop/releases'
-echo '  * texlive-full: https://gist.github.com/wkrea/b91e3d14f35d741cf6b05e57dfad8faf'
 echo '  * sqlectron: https://github.com/sqlectron/sqlectron-gui/releases/latest'
 echo '  * winehq: https://wiki.winehq.org/Ubuntu'
-echo '  * JMeter: https://jmeter.apache.org/download_jmeter.cgi'
-echo '  * Postman: https://dl.pstmn.io/download/latest/linux64'
-echo '  * Jetbrains Rider: https://www.jetbrains.com/rider/download/'
-echo '  * Teams Preview: https://go.microsoft.com/fwlink/p/?LinkID=2112886&culture=en-us&country=WW'
 echo '  * Ventoy: https://www.ventoy.net/en/download.html'
-echo '  * ngrok: https://ngrok.com/download'
-echo '  * xpadneo: https://github.com/atar-axis/xpadneo#prerequisites'
-echo '  * PhotoGIMP: https://github.com/Diolinux/PhotoGIMP#-how-to-install-others'
-echo '  * asus-fan-control: https://github.com/dominiksalvet/asus-fan-control'
 echo '-- zsh external plugins'
 echo '  * zsh-z: https://github.com/agkozak/zsh-z#installation'
-
-

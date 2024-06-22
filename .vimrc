@@ -7,6 +7,7 @@
 " 03. _PLUGIN_SETTINGS_
 " 04. _FUNCTIONS_
 " 05. _KEYBINDINGS_
+" 06. _LATE_IMPORTS_
 
 " ------------------
 " # _EDITOR_CONFIGS_
@@ -21,13 +22,6 @@ if !has('nvim')
     let s:config_dir = $HOME . "/.vim"
 else
     let s:config_dir = $HOME . "/.config/nvim"
-endif
-
-" ## Import settings not tracked by Git
-if !has('nvim') && !empty(glob("$HOME/.vimrc.gitignore"))
-    source $HOME/.vimrc.gitignore
-elseif has('nvim') && !empty(glob("$HOME/.config/nvim/gitignore.vim"))
-    source $HOME/.config/nvim/gitignore.vim
 endif
 
 " ## General options
@@ -168,6 +162,9 @@ if !has('nvim')
     Plug 'tpope/vim-vinegar'
 
     call plug#end()
+
+    " NOTE: Setting colorscheme resets highlight settings, this line must be on top of other settings
+    colorscheme dracula
 else
     " Source Neovim plugins
     source $HOME/.config/nvim/plugins.vim
@@ -386,9 +383,6 @@ let g:lightline = {
 " ## _dracula_
 " ------------
 
-" ### Settings
-colorscheme dracula
-
 " ------------------
 " ## _python_syntax_
 " ------------------
@@ -460,7 +454,7 @@ highlight ExtraWhitespace ctermbg=LightRed ctermfg=black guibg='#FFB86C' guifg=b
 " ----------
 
 " ### Keybindings
-nnoremap <M-u> :UndotreeToggle<CR>
+nnoremap <silent> <M-u> :UndotreeToggle<CR>
 
 " -------------
 " # _FUNCTIONS_
@@ -605,7 +599,7 @@ vnoremap < <gv
 vnoremap > >gv
 
 " See buffers
-nnoremap <Leader>fb :buffers<CR>
+nnoremap <Leader>fb :Buffers!<CR>
 
 " Open netrw
 if !has('nvim')
@@ -647,4 +641,15 @@ if !has('nvim')
     execute "set <M-s>=\es"
     execute "set <M-t>=\et"
     execute "set <M-u>=\eu"
+endif
+
+" ----------------
+" # _LATE_IMPORTS_
+" ----------------
+
+" ## Import settings not tracked by Git
+if !has('nvim') && !empty(glob("$HOME/.vimrc.gitignore"))
+    source $HOME/.vimrc.gitignore
+elseif has('nvim') && !empty(glob("$HOME/.config/nvim/gitignore.vim"))
+    source $HOME/.config/nvim/gitignore.vim
 endif

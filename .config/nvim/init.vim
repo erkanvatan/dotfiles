@@ -1,9 +1,6 @@
 " # Import settings shared with Vim
 source $HOME/.vimrc
 
-" # Import other settings
-source $HOME/.config/nvim/plugins.vim
-
 " # Define global Vim variables
 let g:python3_host_prog = '/usr/bin/python3'
 let g:sql_type_default = 'pgsql'

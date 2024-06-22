@@ -91,6 +91,9 @@ Plug 'HiPhish/rainbow-delimiters.nvim'
 
 call plug#end()
 
+" NOTE: Setting colorscheme resets highlight settings, this line must be on top of other settings
+colorscheme dracula
+
 " -------------------
 " # _PLUGIN_SETTINGS_
 " -------------------
@@ -1046,6 +1049,10 @@ let g:rainbow_delimiters = {
         \ 'RainbowDelimiterGreen',
         \ 'RainbowDelimiterViolet',
         \ 'RainbowDelimiterBlue',
+    \ ],
+    \ 'blacklist': [
+        \ 'comment',
+        \ 'vim',
     \ ],
 \ }
 

@@ -635,7 +635,8 @@ EOF
 " ------------------
 
 " ### Settings
-highlight NvimTreeNormalFloat guibg='#282A36'
+" Fix black background
+highlight link NvimTreeNormalFloat DraculaBg
 
 lua << EOF
 -- Disable netrw at the very start of your init.lua (strongly advised)

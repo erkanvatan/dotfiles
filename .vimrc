@@ -306,9 +306,9 @@ let g:closetag_shortcut = '>'
 
 " ### Keybindings
 " Defines two new text objects to select only current indentation level
-" <count>ai 	An Indentation level and line above.
-" <count>ii 	Inner Indentation level (no line above).
-" <count>aI 	An Indentation level and lines above/below.
+" <count>ai     An Indentation level and line above.
+" <count>ii     Inner Indentation level (no line above).
+" <count>aI     An Indentation level and lines above/below.
 
 " --------------
 " ## _vim_cycle_
@@ -424,14 +424,21 @@ let g:cmake_root_markers = ['.git', '.svn']
 let g:cmake_generate_options = ["-D CMAKE_C_COMPILER=/usr/bin/gcc-12", "-D CMAKE_CXX_COMPILER=/usr/bin/g++-12"]
 
 augroup vim_cmake_group
-    " autoclose vim-cmake window after successfull build
-    autocmd! User CMakeBuildSucceeded CMakeClose
+    autocmd!
+    " autoclose vimcmake window after successful build
+    " repeat() function causes soft-wrap into two lines for ENTER prompt to show
+    autocmd User CMakeBuildSucceeded echo "CMake Build Succeeded!" . repeat(" ", &columns) | CMakeClose!
+
+    " Needed for graceful closing of CMake window
+    autocmd FileType vimcmake nnoremap <buffer><silent>qq :CMakeClose!<CR> 
 augroup END
 
 " ### Keybindings
-nnoremap <leader>cg :CMakeGenerate<CR>
+" Create Release config (default is Debug)   :CMakeGenerate build -DCMAKE_BUILD_TYPE=Release
+nnoremap <leader>cg :CMakeGenerate build -DCMAKE_BUILD_TYPE=Debug
 nnoremap <leader>cb :CMakeBuild<CR>
 nnoremap <leader>co :CMakeOpen<CR>
+nnoremap <leader>cr :CMakeRun 
 
 " ----------------
 " ## _vim_vinegar_

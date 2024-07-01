@@ -15,7 +15,7 @@
 
 " Set leader keys (must be on top because plugins use it)
 let mapleader="\<Space>"
-let maplocalleader = "\<CR>"
+let maplocalleader = ","
 
 " ## Set .config dir to use based on editor (vim vs nvim)
 if !has('nvim')
@@ -148,23 +148,19 @@ if !has('nvim')
     Plug 'itchyny/lightline.vim' " configurable statusline/tabline
     Plug 'ryanoasis/vim-devicons' " lightline icons
     Plug 'dracula/vim', { 'as': 'dracula' }
-    Plug 'tinted-theming/base16-vim' " color theme, https://tinted-theming.github.io/base16-gallery/
     Plug 'vim-python/python-syntax', { 'for': 'python' } " python syntax highlight
-    Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] } " markdown syntax highlight
     Plug 'tpope/vim-fugitive'
     Plug 'cdelledonne/vim-cmake'
     Plug 'ntpeters/vim-better-whitespace'
     Plug 'igankevich/mesonic' " meson build system integration
     Plug 'mbbill/undotree' " the undo history visualizer for VIM
     Plug 'tpope/vim-repeat' " enable repeating supported plugin maps with "."
+    Plug 'catppuccin/nvim', { 'as': 'catppuccin' } " color theme
 
     " ## Vim only plugins
     Plug 'tpope/vim-vinegar'
 
     call plug#end()
-
-    " NOTE: Setting colorscheme resets highlight settings, this line must be on top of other settings
-    colorscheme dracula
 else
     " Source Neovim plugins
     source $HOME/.config/nvim/plugins.vim
@@ -174,21 +170,21 @@ endif
 " # _PLUGIN_SETTINGS_
 " -------------------
 
-" 01. _vim_auto_save_
-" 02. _vim_startify_
-" 03. _vim_surround_
-" 04. _nerdcommenter_
-" 05. _auto_pairs_
-" 06. _vim_floaterm_
-" 07. _vim_closetag_
-" 08. _vim_indent_object_
-" 09. _vim_cycle_
-" 10. _suda_vim_
-" 11. _lightline_vim_
-" 12. _vim_devicons_
-" 13. _dracula_
-" 14. _python_syntax_
-" 15. _vim_markdown_
+" 01. _catppuccin_
+" 02. _dracula_
+" 03. _vim_auto_save_
+" 04. _vim_startify_
+" 05. _vim_surround_
+" 06. _nerdcommenter_
+" 07. _auto_pairs_
+" 08. _vim_floaterm_
+" 09. _vim_closetag_
+" 10. _vim_indent_object_
+" 11. _vim_cycle_
+" 12. _suda_vim_
+" 13. _lightline_vim_
+" 14. _vim_devicons_
+" 15. _python_syntax_
 " 16. _vim_fugitive_
 " 17. _vim_cmake_
 " 18. _vim_vinegar_
@@ -196,6 +192,13 @@ endif
 " 20. _vim_better_whitespace_
 " 21. _undotree_
 
+" ---------------
+" ## _catppuccin_
+" ---------------
+
+" ------------
+" ## _dracula_
+" ------------
 
 " ------------------
 " ## _vim_auto_save_
@@ -321,8 +324,10 @@ augroup vim_cycle_group
 augroup END
 
 " ### Keybindings
-" Move cursor on a word and hit <C-A> or <C-X> to toggle between pair of
+" Move cursor on a word and hit <C-n> or <C-m> to toggle between pair of
 "   words or even increment-decrement a number
+nnoremap <C-n> <Plug>CyclePrevious
+nnoremap <C-m> <Plug>CycleNext
 
 " -------------
 " ## _suda_vim_
@@ -348,7 +353,7 @@ function! LightlineFilename()
 endfunction
 
 let g:lightline = {
-      \ 'colorscheme': 'dracula',
+      \ 'colorscheme': 'catppuccin',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste', 'readonly' ],
       \             [ 'gitbranch', 'filename' ],
@@ -379,25 +384,12 @@ let g:lightline = {
 " ## _vim_devicons_
 " -----------------
 
-" ------------
-" ## _dracula_
-" ------------
-
 " ------------------
 " ## _python_syntax_
 " ------------------
 
 " ### Settings
 let g:python_highlight_all = 1
-
-" -----------------
-" ## _vim_markdown_
-" -----------------
-
-" ### Settings
-let g:vim_markdown_folding_disabled = 1
-let g:vim_markdown_conceal = 0
-let g:vim_markdown_conceal_code_blocks = 0
 
 " -----------------
 " ## _vim_fugitive_
@@ -433,7 +425,7 @@ augroup vim_cmake_group
     autocmd User CMakeBuildSucceeded echo "CMake Build Succeeded!" . repeat(" ", &columns) | CMakeClose!
 
     " Needed for graceful closing of CMake window
-    autocmd FileType vimcmake nnoremap <buffer><silent>qq :CMakeClose!<CR> 
+    autocmd FileType vimcmake nnoremap <buffer><silent>qq :CMakeClose!<CR>
 augroup END
 
 " ### Keybindings
@@ -441,7 +433,7 @@ augroup END
 nnoremap <leader>cg :CMakeGenerate build -DCMAKE_BUILD_TYPE=Debug
 nnoremap <leader>cb :CMakeBuild<CR>
 nnoremap <leader>co :CMakeOpen<CR>
-nnoremap <leader>cr :CMakeRun 
+nnoremap <leader>cr :CMakeRun
 
 " ----------------
 " ## _vim_vinegar_
@@ -457,7 +449,7 @@ nnoremap <leader>cr :CMakeRun
 
 " ### Settings
 let g:better_whitespace_enabled=1
-highlight ExtraWhitespace ctermbg=LightRed ctermfg=black guibg='#FFB86C' guifg=black
+autocmd ColorScheme * highlight ExtraWhitespace ctermbg=LightRed ctermfg=white guibg='#f9e2af' guifg=black
 
 " ----------
 " _undotree_
@@ -485,7 +477,8 @@ function! LongLineHighlightOn()
         call matchdelete(w:llh)
     endif
 
-    highlight OverLength ctermbg=LightBlue ctermfg=black guibg=LightBlue guifg=black
+    highlight OverLength ctermbg=LightBlue ctermfg=black guibg='#89dceb' guifg=black
+    autocmd ColorScheme * highlight OverLength ctermbg=LightBlue ctermfg=black guibg='#89dceb' guifg=black
     if &ft ==? 'css' || &ft ==? 'scss'
         let l:length = 90
         let w:llh = matchadd("OverLength", '\%' . (l:length + 1) . 'v')
@@ -495,11 +488,7 @@ function! LongLineHighlightOn()
     endif
 endfunction
 
-"   Set long line length marker colors
-augroup set_long_line_highlight
-    autocmd!
-    autocmd FileType * call LongLineHighlightOn()
-augroup END
+call LongLineHighlightOn()
 
 " ---------------------
 " ## _ToggleBackground_
@@ -509,23 +498,16 @@ function! ToggleBackground()
     if &background =~? 'dark'
         echo "Changing to light theme"
         set background=light  " for the light version of the theme
-        " colorscheme base16-gruvbox-light-hard
-        " let g:lightline.colorscheme = 'Tomorrow'
-        " colorscheme base16-catppuccin-latte
-        " let g:lightline.colorscheme = 'Tomorrow'
-        colorscheme base16-tomorrow
-        let g:lightline.colorscheme = 'Tomorrow'
-        " colorscheme base16-da-one-paper
-        " let g:lightline.colorscheme = 'Tomorrow'
+        let g:lightline.colorscheme = 'catppuccin'
+        let g:lightline#colorscheme#catppuccin#palette = {'inactive': {'right': [['#bcc0cc', '#eff1f5', 146, 231], ['#9ca0b0', '#eff1f5', 145, 231]], 'middle': [['#bcc0cc', '#eff1f5', 146, 231]], 'left': [['#1e66f5', '#eff1f5', 27, 231], ['#9ca0b0', '#eff1f5', 145, 231]]}, 'replace': {'left': [['e6e9ef', '#d20f39', 189, 161], ['#1e66f5', '#eff1f5', 27, 231]]}, 'normal': {'right': [['#9ca0b0', '#eff1f5', 145, 231], ['#1e66f5', '#ccd0da', 27, 188]], 'middle': [['#1e66f5', '#e6e9ef', 27, 189]], 'warning': [['#e6e9ef', '#df8e1d', 189, 172]], 'left': [['#e6e9ef', '#1e66f5', 189, 27], ['#1e66f5', '#eff1f5', 27, 231]], 'error': [['#e6e9ef', '#d20f39', 189, 161]]}, 'tabline': {'right': [['#bcc0cc', '#eff1f5', 146, 231], ['#9ca0b0', '#eff1f5', 145, 231]], 'middle': [['#bcc0cc', '#eff1f5', 146, 231]], 'left': [['#9ca0b0', '#eff1f5', 145, 231], ['#9ca0b0', '#eff1f5', 145, 231]], 'tabsel': [['#1e66f5', '#bcc0cc', 27, 146], ['#9ca0b0', '#eff1f5', 145, 231]]}, 'visual': {'left': [['#e6e9ef', '#8839ef', 189, 99], ['1e66f5', '#eff1f5', 27, 231]]}, 'insert': {'left': [['#e6e9ef', '#179299', 189, 30], ['#1e66f5', '#eff1f5', 27, 231]]}}
     else
         echo "Changing to dark theme"
         set background=dark   " for the dark version of the theme
-        colorscheme dracula
-        let g:lightline.colorscheme = 'dracula'
+        let g:lightline.colorscheme = 'catppuccin'
+        let g:lightline#colorscheme#catppuccin#palette = {'inactive': {'right': [['#45475a', '#1e1e2e', 59, 16], ['#6c7086', '#1e1e2e', 60, 16]], 'middle': [['#45475a', '#1e1e2e', 59, 16]], 'left': [['#89b4fa', '#1e1e2e', 111, 16], ['#6c7086', '#1e1e2e', 60, 16]]}, 'replace': {'left': [['#181825', '#f38ba8', 16, 211], ['#89b4fa', '#1e1e2e', 111, 16]]}, 'normal': {'right': [['#6c7086', '#1e1e2e', 60, 16], ['#89b4fa', '#313244', 111, 59]], 'middle': [['#89b4fa', '#181825', 111, 16]], 'warning': [['#181825', '#f9e2af', 16, 223]], 'left': [['#181825', '#89b4fa', 16, 111], ['#89b4fa', '#1e1e2e', 111, 16]], 'error': [['#181825', '#f38ba8', 16, 211]]}, 'tabline': {'right': [['#45475a', '#1e1e2e', 59, 16], ['#6c7086', '#1e1e2e', 60, 16]], 'middle': [['#45475a', '#1e1e2e', 59, 16]], 'left': [['#6c7086', '#1e1e2e', 60, 16], ['#6c7086', '#1e1e2e', 60, 16]], 'tabsel': [['#89b4fa', '#45475a', 111, 59], ['#6c7086', '#1e1e2e', 60, 16]]}, 'visual': {'left': [['#181825', '#cba6f7', 16, 183], ['#89b4fa', '#1e1e2e', 111, 16]]}, 'insert': {'left': [['#181825', '#94e2d5', 16, 116], ['#89b4fa', '#1e1e2e', 111, 16]]}}
     endif
 
     try
-        call LongLineHighlightOn()
         call lightline#init()
         call lightline#colorscheme()
         call lightline#update()
@@ -617,8 +599,11 @@ if !has('nvim')
 endif
 
 " Move in quickfix list (copen)
-nnoremap <silent> [q :cprevious<CR>
-nnoremap <silent> ]q :cnext<CR>
+nnoremap <silent> [c :cprevious<CR>
+nnoremap <silent> ]c :cnext<CR>
+" Move in location list (lopen)
+nnoremap <silent> [l :lprevious<CR>
+nnoremap <silent> ]l :lnext<CR>
 
 " Clear highlighting of 'hlsearch' and call :diffupdate
 nnoremap <silent> <leader>h :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><leader>h
@@ -653,9 +638,16 @@ if !has('nvim')
     execute "set <M-u>=\eu"
 endif
 
+" Auto-indent whole file
+nnoremap <silent> <localleader>== gg=G<C-o>
+
 " ----------------
 " # _LATE_IMPORTS_
 " ----------------
+
+" ## Set colorscheme and trigger highlight groups defined with "autocmd ColorScheme"
+"    (must be on the bottom to trigger autocmds)
+colorscheme catppuccin
 
 " ## Import settings not tracked by Git
 if !has('nvim') && !empty(glob("$HOME/.vimrc.gitignore"))

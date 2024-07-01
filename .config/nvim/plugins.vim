@@ -39,16 +39,15 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'lambdalisue/suda.vim' " suport for sudo in neovim
     Plug 'itchyny/lightline.vim' " configurable statusline/tabline
     Plug 'ryanoasis/vim-devicons' " lightline icons
-    Plug 'dracula/vim', { 'as': 'dracula' }
-    Plug 'tinted-theming/base16-vim' " color theme, https://tinted-theming.github.io/base16-gallery/
+    Plug 'dracula/vim', { 'as': 'dracula' } " color theme
     Plug 'vim-python/python-syntax', { 'for': 'python' } " python syntax highlight
-    Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'md'] } " markdown syntax highlight
     Plug 'tpope/vim-fugitive'
     Plug 'cdelledonne/vim-cmake'
     Plug 'ntpeters/vim-better-whitespace'
     Plug 'igankevich/mesonic' " meson build system integration
     Plug 'mbbill/undotree' " the undo history visualizer for VIM
     Plug 'tpope/vim-repeat' " enable repeating supported plugin maps with "."
+    Plug 'catppuccin/nvim', { 'as': 'catppuccin' } " color theme
 
 " ## Extra Vim plugins
 Plug 'shime/vim-livedown' " live preview of markdown
@@ -88,20 +87,20 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} " better parsing for
 Plug 'ThePrimeagen/refactoring.nvim'
 Plug 'Badhi/nvim-treesitter-cpp-tools'
 Plug 'HiPhish/rainbow-delimiters.nvim'
+Plug 'MeanderingProgrammer/markdown.nvim', { 'as': 'render-markdown.nvim' }
+Plug 'tadmccorkle/markdown.nvim'
 
 call plug#end()
 
-" NOTE: Setting colorscheme resets highlight settings, this line must be on top of other settings
-colorscheme dracula
 
 " -------------------
 " # _PLUGIN_SETTINGS_
 " -------------------
 
-" 01. _vim_livedown_
-" 02. _lightline_ale_
-" 03. _vim_one_
-" 04. _base16_vim_
+" 01. _catppuccin_
+" 02. _dracula
+" 03. _vim_livedown_
+" 04. _lightline_ale_
 " 05. _vim_snippets_
 " 06. _ultisnips_
 " 07. _ale_
@@ -130,6 +129,69 @@ colorscheme dracula
 " 30. _vista_vim_
 " 31. _vimspector_
 " 32. _rainbow_delimiters_nvim_
+" 33. _meanderingprogrammer_markdown_nvim_
+" 34. _tadmccorkle_markdown_nvim_
+
+" ---------------
+" ## _catppuccin_
+" ---------------
+
+" ### Settings
+let g:latte = luaeval('require("catppuccin.palettes").get_palette "latte"')
+let g:mocha = luaeval('require("catppuccin.palettes").get_palette "mocha"')
+
+lua << EOF
+require("catppuccin").setup({
+    flavour = "auto", -- latte, frappe, macchiato, mocha
+    background = { -- :h background
+        light = "latte",
+        dark = "mocha",
+    },
+    transparent_background = false, -- disables setting the background color.
+    show_end_of_buffer = false, -- shows the '~' characters after the end of buffers
+    term_colors = false, -- sets terminal colors (e.g. `g:terminal_color_0`)
+    dim_inactive = {
+        enabled = false, -- dims the background color of inactive window
+        shade = "dark",
+        percentage = 0.15, -- percentage of the shade to apply to the inactive window
+    },
+    no_italic = false, -- Force no italic
+    no_bold = false, -- Force no bold
+    no_underline = false, -- Force no underline
+    styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
+        comments = { "italic" }, -- Change the style of comments
+        conditionals = { "italic" },
+        loops = {},
+        functions = {},
+        keywords = {},
+        strings = {},
+        variables = {},
+        numbers = {},
+        booleans = {},
+        properties = {},
+        types = {},
+        operators = {},
+        -- miscs = {}, -- Uncomment to turn off hard-coded styles
+    },
+    color_overrides = {},
+    custom_highlights = {},
+    default_integrations = true,
+    integrations = {
+        gitsigns = true,
+        nvimtree = true,
+        treesitter = true,
+        coc_nvim = true,
+        indent_blankline = {
+            enabled = true,
+            scope_color = "", -- catppuccin color (eg. `lavender`) Default: text
+            colored_indent_levels = false,
+        },
+        markdown = true,
+        rainbow_delimiters = true
+        -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
+    },
+})
+EOF
 
 " -----------------
 " ## _vim_livedown_
@@ -146,14 +208,6 @@ nmap <leader>tm :LivedownToggle<CR>
 " ------------------
 " ## _lightline_ale_
 " ------------------
-
-" ------------
-" ## _vim_one_
-" ------------
-
-" ---------------
-" ## _base16_vim_
-" ---------------
 
 " -----------------
 " ## _vim_snippets_
@@ -213,10 +267,12 @@ let g:ale_list_window_size = 5
 command! ALEDisableFixersBuffer let b:ale_fix_on_save=0
 command! ALEEnableFixersBuffer  let b:ale_fix_on_save=1
 
-highlight ALEError ctermbg=White
-highlight ALEError ctermfg=DarkRed
-highlight ALEWarning ctermbg=LightYellow
-highlight ALEWarning ctermfg=Darkmagenta
+augroup ale_highlight
+    autocmd!
+    autocmd ColorScheme *
+        \ highlight ALEError ctermbg=White ctermfg=DarkRed |
+        \ highlight ALEWarning ctermbg=LightYellow ctermfg=DarkMagenta
+augroup END
 
 " Set linters by file type
 let g:ale_linters = {
@@ -641,7 +697,9 @@ EOF
 
 " ### Settings
 " Fix black background
-highlight link NvimTreeNormalFloat DraculaBg
+if hlexists('DraculaFg')
+    highlight link NvimTreeNormalFloat DraculaBg
+endif
 
 lua << EOF
 -- Disable netrw at the very start of your init.lua (strongly advised)
@@ -755,13 +813,13 @@ require('neorg').setup {
 EOF
 
 " ### Keybindings
-nnoremap <silent> <localleader>nm :Neorg inject-metadata<CR>
-nnoremap <silent> <localleader>t :Neorg toc left <CR> :vertical resize 50<CR>
-nnoremap <silent> <localleader>a i
-" insert anchor
-nnoremap <silent> <localleader>a i<C-v>{<C-v>}<Esc>h"+p
-" autoindent file
-nnoremap <silent> <localleader>i gg=G<C-o>
+augroup neorg_keybindings
+    autocmd!
+    autocmd FileType norg nnoremap <buffer> <silent> <localleader>tc :Neorg toc left <CR> :vertical resize 50<CR>
+    autocmd FileType norg nnoremap <buffer> <silent> <localleader>nm :Neorg inject-metadata<CR>
+    " insert anchor
+    autocmd FileType norg nnoremap <buffer> <silent> <localleader>a i<C-v>{<C-v>}<Esc>h"+p
+augroup END
 
 " --------------------
 " ## _debugprint_nvim_
@@ -835,6 +893,8 @@ require'nvim-treesitter.configs'.setup {
         "json",
         "lua",
         "make",
+        "markdown",
+        "markdown_inline",
         "python",
         "regex",
         "vim",
@@ -1063,13 +1123,211 @@ let g:rainbow_delimiters = {
 \ }
 
 " Link highlight groups to Dracula colors if Dracula is installed
-if hlexists('DraculaRed')
+if hlexists('DraculaFg')
     highlight link RainbowDelimiterRed DraculaFg
     highlight link RainbowDelimiterOrange DraculaOrange
     highlight link RainbowDelimiterYellow DraculaYellow
     highlight link RainbowDelimiterCyan DraculaCyan
     highlight link RainbowDelimiterGreen DraculaGreen
     highlight link RainbowDelimiterViolet DraculaPink
+    highlight link RainbowDelimiterBlue DraculaCyanItalic
 endif
 " ### Keybindings
 nnoremap <silent> <Leader>tr :call rainbow_delimiters#toggle(0)<CR>
+
+" ---------------------------------------
+" ## _meanderingprogrammer_markdown_nvim_
+" ---------------------------------------
+
+" ### Settings
+if hlexists('DraculaFg')
+    highlight link markdownH1 DraculaGreen
+    highlight link markdownH2 DraculaPurple
+    highlight link markdownH3 DraculaCyan
+    highlight link markdownH4 DraculaOrange
+    highlight link markdownH5 DraculaRed
+    highlight link markdownH6 DraculaYellow
+endif
+
+lua << EOF
+require('render-markdown').setup({
+    -- Whether Markdown should be rendered by default or not
+    start_enabled = true,
+    -- Whether LaTeX should be rendered, mainly used for health check
+    latex_enabled = false,
+    -- Maximum file size (in MB) that this plugin will attempt to render
+    -- Any file larger than this will effectively be ignored
+    max_file_size = 1.5,
+    -- The level of logs to write to file: vim.fn.stdpath('state') .. '/render-markdown.log'
+    -- Only intended to be used for plugin development / debugging
+    log_level = 'error',
+    -- Filetypes this plugin will run on
+    file_types = { 'markdown' },
+    -- Vim modes that will show a rendered view of the markdown file
+    -- All other modes will be uneffected by this plugin
+    render_modes = { 'n', 'c' },
+    -- Characters that will replace the # at the start of headings
+    headings = { '󰲡 ', '󰲣 ', '󰲥 ', '󰲧 ', '󰲩 ', '󰲫 ' },
+    -- Character to use for the horizontal break
+    dash = '─',
+    -- Character to use for the bullet points in lists
+    bullets = { '●', '○', '◆', '◇' },
+    checkbox = {
+        -- Character that will replace the [ ] in unchecked checkboxes
+        unchecked = '󰄱 ',
+        -- Character that will replace the [x] in checked checkboxes
+        checked = '󰱒 ',
+    },
+    -- Character that will replace the > at the start of block quotes
+    quote = '┃',
+    -- Symbol / text to use for different callouts
+    callout = {
+        note = '󰋽 Note',
+        tip = '󰌶 Tip',
+        important = '󰅾 Important',
+        warning = '󰀪 Warning',
+        caution = '󰳦 Caution',
+    },
+    -- Window options to use that change between rendered and raw view
+    win_options = {
+        -- See :h 'conceallevel'
+        conceallevel = {
+            -- Used when not being rendered, get user setting
+            default = vim.api.nvim_get_option_value('conceallevel', {}),
+            -- Used when being rendered, concealed text is completely hidden
+            rendered = 3,
+        },
+        -- See :h 'concealcursor'
+        concealcursor = {
+            -- Used when not being rendered, get user setting
+            default = vim.api.nvim_get_option_value('concealcursor', {}),
+            -- Used when being rendered, conceal text in all modes
+            rendered = 'nvic',
+        },
+    },
+    -- Determines how code blocks are rendered
+    --  full: adds language icon above code block if possible + normal behavior
+    --  normal: renders a background
+    --  none: disables rendering
+    code_style = 'full',
+    -- Determines how tables are rendered
+    --  full: adds a line above and below tables + normal behavior
+    --  normal: renders the rows of tables
+    --  none: disables rendering
+    table_style = 'full',
+    -- Determines how table cells are rendered
+    --  overlay: writes over the top of cells removing conealing and highlighting
+    --  raw: will leave the cells as they and only replace table related symbols
+    cell_style = 'overlay',
+    -- Mapping from treesitter language to user defined handlers
+    -- See 'Custom Handlers' section for more info
+    custom_handlers = {},
+    -- Define the highlight groups to use when rendering various components
+    highlights = {
+        heading = {
+            -- Background of heading line
+            backgrounds = {
+                'markdownH1',
+                'markdownH2',
+                'markdownH3',
+                'markdownH4',
+                'markdownH5',
+                'markdownH6',
+            },
+            -- Foreground of heading character only
+            foregrounds = {
+                'markdownH1',
+                'markdownH2',
+                'markdownH3',
+                'markdownH4',
+                'markdownH5',
+                'markdownH6',
+            },
+        },
+        -- Horizontal break
+        dash = 'LineNr',
+        -- Code blocks
+        code = 'ColorColumn',
+        -- Bullet points in list
+        bullet = 'Normal',
+        checkbox = {
+            -- Unchecked checkboxes
+            unchecked = '@markup.list.unchecked',
+            -- Checked checkboxes
+            checked = '@markup.heading',
+        },
+        table = {
+            -- Header of a markdown table
+            head = '@markup.heading',
+            -- Non header rows in a markdown table
+            row = 'Normal',
+        },
+        -- Quote character in a block quote
+        quote = '@markup.quote',
+        -- Highlights to use for different callouts
+        callout = {
+            note = 'DraculaCyan',
+            tip = 'DraculaGreen',
+            important = 'DraculaPurple',
+            warning = 'DraculaOrange',
+            caution = 'DraculaError',
+        },
+    },
+})
+EOF
+
+
+" ------------------------------
+" ## _tadmccorkle_markdown_nvim_
+" ------------------------------
+
+" ### Settings
+lua << EOF
+require('markdown').setup({
+    -- Disable all keymaps by setting mappings field to 'false'.
+    -- Selectively disable keymaps by setting corresponding field to 'false'.
+    mappings = {
+        inline_surround_toggle = false, -- (string|boolean) toggle inline style
+        inline_surround_toggle_line = false, -- (string|boolean) line-wise toggle inline style
+        inline_surround_delete = false, -- (string|boolean) delete emphasis surrounding cursor
+        inline_surround_change = false, -- (string|boolean) change emphasis surrounding cursor
+        link_add = "gl", -- (string|boolean) add link
+        link_follow = "gx", -- (string|boolean) follow link
+        go_curr_heading = "]c", -- (string|boolean) set cursor to current section heading
+        go_parent_heading = "]p", -- (string|boolean) set cursor to parent section heading
+        go_next_heading = "]]", -- (string|boolean) set cursor to next section heading
+        go_prev_heading = "[[", -- (string|boolean) set cursor to previous section heading
+    },
+    link = {
+        paste = {
+            enable = true, -- whether to convert URLs to links on paste
+        },
+    },
+    toc = {
+        -- Comment text to flag headings/sections for omission in table of contents.
+        omit_heading = "toc omit heading",
+        omit_section = "toc omit section",
+        -- Cycling list markers to use in table of contents.
+        -- Use '.' and ')' for ordered lists.
+        markers = { "-" },
+    },
+    -- Hook functions allow for overriding or extending default behavior.
+    -- Called with a table of options and a fallback function with default behavior.
+    -- Signature: fun(opts: table, fallback: fun())
+    hooks = {
+        -- Called when following links. Provided the following options:
+        -- * 'dest' (string): the link destination
+        -- * 'use_default_app' (boolean|nil): whether to open the destination with default application
+        --   (refer to documentation on <Plug> mappings for explanation of when this option is used)
+        follow_link = nil,
+    },
+    on_attach = nil, -- (fun(bufnr: integer)) callback when plugin attaches to a buffer
+})
+EOF
+" ### Keybindings
+
+augroup markdown_keybindings
+    autocmd!
+    autocmd FileType markdown nnoremap <buffer> <silent> <localleader>tc :MDToc<CR>
+    autocmd FileType markdown nnoremap <buffer> <silent> <localleader>tt :MDTaskToggle<CR>
+augroup END

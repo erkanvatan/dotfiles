@@ -515,6 +515,8 @@ function! ToggleBackground()
     endtry
 endfunction
 
+command! ToggleBackground call ToggleBackground()
+
 " ----------------------
 " ## _TermForceCloseAll_
 " ----------------------
@@ -609,7 +611,7 @@ nnoremap <silent> ]l :lnext<CR>
 nnoremap <silent> <leader>h :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><leader>h
 
 " Toggle background theme between light and dark
-nnoremap <silent> <M-t> :call ToggleBackground()<CR>
+nnoremap <silent> <M-t> :ToggleBackground<CR>
 
 " Set bindings for default Vim autocompletion support
 " :help ins-completion

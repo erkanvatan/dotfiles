@@ -999,10 +999,16 @@ let g:fzf_layout = {'up':'~80%', 'window': { 'width': 0.8, 'height': 0.8,'yoffse
 let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
 
 " FZF Buffer Delete
-command! BD call fzf#run(fzf#wrap({
-  \ 'source': s:list_buffers(),
-  \ 'sink*': { lines -> s:delete_buffers(lines) },
-  \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
+command! BuffersDelete call fzf#run(fzf#wrap({
+    \ 'source': s:list_buffers(),
+    \ 'sink*': { lines -> s:delete_buffers(lines) },
+    \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
+\ }))
+
+" FZF List only modified buffers
+command! BuffersModified call fzf#run(fzf#wrap({
+    \ 'source': s:list_modified_buffers(),
+    \ 'sink': { key -> execute('b ' .. key) }
 \ }))
 
 " Don't consider filename as a match in :Rg command
@@ -1021,6 +1027,13 @@ function! s:delete_buffers(lines)
   execute 'bdelete' join(map(a:lines, {_, line -> split(line)[0]}))
 endfunction
 
+function! s:list_modified_buffers()
+  redir => list
+  silent ls +
+  redir END
+  return map(split(list, "\n"), { _, line -> split(line, '"')[1]})
+endfunction
+
 " ### Keybindings
 " Select multiple things with Shift + TAB
 " Open entries in split panes with TAB
@@ -1034,6 +1047,7 @@ nnoremap <leader>fT :Tags!<CR>
 nnoremap <leader>fl :BLines!<CR>
 nnoremap <leader>fL :Lines<CR>
 nnoremap <leader>fb :Buffers!<CR>
+nnoremap <leader>fB :BuffersModified<CR>
 nnoremap <leader>fg :Rg!<CR>
 " Git Bindings
 nnoremap <leader>gf :GFiles!?<CR>

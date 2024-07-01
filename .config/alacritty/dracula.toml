@@ -12,16 +12,6 @@ background = "#282a36"
 foreground = "#f8f8f2"
 bright_foreground = "#ffffff"
 
-[colors.cursor]
-
-text = "#282a36"
-cursor = "#f8f8f2"
-
-[colors.vi_mode_cursor]
-
-text = "CellBackground"
-cursor = "CellForeground"
-
 [colors.selection]
 
 text = "CellForeground"

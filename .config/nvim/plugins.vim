@@ -263,6 +263,11 @@ let g:ale_html_tidy_options = "-config $HOME/projects/web/dotfiles/jinja/.tidyrc
 let g:ale_c_clangformat_options = "-style='{BasedOnStyle: WebKit, ColumnLimit: 120, BreakBeforeBraces: Stroustrup, IndentWidth: 4, IndentCaseLabels: false, PointerAlignment: Left, SpaceBeforeAssignmentOperators: true, AllowShortBlocksOnASingleLine: Never, AllowShortFunctionsOnASingleLine: InlineOnly, AlwaysBreakTemplateDeclarations: Yes}'"
 " let g:ale_c_clangformat_options = "--assume-filename=$HOME/.config/.clang-format"
 
+let g:ale_cpp_astyle_project_options = ".astyle.ini"
+let g:ale_c_astyle_project_options = ".astyle.ini"
+
+let g:ale_c_uncrustify_options = "-c $HOME/.config/.uncrustify.cfg"
+
 " Rust
 let g:ale_rust_analyzer_executable = "$HOME/.config/coc/extensions/coc-rust-analyzer-data/rust-analyzer"
 let g:ale_rust_rustfmt_options = "--config wrap_comments=true,format_code_in_doc_comments=true,overflow_delimited_expr=true"
@@ -417,7 +422,7 @@ nmap <silent> ]d <Plug>(coc-diagnostic-next)
 
 " Jump bindings, to go back to previous location use Ctrl+O
 nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gt <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
@@ -991,7 +996,7 @@ let g:fzf_action = {
 " ctrl + d to delete the branch under cursor
 " alt + enter to track a remote branch locally
 
-nnoremap <leader>gc :GBranches<CR>
+nnoremap <leader>gb :GBranches<CR>
 
 " --------------
 " ## _vista_vim_

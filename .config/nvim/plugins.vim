@@ -129,8 +129,8 @@ call plug#end()
 " 30. _vista_vim_
 " 31. _vimspector_
 " 32. _rainbow_delimiters_nvim_
-" 33. _meanderingprogrammer_markdown_nvim_
-" 34. _tadmccorkle_markdown_nvim_
+" 33. _render_markdown_nvim_
+" 34. _markdown_nvim_
 
 " ---------------
 " ## _catppuccin_
@@ -1015,6 +1015,10 @@ command! BuffersModified call fzf#run(fzf#wrap({
 command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case "
     \ .shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
 
+" :RG command with --max-depth option given as parameter
+command! -bang -nargs=1 RGd call fzf#vim#grep2("rg --column --line-number --no-heading --color=always --smart-case --max-depth "
+    \ .(<q-args>), '', {}, <bang>0)
+
 " ### Functions
 function! s:list_buffers()
   redir => list
@@ -1149,9 +1153,9 @@ endif
 " ### Keybindings
 nnoremap <silent> <Leader>tr :call rainbow_delimiters#toggle(0)<CR>
 
-" ---------------------------------------
-" ## _meanderingprogrammer_markdown_nvim_
-" ---------------------------------------
+" -------------------------
+" ## _render_markdown_nvim_
+" -------------------------
 
 " ### Settings
 if hlexists('DraculaFg')
@@ -1280,20 +1284,20 @@ require('render-markdown').setup({
         quote = '@markup.quote',
         -- Highlights to use for different callouts
         callout = {
-            note = 'DraculaCyan',
-            tip = 'DraculaGreen',
-            important = 'DraculaPurple',
-            warning = 'DraculaOrange',
-            caution = 'DraculaError',
+            note = 'Cyan',
+            tip = 'Green',
+            important = 'Purple',
+            warning = 'Orange',
+            caution = 'Red',
         },
     },
 })
 EOF
 
 
-" ------------------------------
-" ## _tadmccorkle_markdown_nvim_
-" ------------------------------
+" ------------------
+" ## _markdown_nvim_
+" ------------------
 
 " ### Settings
 lua << EOF
@@ -1307,8 +1311,8 @@ require('markdown').setup({
         inline_surround_change = false, -- (string|boolean) change emphasis surrounding cursor
         link_add = "gl", -- (string|boolean) add link
         link_follow = "gx", -- (string|boolean) follow link
-        go_curr_heading = "]c", -- (string|boolean) set cursor to current section heading
-        go_parent_heading = "]p", -- (string|boolean) set cursor to parent section heading
+        go_curr_heading = false, -- (string|boolean) set cursor to current section heading
+        go_parent_heading = false, -- (string|boolean) set cursor to parent section heading
         go_next_heading = "]]", -- (string|boolean) set cursor to next section heading
         go_prev_heading = "[[", -- (string|boolean) set cursor to previous section heading
     },

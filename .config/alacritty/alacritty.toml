@@ -17,7 +17,7 @@
 # _TERMINAL_CONFIGS_
 # ------------------
 
-import = [ "~/.config/alacritty/dracula.toml" ]
+import = [ "~/.config/alacritty/themes/catppuccin-mocha.toml" ]
 
 [env]
 TERM = "xterm-256color"
@@ -46,31 +46,37 @@ unfocused_hollow = true
 # -------------
 # _KEYBINDINGS_
 # -------------
+# https://www.toptal.com/developers/keycode Check event.code to identify keycodes
 
 [[keyboard.bindings]]
-key = "V"
-mods = "Control|Alt"
-action = "Paste"
-
-[[keyboard.bindings]]
-key = "C"
-mods = "Control|Alt"
-action = "Copy"
-
-[[keyboard.bindings]]
-key = "Numpad0"
-mods = "Control"
-action = "ResetFontSize"
+key = "F11"
+mods = "Control|Shift"
+action = "DecreaseFontSize"
 
 [[keyboard.bindings]]
 key = "F12"
-mods = "Control"
+mods = "Control|Shift"
 action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = "F10"
+mods = "Control|Shift"
+action = "ResetFontSize"
 
 [[keyboard.bindings]]
 key = "NumpadSubtract"
 mods = "Control"
 action = "DecreaseFontSize"
+
+[[keyboard.bindings]]
+key = "NumpadAdd"
+mods = "Control"
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Numpad0"
+mods = "Control"
+action = "ResetFontSize"
 
 [[keyboard.bindings]]
 key = "Space"

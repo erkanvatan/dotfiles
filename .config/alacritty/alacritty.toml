@@ -5,6 +5,8 @@
 # (encountered in VirtualBox Ubuntu 22.04 machine). To solve this bug, run the program with:
 #   LIBGL_ALWAYS_SOFTWARE=1 alacritty
 
+# NOTE: Delete cursor color sections from imported themes, otherwise cursor color in Vim breaks
+
 # -----------------------
 # ALACRITTY.TOML CONTENTS
 # -----------------------

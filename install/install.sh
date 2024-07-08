@@ -6,6 +6,15 @@
 # installed in root home directory.        #
 ############################################
 
+#
+# Xfce4 Themes:
+#   - Appearance
+#       - Style: Adwaita-Dark
+#       - Icons: Papirus-Dark
+#   - Window Manager
+#       - Style: Yaru-Dark
+#
+
 DISTRO=${1^^} # turn to all uppercase
 EMAIL=${2}
 

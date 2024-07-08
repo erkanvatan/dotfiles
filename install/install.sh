@@ -119,8 +119,8 @@ fi
 
 # install nvm
 if ! [ -d "$HOME/.nvm" ]; then
-    echo '# INSTALLING NVM (V0.39.1) #'
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+    echo '# INSTALLING NVM (V0.39.7) #'
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
     # initialize nvm
     export NVM_DIR="$HOME/.nvm"
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -169,6 +169,11 @@ eval "$(pyenv virtualenv-init -)"
     # install pyenv plugins
     git clone https://github.com/alefpereira/pyenv-pyright.git $(pyenv root)/plugins/pyenv-pyright
     pyenv update
+
+    # install latest python version
+    local latest_python_version=$(pyenv install --list | grep -v - | grep -v a | grep -v b | tail -1 | tr -d ' ')
+    pyenv install $latest_python_version
+    pyenv global $latest_python_version
 else
     echo '# W: PYENV ALREADY INSTALLED, UPDATING #'
     pyenv update
@@ -214,35 +219,7 @@ else
     printf 'You can update by calling:\n\tcd $HOME/.fzf && git pull\n\t./install\n'
 fi
 
-# install calibre
-if ! [ -x "$(command -v calibre)" ]; then
-    echo '# INSTALLING LATEST CALIBRE #'
-    sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin
-else
-    echo '# W: CALIBRE ALREADY INSTALLED #'
-fi
-
 echo '>>> REPOSITORIES FROM WEB FINISHED <<<'
-
-# install discord
-if ! [ -x "$(command -v discord)" ]; then
-    echo '# INSTALLING LATEST DISCORD #'
-    sudo -v
-    wget -O discord.deb "https://discord.com/api/download?platform=linux&format=deb"
-    sudo gdebi discord.deb
-else
-    echo '# W: DISCORD ALREADY INSTALLED #'
-fi
-
-# install zoom
-if ! [ -x "$(command -v zoom)" ]; then
-    echo '# INSTALLING LATEST ZOOM #'
-    sudo -v
-    wget -O zoom.deb https://zoom.us/client/latest/zoom_amd64.deb
-    sudo gdebi zoom.deb
-else
-    echo '# W: ZOOM ALREADY INSTALLED #'
-fi
 
 # install rustup
 # if ! [ -x "$(command -v rustup)" ]; then
@@ -252,7 +229,6 @@ fi
 # else
     # echo '# W: RUSTUP ALREADY INSTALLED #'
 # fi
-
 
 ### Installing applications using npm
 echo '### NPM APPS ###'
@@ -353,6 +329,8 @@ echo '>>> PIP APPS FINISHED <<<'
 echo '### CARGO APPS ###'
 cargo install alacritty
 cargo install neocmakelsp
+cargo install mdbook
+cargo install mdbook-callouts
 echo '>>> CARGO APPS FINISHED <<<'
 
 ### Installing rustup components

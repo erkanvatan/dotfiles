@@ -45,14 +45,8 @@ exec 1>$LOG_DIR/apt_install.log
 pushd $TEMP_DIR >/dev/null
 
 echo '# ADDING PPA REPOS #' 1>/dev/tty
-# cherrytree
-add-apt-repository -y ppa:giuspen/ppa
 # crow-translate
 add-apt-repository -y ppa:jonmagon/crow-translate
-# open broadcaster software (obs-studio)
-add-apt-repository -y ppa:obsproject/obs-studio
-# openshot
-add-apt-repository -y ppa:openshot.developers/ppa
 # tlp
 add-apt-repository -y ppa:linrunner/tlp
 # tlpui
@@ -124,37 +118,29 @@ apt-get -qq --yes install tlp tlp-rdw
 apt-get -qq --yes install numlockx
 apt-get -qq --yes install pgformatter
 apt-get -qq --yes install flac
-apt-get -qq --yes install xboxdrv
-apt-get -qq --yes install postgresql postgresql-contrib
 apt-get -qq --yes install hwinfo
 apt-get -qq --yes install rar
 apt-get -qq --yes install clang-format
 apt-get -qq --yes install colordiff
 apt-get -qq --yes install cppcheck
 apt-get -qq --yes install debian-goodies
-apt-get -qq --yes install exa
+apt-get -qq --yes install eza
 apt-get -qq --yes install picocom
+apt-get -qq --yes install python3-argcomplete
 
 
 # GUI APPS
-apt-get -qq --yes install cherrytree
 apt-get -qq --yes install keepassxc
 apt-get -qq --yes install crow-translate
 apt-get -qq --yes install gsmartcontrol
-apt-get -qq --yes install obs-studio
-apt-get -qq --yes install openshot-qt python3-openshot
 apt-get -qq --yes install picard
 apt-get -qq --yes install qbittorrent
-apt-get -qq --yes install steam
 apt-get -qq --yes install tlpui
 apt-get -qq --yes install gparted
-apt-get -qq --yes install xournalpp
 apt-get -qq --yes install quodlibet
-apt-get -qq --yes install zathura
 apt-get -qq --yes install thunderbird
 apt-get -qq --yes install peek
 apt-get -qq --yes install feh
-apt-get -qq --yes install chromium
 apt-get -qq --yes install gimp
 
 # installing dependencies
@@ -171,14 +157,7 @@ apt-get -qq --yes install cmake pkg-config libfreetype6-dev libfontconfig1-dev l
 apt-get -qq --yes install coreutils xdotool
 apt-get -qq --yes install libxcb-util-dev libxcb-cursor-dev
 
-#   onedrive
-apt-get -qq --yes install build-essential libcurl4-openssl-dev libsqlite3-dev \
-pkg-config git curl libnotify-dev
-
-# usbip
-apt-get -qq --yes install linux-tools-generic
-
-# PyQt5 
+# PyQt5
 apt-get -qq --yes install libxcb-xinerama0
 
 # PostgreSQL

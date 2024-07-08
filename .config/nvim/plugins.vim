@@ -815,7 +815,6 @@ EOF
 " ### Keybindings
 augroup neorg_keybindings
     autocmd!
-    autocmd FileType norg nnoremap <buffer> <silent> <localleader>tc :Neorg toc left <CR> :vertical resize 50<CR>
     autocmd FileType norg nnoremap <buffer> <silent> <localleader>nm :Neorg inject-metadata<CR>
     " insert anchor
     autocmd FileType norg nnoremap <buffer> <silent> <localleader>a i<C-v>{<C-v>}<Esc>h"+p
@@ -1346,6 +1345,6 @@ EOF
 
 augroup markdown_keybindings
     autocmd!
-    autocmd FileType markdown nnoremap <buffer> <silent> <localleader>tc :MDToc<CR>
+    autocmd FileType markdown nnoremap <buffer> <silent> gO :MDToc<CR>
     autocmd FileType markdown nnoremap <buffer> <silent> <localleader>tt :MDTaskToggle<CR>
 augroup END

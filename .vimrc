@@ -326,8 +326,9 @@ augroup END
 " ### Keybindings
 " Move cursor on a word and hit <C-n> or <C-m> to toggle between pair of
 "   words or even increment-decrement a number
-nnoremap <C-n> <Plug>CyclePrevious
-nnoremap <C-m> <Plug>CycleNext
+let g:cycle_no_mappings = 1
+nnoremap <C-b> <Plug>CyclePrevious
+nnoremap <C-n> <Plug>CycleNext
 
 " -------------
 " ## _suda_vim_

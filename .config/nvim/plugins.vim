@@ -1007,7 +1007,8 @@ command! BuffersDelete call fzf#run(fzf#wrap({
 " FZF List only modified buffers
 command! BuffersModified call fzf#run(fzf#wrap({
     \ 'source': s:list_modified_buffers(),
-    \ 'sink': { key -> execute('b ' .. key) }
+    \ 'sink': { key -> execute('b ' .. key) },
+    \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
 \ }))
 
 " Don't consider filename as a match in :Rg command
@@ -1017,6 +1018,13 @@ command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-hea
 " :RG command with --max-depth option given as parameter
 command! -bang -nargs=1 RGd call fzf#vim#grep2("rg --column --line-number --no-heading --color=always --smart-case --max-depth "
     \ .(<q-args>), '', {}, <bang>0)
+
+let s:config="/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
+command! ConfigEdit call fzf#run(fzf#wrap({
+    \ 'source': s:config . ' ls-tree --name-only -r --full-name master $HOME',
+    \ 'sink': { key -> execute('e ' .. key) },
+    \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
+\ }))
 
 " ### Functions
 function! s:list_buffers()

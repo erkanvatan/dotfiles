@@ -134,6 +134,7 @@ if !has('nvim')
     call plug#begin('~/.vim/plugged')
 
     " ## Plugins shared with Neovim
+    Plug 'tpope/vim-repeat' " enable repeating supported plugin maps with "."
     Plug 'tpope/vim-sensible'
     Plug '907th/vim-auto-save'
     Plug 'mhinz/vim-startify' " change default vim starting screen
@@ -154,7 +155,6 @@ if !has('nvim')
     Plug 'ntpeters/vim-better-whitespace'
     Plug 'igankevich/mesonic' " meson build system integration
     Plug 'mbbill/undotree' " the undo history visualizer for VIM
-    Plug 'tpope/vim-repeat' " enable repeating supported plugin maps with "."
     Plug 'catppuccin/nvim', { 'as': 'catppuccin' } " color theme
 
     " ## Vim only plugins

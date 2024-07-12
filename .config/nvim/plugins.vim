@@ -26,6 +26,7 @@ endif
 call plug#begin('~/.config/nvim/plugged')
 
     " ## Plugins shared with Vim
+    Plug 'tpope/vim-repeat' " enable repeating supported plugin maps with "."
     Plug 'tpope/vim-sensible'
     Plug '907th/vim-auto-save'
     Plug 'mhinz/vim-startify' " change default vim starting screen
@@ -46,7 +47,6 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'ntpeters/vim-better-whitespace'
     Plug 'igankevich/mesonic' " meson build system integration
     Plug 'mbbill/undotree' " the undo history visualizer for VIM
-    Plug 'tpope/vim-repeat' " enable repeating supported plugin maps with "."
     Plug 'catppuccin/nvim', { 'as': 'catppuccin' } " color theme
 
 " ## Extra Vim plugins
@@ -1022,7 +1022,7 @@ command! -bang -nargs=1 RGd call fzf#vim#grep2("rg --column --line-number --no-h
 let s:config="/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
 command! ConfigEdit call fzf#run(fzf#wrap({
     \ 'source': s:config . ' ls-tree --name-only -r --full-name master $HOME',
-    \ 'sink': { key -> execute('e ' .. key) },
+    \ 'sink': { key -> execute('e ' . $HOME . '/' . key) },
     \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
 \ }))
 

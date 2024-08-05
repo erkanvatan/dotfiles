@@ -56,6 +56,7 @@
   "python.linting.pylintEnabled": false,
   "python.linting.flake8Enabled": false,
   "python.analysis.typeCheckingMode": "off",
+  "pyright.inlayHints.variableTypes": false,
 
   "html.format.enable": false,
   "html.filetypes": [

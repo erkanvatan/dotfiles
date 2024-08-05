@@ -17,7 +17,7 @@ height=$(wattr h "$ROOT")
 # my_term=urxvt
 # my_term=sakura
 my_term="alacritty"
-my_term_path="$HOME/bin/launch_alacritty_vm.sh"
+my_term_path="$HOME/.cargo/bin/alacritty"
 # my_term=terminator
 # my_term=gnome-terminal
 

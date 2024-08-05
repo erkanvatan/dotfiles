@@ -156,6 +156,7 @@ if !has('nvim')
     Plug 'igankevich/mesonic' " meson build system integration
     Plug 'mbbill/undotree' " the undo history visualizer for VIM
     Plug 'catppuccin/nvim', { 'as': 'catppuccin' } " color theme
+    Plug 'NoahTheDuke/vim-just' " just command runner support
 
     " ## Vim only plugins
     Plug 'tpope/vim-vinegar'

@@ -48,6 +48,7 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'igankevich/mesonic' " meson build system integration
     Plug 'mbbill/undotree' " the undo history visualizer for VIM
     Plug 'catppuccin/nvim', { 'as': 'catppuccin' } " color theme
+    Plug 'NoahTheDuke/vim-just' " just command runner support
 
 " ## Extra Vim plugins
 Plug 'shime/vim-livedown' " live preview of markdown
@@ -299,7 +300,7 @@ let g:ale_fixers = {
 \   'css': ['stylelint'],
 \   'scss': ['stylelint'],
 \   'sql': ['pgformatter'],
-\   'python': ['autopep8'],
+\   'python': ['black'],
 \   'rust': ['rustfmt'],
 \   'latex': ['chktex'],
 \   'sh': ['shfmt'],
@@ -310,6 +311,7 @@ let g:ale_fixers = {
 " Python
 let g:ale_python_flake8_options = '--max-line-length 120 --ignore=E501'
 let g:ale_python_autopep8_options = '--max-line-length 120'
+let g:ale_python_black_options = '--line-length 120'
 
 " HTML
 let g:ale_html_beautify_options = '--indent-size 2 --max-preserve-newlines 2 --wrap-line-length 120'

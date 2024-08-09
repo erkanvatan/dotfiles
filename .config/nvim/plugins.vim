@@ -72,7 +72,8 @@ Plug 'puremourning/vimspector' " A multi-language debugging system for Vim
 Plug 'mattn/emmet-vim' " good for html tags
 Plug 'othree/html5.vim', {'for': ['html', 'html5', 'htm']} " html5 syntax highlight
 Plug 'pangloss/vim-javascript' " javascript syntax highlight
-Plug 'Glench/Vim-Jinja2-Syntax' " Jinja2 syntax highlight
+" NOTE: Vim-Jinja2-Syntax conflicts with coc-htmldjango extension
+" Plug 'Glench/Vim-Jinja2-Syntax' " Jinja2 syntax highlight
 Plug 'inkarkat/vim-SyntaxRange'
 " Plug 'HerringtonDarkholme/yats.vim' " typescript syntax highlighting
 
@@ -300,7 +301,7 @@ let g:ale_fixers = {
 \   'css': ['stylelint'],
 \   'scss': ['stylelint'],
 \   'sql': ['pgformatter'],
-\   'python': ['black'],
+\   'python': ['black', 'isort'],
 \   'rust': ['rustfmt'],
 \   'latex': ['chktex'],
 \   'sh': ['shfmt'],
@@ -315,7 +316,7 @@ let g:ale_python_black_options = '--line-length 120'
 
 " HTML
 let g:ale_html_beautify_options = '--indent-size 2 --max-preserve-newlines 2 --wrap-line-length 120'
-let g:ale_html_tidy_options = "-config $HOME/projects/web/dotfiles/jinja/.tidyrc"
+let g:ale_html_tidy_options = ""
 
 " C/C++
 let g:ale_c_clangformat_options = "-style='{BasedOnStyle: WebKit, ColumnLimit: 120, BreakBeforeBraces: Stroustrup, IndentWidth: 4, IndentCaseLabels: false, PointerAlignment: Left, SpaceBeforeAssignmentOperators: true, AllowShortBlocksOnASingleLine: Never, AllowShortFunctionsOnASingleLine: InlineOnly, AlwaysBreakTemplateDeclarations: Yes}'"
@@ -324,7 +325,7 @@ let g:ale_c_clangformat_options = "-style='{BasedOnStyle: WebKit, ColumnLimit: 1
 let g:ale_cpp_astyle_project_options = ".astyle.ini"
 let g:ale_c_astyle_project_options = ".astyle.ini"
 
-let g:ale_c_uncrustify_options = "-c $HOME/.config/.uncrustify.cfg"
+let g:ale_c_uncrustify_options = "-c .uncrustify.cfg"
 
 " Rust
 let g:ale_rust_analyzer_executable = "$HOME/.config/coc/extensions/coc-rust-analyzer-data/rust-analyzer"
@@ -374,6 +375,12 @@ augroup coc_nvim_group
     autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
 augroup END
 
+augroup coc_fix_on_save
+    autocmd!
+    autocmd BufWritePre *.html if &ft == "htmldjango" |
+        \ CocCommand htmldjango.djlint.format | endif
+augroup END
+
 let g:coc_user_config = {}
 " CoC extensions to install automatically
 let g:coc_global_extensions = [
@@ -388,6 +395,7 @@ let g:coc_global_extensions = [
     \ 'coc-eslint',
     \ 'coc-git',
     \ 'coc-html',
+    \ 'coc-htmldjango',
     \ 'coc-json',
     \ 'coc-lists',
     \ 'coc-marketplace',
@@ -645,9 +653,19 @@ let g:user_emmet_leader_key=','
 " ## _vim_jinja2_syntax_
 " ----------------------
 
-" ---------------------
-" ## _vim_syntax_range_
-" ---------------------
+augroup editor_configs_vim_options
+    autocmd!
+    " Set the filetype based on the file extension, overriding any
+    " 'filetype' that has already been set
+    " autocmd BufRead,BufNewFile *.html set filetype=html.javascript.jinja
+
+    " Set partial syntax by file extension
+    " autocmd FileType jinja.html call SyntaxRange#Include('{%', '%}', 'jinja') |
+        " \ call SyntaxRange#Include('{{', '}}', 'jinja')
+augroup END
+" --------------------
+" ## _vim_syntaxrange_
+" --------------------
 
 " -------------
 " ## _yats_vim_
@@ -883,21 +901,30 @@ EOF
 lua << EOF
 require'nvim-treesitter.configs'.setup {
     -- Additional parsers:
-    -- :TSInstall bibtex c_sharp css http html java latex norg rust scss sql typescript javascript
+    -- :TSInstall bibtex c_sharp java latex rust
     ensure_installed = {
         "bash",
         "c",
+        "css",
         "cmake",
         "comment",
         "cpp",
         "dockerfile",
+        "html",
+        "http",
+        "htmldjango",
         "json",
         "lua",
+        "norg",
         "make",
         "markdown",
         "markdown_inline",
         "python",
         "regex",
+        "sql",
+        "scss",
+        "typescript",
+        "javascript",
         "vim",
         "vimdoc",
         "yaml"

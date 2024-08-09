@@ -59,12 +59,7 @@ augroup editor_configs_vim_options
 
     " Set the filetype based on the file extension, overriding any
     " 'filetype' that has already been set
-    autocmd BufRead,BufNewFile *.html set filetype=html.javascript.jinja
     autocmd BufRead,BufNewFile *.launch set filetype=xml
-
-    " Set partial syntax by file extension
-    autocmd BufRead,BufNewFile *.html call SyntaxRange#Include('{%', '%}', 'jinja') |
-        \ call SyntaxRange#Include('{{', '}}', 'jinja')
 
     " Set which files will use highlight from start of file (fix for Javascript
     " inside HTML syntax)
@@ -285,7 +280,7 @@ let g:AutoPairsMapCR = 0
 let g:floaterm_gitcommit='floaterm'
 let g:floaterm_width=0.9
 let g:floaterm_height=0.9
-let g:floaterm_autoclose=2
+let g:floaterm_autoclose=1
 
 " ### Keybindings
 let g:floaterm_keymap_toggle = '<C-f>'
@@ -531,10 +526,14 @@ function! s:TermForceCloseAll() abort
     endfor
 endfunction
 
-augroup term_force_close_all
-    autocmd!
-    autocmd QuitPre * call <sid>TermForceCloseAll()
-augroup END
+if !has('nvim')
+    " NOTE: If Floaterm term buffer is running it causes Vim to not close with :qall
+    augroup term_force_close_all
+        autocmd!
+        " TODO: it causes term to close when any window is closed even if you don't exit Vim
+        autocmd QuitPre * call <sid>TermForceCloseAll()
+    augroup END
+endif
 
 " ---------------
 " # _KEYBINDINGS_

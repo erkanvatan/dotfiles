@@ -25,8 +25,8 @@ help_menu()
     printf "\tvim      - prepare Vim and Neovim plugins and CoC extensions\n"
     printf "\ttmux     - prepare tmux plugins\n"
     printf "\ttldr     - prepare tldr cache\n"
-    printf "\tprezto   - update and prepare prezto framework for Zsh\n"
-    printf "\tcargo    - update and prepare cargo binary crates\n"
+    printf "\tprezto   - prepare prezto framework for Zsh\n"
+    printf "\tcargo    - prepare cargo binary crates\n"
 }
 
 # --------------
@@ -131,7 +131,7 @@ if [ ! -z "$1" ]; then
         main
     fi
     echo "### tar package started... ###"
-    tar caf package-v$version.tar.gz -C $script_path install_offline.sh package
+    tar caf arensonz-dotfiles-package-v$version.tar.gz -C $script_path install_offline.sh package
     echo "### tar package finished ###"
     echo ""
 else

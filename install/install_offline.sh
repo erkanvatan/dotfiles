@@ -15,7 +15,7 @@ dir_package=$script_path/package
 
 help_menu()
 {
-    echo "Offline install programs"
+    echo "Installs programs without Internet connection"
     echo ""
     echo "Usage: $script_bin <function name>"
     echo ""

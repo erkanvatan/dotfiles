@@ -12,6 +12,7 @@ failure=1
 script_bin=$0
 script_path=$(realpath $(dirname $script_bin))
 dir_package=$script_path/package
+backup_dir=/tmp/arensonz-dotfiles-package-v$version
 
 help_menu()
 {
@@ -34,6 +35,11 @@ help_menu()
 # --------------
 main()
 {
+    mkdir -p $backup_dir
+    mv ~/dotfiles $backup_dir
+    mv ~/.zprezto $backup_dir
+    mv ~/.zprezto-contrib $backup_dir
+    mv ~/.tmux $backup_dir
     function_wrapper dotfiles && \
     function_wrapper vim && \
     function_wrapper tmux && \

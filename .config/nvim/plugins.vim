@@ -287,7 +287,7 @@ let g:ale_linters = {
 \   'scss': ['stylelint'],
 \   'rust': ['analyzer'],
 \   'latex': ['chktex'],
-\   'sh': ['shell'],
+\   'sh': ['shellcheck'],
 \   'c': [],
 \   'cpp': []
 \}
@@ -306,13 +306,14 @@ let g:ale_fixers = {
 \   'latex': ['chktex'],
 \   'sh': ['shfmt'],
 \   'c': ['clang-format'],
-\   'cpp': ['clang-format']
+\   'cpp': ['clang-format'],
+\   'json': ['jq']
 \}
 
 " Python
 let g:ale_python_flake8_options = '--max-line-length 120 --ignore=E501'
 let g:ale_python_autopep8_options = '--max-line-length 120'
-let g:ale_python_black_options = '--line-length 120'
+let g:ale_python_black_options = '--line-length 120 --target-version py310'
 
 " HTML
 let g:ale_html_beautify_options = '--indent-size 2 --max-preserve-newlines 2 --wrap-line-length 120'
@@ -330,6 +331,9 @@ let g:ale_c_uncrustify_options = "-c .uncrustify.cfg"
 " Rust
 let g:ale_rust_analyzer_executable = "$HOME/.config/coc/extensions/coc-rust-analyzer-data/rust-analyzer"
 let g:ale_rust_rustfmt_options = "--config wrap_comments=true,format_code_in_doc_comments=true,overflow_delimited_expr=true"
+
+" Bash/Sh
+let g:ale_sh_shfmt_options = "-i 4 -fn -sr -ci"
 
 " Javascript
 let g:ale_javascript_prettier_use_local_config = 1
@@ -396,10 +400,10 @@ let g:coc_global_extensions = [
     \ 'coc-git',
     \ 'coc-html',
     \ 'coc-htmldjango',
+    \ 'coc-jedi',
     \ 'coc-json',
     \ 'coc-lists',
     \ 'coc-marketplace',
-    \ 'coc-pyright',
     \ 'coc-rust-analyzer',
     \ 'coc-sh',
     \ 'coc-snippets',
@@ -426,14 +430,6 @@ command! -nargs=0 OR   :call CocActionAsync('runCommand', 'editor.action.organiz
 " ### Functions
 function! EnableCocDiagnosticBuffer()
     call coc#config('diagnostic', { 'enable': v:true })
-endfunction
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
 endfunction
 
 function! CheckBackspace() abort

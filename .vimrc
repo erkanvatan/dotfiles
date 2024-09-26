@@ -45,10 +45,10 @@ set hlsearch " Keep search highlight
 set list " Show whitespace characters
 set showcmd " show keypresses in status line
 
-augroup editor_configs_vim_options
+augroup editor_configs
     autocmd!
     " Do not continue newlines with comment character
-    autocmd FileType * set formatoptions-=cro
+    autocmd FileType * setlocal formatoptions-=cro
 
     " Set width to break lines
     autocmd FileType * setlocal textwidth=120
@@ -106,6 +106,9 @@ set nobackup " Disable backup files
 set nowritebackup " Disable backup files
 set shortmess+=c " Disable hit ENTER prompts for completion
 set signcolumn=yes " Always show sign column, otherwise it will shift text
+
+" ## Commands
+command! V e $MYVIMRC | cd %:h
 
 " -----------
 " # _PLUGINS_

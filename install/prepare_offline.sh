@@ -80,6 +80,7 @@ prezto()
     # zprezto-update
     home_get ~/.zprezto
     home_get ~/.zprezto-contrib
+    home_get ~/.cache/gitstatus
 }
 
 cargo()

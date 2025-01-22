@@ -45,28 +45,6 @@ set hlsearch " Keep search highlight
 set list " Show whitespace characters
 set showcmd " show keypresses in status line
 
-augroup editor_configs
-    autocmd!
-    " Do not continue newlines with comment character
-    autocmd FileType * setlocal formatoptions-=cro
-
-    " Set width to break lines
-    autocmd FileType * setlocal textwidth=120
-
-    " Set in which file types should lines auto break
-    autocmd FileType norg setlocal fo+=t
-    autocmd FileType toml setlocal fo-=t
-
-    " Set the filetype based on the file extension, overriding any
-    " 'filetype' that has already been set
-    autocmd BufRead,BufNewFile *.launch set filetype=xml
-
-    " Set which files will use highlight from start of file (fix for Javascript
-    " inside HTML syntax)
-    autocmd BufRead,BufNewFile *.html syntax sync fromstart
-
-augroup END
-
 " ## Colors
 set termguicolors " enable true-color support
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum" " set foreground color
@@ -85,16 +63,6 @@ set softtabstop=4
 set shiftwidth=4
 set expandtab
 set smartindent
-
-" ### Set language-specific indendation
-augroup lang_indentation_by_filetype
-    autocmd!
-    autocmd Filetype css,scss,javascript,typescript,html,json,xml,norg,cmake
-        \ setlocal tabstop=2 shiftwidth=2 softtabstop=2
-    autocmd Filetype meson
-        \ setlocal tabstop=4 shiftwidth=4 softtabstop=4
-    autocmd BufRead,BufNewFile *.html setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-augroup END
 
 " ## Visual settings
 set showtabline=2 " Always show tab line
@@ -164,6 +132,37 @@ else
     " Source Neovim plugins
     source $HOME/.config/nvim/plugins.vim
 endif
+
+augroup lang_indentation_by_filetype
+    autocmd!
+    autocmd Filetype css,scss,javascript,typescript,html,json,xml,norg,cmake
+        \ setlocal tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd Filetype meson
+        \ setlocal tabstop=4 shiftwidth=4 softtabstop=4
+    autocmd BufRead,BufNewFile *.html setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+augroup END
+
+augroup editor_configs_vim_options
+    autocmd!
+    " Do not continue newlines with comment character
+    autocmd FileType * set formatoptions-=cro
+
+    " Set width to break lines
+    autocmd FileType * set textwidth=120
+
+    " Set in which file types should lines auto break
+    autocmd FileType norg setlocal fo+=t
+    autocmd FileType toml setlocal fo-=t
+
+    " Set the filetype based on the file extension, overriding any
+    " 'filetype' that has already been set
+    autocmd BufRead,BufNewFile *.launch set filetype=xml
+
+    " Set which files will use highlight from start of file (fix for Javascript
+    " inside HTML syntax)
+    autocmd BufRead,BufNewFile *.html syntax sync fromstart
+
+augroup END
 
 " -------------------
 " # _PLUGIN_SETTINGS_

@@ -19,7 +19,7 @@
 # _TERMINAL_CONFIGS_
 # ------------------
 
-import = [ "~/.config/alacritty/themes/catppuccin-mocha.toml" ]
+general.import = [ "~/.config/alacritty/themes/catppuccin-mocha.toml" ]
 
 [env]
 TERM = "xterm-256color"

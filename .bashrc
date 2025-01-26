@@ -19,7 +19,7 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 #   default options
 export FZF_DEFAULT_OPTS='--layout=reverse'
 # grep
-export GREP_COLORS='0;31'
+export GREP_COLORS='mt=0;31'
 export LESS='-F -g -i -M -R -S -w -X -z-4'
 export LC_ALL='en_US.UTF-8'
 # prompt: show full path for current directory

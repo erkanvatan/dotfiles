@@ -302,7 +302,8 @@ if [ -x "$(command -v pipx)" ]; then
     echo '# INSTALLING PIPX APPS #'
     pipx install yt-dlp
     pipx install flake8
-    pipx install autopep8
+    pipx install black
+    pipx install isort
     pipx install jedi-language-server
     pipx install pycodestyle
     pipx install pipreqs

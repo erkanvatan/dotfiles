@@ -29,7 +29,7 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_DEFAULT_OPTS='--layout=reverse'
 
 # grep
-export GREP_COLORS='0;31'
+export GREP_COLORS='mt=0;31'
 
 # locales
 export LC_ALL="en_US.UTF-8"
@@ -100,9 +100,9 @@ alias history='fc -l 1'
 alias ip='ip --color=auto'
 
 # ls
-alias ls='exa -Fag --group-directories-first'
+alias ls='exa -F -ag --group-directories-first'
 alias ll='ls -l'
-alias lsh='exa -Fg --group-directories-first'
+alias lsh='exa -F -g --group-directories-first'
 alias llh='lsh -l'
 
 # Neovim
@@ -196,7 +196,7 @@ eval "$(pyenv virtualenv-init -)"
 #   Set pipx default python interpreter
 export PIPX_DEFAULT_PYTHON="$HOME/.pyenv/versions/$(pyenv version-name)/bin/python"
 #   Load pipx completions
-eval "$(register-python-argcomplete3 pipx)"
+eval "$(register-python-argcomplete pipx)"
 
 # tabtab source for packages
 # uninstall by removing these lines

@@ -1,5 +1,6 @@
 {
   "coc.preferences.extensionUpdateCheck": "weekly",
+  "languageserver": {},
   "suggest.completionItemKindLabels": {
     "text": "t",
     "method": "m",
@@ -44,12 +45,6 @@
   "snippets.loadFromExtensions": true,
   "inlayHint.enable": true,
   "inlayHint.enableParameter": false,
-  "languageserver": {},
-  "python.linting.enabled": false,
-  "python.linting.pylintEnabled": false,
-  "python.linting.flake8Enabled": false,
-  "python.analysis.typeCheckingMode": "off",
-  "pyright.inlayHints.variableTypes": false,
   "html.format.enable": false,
   "html.filetypes": [
     "html",
@@ -88,5 +83,9 @@
     "${workspaceFolder}/build-aarch64",
     "${workspaceFolder}/build",
     "${workspaceFolder}/Build"
-  ]
+  ],
+  "bitbake.pathToBitbakeFolder": "/space/yocto/layers/poky/bitbake",
+  "bitbake.pathToBuildFolder": "/space/yocto/builds/lsp-build",
+  "bitbake.pathToEnvScript": "/space/yocto/layers/poky/oe-init-build-env",
+  "bitbake.parseOnSave": false,
 }

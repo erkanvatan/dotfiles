@@ -274,6 +274,7 @@ augroup END
 
 " Set linters by file type
 let g:ale_linters = {
+\   'bitbake': [],
 \   'javascript': [],
 \   'typescript': [],
 \   'python': ['flake8'],
@@ -385,6 +386,7 @@ let g:coc_user_config = {}
 " CoC extensions to install automatically
 let g:coc_global_extensions = [
     \ 'coc-bootstrap-classname',
+    \ 'coc-bitbake',
     \ 'coc-clang-format-style-options',
     \ 'coc-clangd',
     \ 'coc-cmake',

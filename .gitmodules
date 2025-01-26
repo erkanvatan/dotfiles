@@ -1,0 +1,15 @@
+[submodule ".zprezto"]
+	path = .zprezto
+	url = https://github.com/sorin-ionescu/prezto.git
+[submodule ".zprezto-contrib/zsh-z"]
+	path = .zprezto-contrib/zsh-z
+	url = https://github.com/agkozak/zsh-z.git
+[submodule ".zprezto-contrib/zsh-you-should-use"]
+	path = .zprezto-contrib/zsh-you-should-use
+	url = https://github.com/MichaelAquilina/zsh-you-should-use.git
+[submodule ".zprezto-contrib/zsh-bat"]
+	path = .zprezto-contrib/zsh-bat
+	url = https://github.com/fdellwing/zsh-bat.git
+[submodule "programs/swift-map"]
+	path = programs/swift-map
+	url = https://github.com/arensonzz/swift-map.git

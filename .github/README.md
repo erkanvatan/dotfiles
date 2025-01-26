@@ -17,9 +17,12 @@ All of my Linux config files. Easy installation and maintenance with Git bare re
 I use Linux distributions daily for both personal and work related things. Over the years I have customized
 Linux CLI tools to my liking. This repository has my config files for the following programs:
 
+- **Alacritty**
 - **Zsh** with **Prezto** configuration framework
-- **Tmux**
-- **Neovim** / **Vim**
+- **Tmux** with TPM plugin manager
+- **Neovim** / **Vim** with vim-plug plugin manager
+
+I use [Catppuccin](https://catppuccin.com/) theme in all of these programs.
 
 ## Installation
 
@@ -48,12 +51,14 @@ the need to `cd` first.
         alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
         alias config_edit="(export GIT_DIR=$HOME/.dotfiles; export GIT_WORK_TREE=$HOME; nvim)"
         ```
+
     3. Configure local Git settings for the repository.
 
         ```sh
         config config --local status.showUntrackedFiles no
         config config --local core.worktree $HOME
         ```
+
     4. Set your fork as remote repository. I used my repo's HTTPS clone link in this example. 
        You should use the [link](#Fork-the-repo) you copied.
 
@@ -65,7 +70,9 @@ the need to `cd` first.
 
     ```sh
     config pull origin master
+    config submodule update --init --remote --recursive
     ```
+
 ## Usage
 
 Use `config` alias instead of `git` when working with dotfiles repository.

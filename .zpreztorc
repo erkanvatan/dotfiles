@@ -28,6 +28,7 @@ zstyle ':prezto:load' pmodule-dirs $HOME/.zprezto-contrib
 ## Fzf-tab
 # Disable sort when completing `git checkout`
 zstyle ':completion:*:git-checkout:*' sort false
+zstyle ':completion:*:zshz:*' sort false
 
 # Force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
 zstyle ':completion:*' menu no

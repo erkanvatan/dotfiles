@@ -2,11 +2,6 @@
 # Defines environment variables.
 #
 
-# Ensure that a non-login, non-interactive shell has a defined environment.
-if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprofile"
-fi
-
 export BROWSER='firefox'
 export EDITOR='nvim'
 export VISUAL='nvim'
@@ -20,9 +15,6 @@ export FZF_DEFAULT_OPTS='--layout=reverse'
 # grep
 export GREP_COLORS='mt=0;31'
 
-# locales
-export LC_ALL="en_US.UTF-8"
-
 # nvm
 export NVM_DIR="$HOME/.nvm"
 
@@ -31,3 +23,5 @@ export PATH="$HOME/.dotnet/tools:$HOME/.pyenv/bin:$HOME/.local/bin:$HOME/bin:$HO
 
 # pipx
 export PIPX_DEFAULT_PYTHON="$HOME/.pyenv/versions/$(pyenv version-name)/bin/python"
+
+if [ -e /home/pc-2811/.nix-profile/etc/profile.d/nix.sh ]; then . /home/pc-2811/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer

@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+# -----------------------
+# @file any-term-dropdown
+# @author arensonz
+# @date 2025-02-04
+# @brief Turn any terminal into a drop-down (Quake-style) terminal
+#
+# @depend coreutils
+# @depend xdotool
+# @depend libxcb-util-dev
+# @depend libxcb-cursor-dev
+# @depend wmutils https://github.com/wmutils/core
+# -----------------------
+
+readonly TERM_BIN="alacritty"
+# must set TERM_PATH manually (instead of using `command -v`) for keyboard shortcut to work
+readonly TERM_PATH="$HOME/.cargo/bin/alacritty"
+
+readonly SCRIPT_NAME="$(basename $0)"
+
+handle_error()
+{
+    local -r MSG="$1"
+    echo "$MSG"
+    notify-send -u normal "$SCRIPT_NAME" "$MSG"
+    exit 1
+}
+
+command -v "$TERM_PATH" >/dev/null || handle_error "[ERROR] $TERM_BIN is not installed"
+
+# get screen resolution width and height
+readonly ROOT=$(lsw -r)
+readonly WIDTH=$(wattr w "$ROOT")
+readonly HEIGHT=$(wattr h "$ROOT")
+
+pgrep -x "$TERM_BIN" >/dev/null
+if [ "$?" -ne 0 ]; then
+    "$TERM_PATH" &
+fi
+
+# get terminal emulator and matching name pid ex: 44040485
+readonly PID=$(comm -12 <(xdotool search --name "$TERM_BIN" | sort) <(xdotool search --class "$TERM_BIN" | sort))
+
+# get windows id from pid ex: 0x2a00125%
+readonly WID=$(printf 0x%x "$PID")
+
+# maximize terminal emulator
+wrs "$WIDTH" "$HEIGHT" "$WID"
+
+# toggle show/hide terminal emulator
+mapw -t "$WID"

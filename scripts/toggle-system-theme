@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# -------------------------
+# @file toggle-system-theme
+# @author arensonz
+# @date 2025-02-04
+# @brief Switch between system wide dark and light mode with each execution
+# -------------------------
+
+readonly DARK_THEME='Qogir-Dark'
+readonly DARK_THEME_ICONS='Qogir-Dark'
+readonly LIGHT_THEME='Qogir'
+readonly LIGHT_THEME_ICONS='Qogir'
+
+COLOR_VALUE="$(cat /tmp/system_theme_color 2>/dev/null)"
+
+if [[ "$COLOR_VALUE" = "light" ]]; then
+    readonly THEME="$DARK_THEME"
+    readonly THEME_ICONS="$DARK_THEME_ICONS"
+    echo "dark" > /tmp/system_theme_color
+else
+    readonly THEME="$LIGHT_THEME"
+    readonly THEME_ICONS="$LIGHT_THEME_ICONS"
+    echo "light" > /tmp/system_theme_color
+fi
+
+gsettings set org.cinnamon.theme name "$THEME"
+gsettings set org.cinnamon.desktop.interface gtk-theme "$THEME"
+gsettings set org.cinnamon.desktop.wm.preferences theme "$THEME"
+gsettings set org.cinnamon.desktop.interface icon-theme "$THEME_ICONS"
+
+gsettings set org.mate.interface gtk-theme "$THEME"
+gsettings set org.mate.interface icon-theme "$THEME_ICONS"
+
+gsettings set org.gnome.desktop.interface gtk-theme "$THEME"
+gsettings set org.gnome.desktop.interface icon-theme "$THEME_ICONS"
+
+xfconf-query -c xsettings -p /Net/ThemeName -s "$THEME"
+xfconf-query -c xfwm4 -p /general/theme -s "$THEME"
+xfconf-query -c xsettings -p /Net/IconThemeName -s "$THEME_ICONS"

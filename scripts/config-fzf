@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# ----------------
+# @file config-fzf
+# @author arensonz
+# @date 2025-02-04
+# @brief List dotfiles tracked in .dotfiles bare repository using FZF
+#        in multi-select mode. You can select multiple files with <TAB>.
+#        Selected files are printed to stdout.
+#
+# @depend fzf
+# @depend git
+# ----------------
+
+readonly CONFIG="/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
+
+readonly FILES=$($CONFIG ls-tree --name-only -r --full-name master $HOME | sort | fzf --multi)
+ABS_FILES=""
+
+while IFS= read -r FILE; do
+    ABS_FILES="$ABS_FILES$HOME/$FILE "
+done <<< "$FILES"
+
+echo "$ABS_FILES"

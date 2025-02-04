@@ -44,21 +44,17 @@ fi
 # _ALIASES_
 # ---------
 
-alias clip_cmd='xargs echo -n | xclip -sel clip'
+alias clip-cmd='xargs echo -n | xclip -sel clip'
+alias du-dir='du -sk * .* | sort -n | perl -ne '\''($s,$f)=split(m{\t});for (qw(K M G)) {if($s<1024) {printf("%.1f",$s);print "$_\t$f"; last};$s=$s/1024}'\'
 alias fd='fdfind'
-alias fzfp="fzf --preview 'batcat --style=numbers --color=always {} | head -500'"
-alias picocom='picocom -f n -y n -d 8 -p 1'
+alias history='fc -l 1'
+alias ip='ip --color=auto'
 alias pip='pip3'
-alias usage='du -sk * | sort -n | perl -ne '\''($s,$f)=split(m{\t});for (qw(K M G)) {if($s<1024) {printf("%.1f",$s);print "$_\t$f"; last};$s=$s/1024}'\'
-alias yt_dlp_audio='yt-dlp --ignore-errors --output "%(title)s.%(ext)s" --extract-audio --audio-format mp3'
+alias yt-dlp-audio='yt-dlp --ignore-errors --output "%(title)s.%(ext)s" --extract-audio --audio-format mp3'
 
 # dotfiles bare git repository
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
-alias config_edit="(export GIT_DIR=$HOME/.dotfiles; export GIT_WORK_TREE=$HOME; $EDITOR)"
-alias config_fzf_add='dotfile_add.sh'
-alias config_fzf_edit='dotfile_edit.sh'
-alias history='fc -l 1'
-alias ip='ip --color=auto'
+alias config-edit="(export GIT_DIR=$HOME/.dotfiles; export GIT_WORK_TREE=$HOME; $EDITOR)"
 
 # docker
 alias dc='docker container'
@@ -93,11 +89,12 @@ alias gccount='echo "Commit count: " && git shortlog -s | awk '"'"'{ s += $1 } E
 
 # ls
 command -v exa >/dev/null && alias ls='exa -F -ag --group-directories-first'
- alias ll='ls -l'
+alias ll='ls -l'
 command -v exa >/dev/null && alias lsh='exa -F -g --group-directories-first'
 alias llh='lsh -l'
 
-# disable Ctrl + S mapping of the terminal before running vim/nvim
+# vim
+## disable Ctrl + S mapping of the terminal before running vim/nvim
 alias vim="stty stop '' -ixoff; nvim"
 alias nvim="stty stop '' -ixoff; nvim"
 
@@ -126,8 +123,7 @@ bashcompinit
 
 # pyenv
 command -v pyenv >/dev/null \
-    && eval "$(pyenv init --path)" \
-    && eval "$(pyenv init -)" \
+    && eval "$(pyenv init - zsh)" \
     && eval "$(pyenv virtualenv-init -)"
 
 # pipx

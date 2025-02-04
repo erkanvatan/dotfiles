@@ -19,9 +19,10 @@ export GREP_COLORS='mt=0;31'
 export NVM_DIR="$HOME/.nvm"
 
 # path
-export PATH="$HOME/.dotnet/tools:$HOME/.pyenv/bin:$HOME/.local/bin:$HOME/bin:$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.pyenv/bin:$HOME/scripts:$PATH"
 
 # pipx
 export PIPX_DEFAULT_PYTHON="$HOME/.pyenv/versions/$(pyenv version-name)/bin/python"
 
-if [ -e /home/pc-2811/.nix-profile/etc/profile.d/nix.sh ]; then . /home/pc-2811/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+# nix
+[ -e $HOME/.nix-profile/etc/profile.d/nix.sh ] && source $HOME/.nix-profile/etc/profile.d/nix.sh

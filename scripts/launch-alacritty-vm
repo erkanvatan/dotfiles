@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# -------------------------
+# @file launch-alacritty-vm
+# @author arensonz
+# @date 2025-02-04
+# @brief GPU-accelerated terminal emulators open as blank screen in virtual machines
+#        (encountered in VirtualBox Ubuntu 22.04 machine).
+#        To solve this bug, run the program with: LIBGL_ALWAYS_SOFTWARE=1 alacritty
+#
+# @depend alacritty
+# -------------------------
+
+if command -v alacritty >/dev/null; then
+    LIBGL_ALWAYS_SOFTWARE=1 exec $(command -v alacritty)
+fi

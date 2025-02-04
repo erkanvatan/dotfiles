@@ -125,9 +125,10 @@ bashcompinit
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 # pyenv
-eval "$(pyenv init --path)"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+command -v pyenv >/dev/null \
+    && eval "$(pyenv init --path)" \
+    && eval "$(pyenv init -)" \
+    && eval "$(pyenv virtualenv-init -)"
 
 # pipx
-eval "$(register-python-argcomplete pipx)"
+command -v register-python-argcomplete >/dev/null && eval "$(register-python-argcomplete pipx)"

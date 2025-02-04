@@ -22,7 +22,8 @@ export NVM_DIR="$HOME/.nvm"
 export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.pyenv/bin:$HOME/scripts:$PATH"
 
 # pipx
-export PIPX_DEFAULT_PYTHON="$HOME/.pyenv/versions/$(pyenv version-name)/bin/python"
+command -v pyenv >/dev/null \
+    && export PIPX_DEFAULT_PYTHON="$HOME/.pyenv/versions/$(pyenv version-name)/bin/python"
 
 # nix
 [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ] && source $HOME/.nix-profile/etc/profile.d/nix.sh

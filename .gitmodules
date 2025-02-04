@@ -16,3 +16,6 @@
 [submodule "programs/swift-map"]
 	path = programs/swift-map
 	url = https://github.com/arensonzz/swift-map.git
+[submodule ".tmux/plugins/tpm"]
+	path = .tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm.git

@@ -10,6 +10,9 @@
 [submodule ".zprezto-contrib/zsh-bat"]
 	path = .zprezto-contrib/zsh-bat
 	url = https://github.com/fdellwing/zsh-bat.git
+[submodule ".zprezto-contrib/fzf-tab"]
+	path = .zprezto-contrib/fzf-tab
+	url = https://github.com/Aloxaf/fzf-tab.git
 [submodule "programs/swift-map"]
 	path = programs/swift-map
 	url = https://github.com/arensonzz/swift-map.git

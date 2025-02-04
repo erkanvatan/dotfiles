@@ -25,6 +25,13 @@ zstyle ':prezto:load' pmodule-dirs $HOME/.zprezto-contrib
 # Set the Zsh functions to load (man zshcontrib).
 # zstyle ':prezto:load' zfunction 'zargs' 'zmv'
 
+## Fzf-tab
+# Disable sort when completing `git checkout`
+zstyle ':completion:*:git-checkout:*' sort false
+
+# Force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
+zstyle ':completion:*' menu no
+
 # Set the Prezto modules to load (browse modules).
 # Order:
 #   first: environment
@@ -45,6 +52,7 @@ zstyle ':prezto:load' pmodule \
   'ssh' \
   'zsh-bat' \
   'zsh-you-should-use' \
+  'fzf-tab' \
   'zsh-z' \
   'syntax-highlighting' \
   'autosuggestions' \
@@ -68,12 +76,17 @@ zstyle ':prezto:module:editor' key-bindings 'vi'
 zstyle ':prezto:module:editor' ps-context 'yes'
 
 ## Git
-
 # Disable aliases
 zstyle ':prezto:module:git:alias' skip 'yes'
 
-## History
+## Fzf-tab
+# preview directory's content with eza when completing cd
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 
+# switch group using `<` and `>`
+zstyle ':fzf-tab:*' switch-group '<' '>'
+
+## History
 # Set the maximum  number  of  events  stored  in  the  internal history list.
 zstyle ':prezto:module:history' histsize 50000
 
@@ -81,7 +94,6 @@ zstyle ':prezto:module:history' histsize 50000
 zstyle ':prezto:module:history' savehist 50000
 
 ## Prompt
-
 # Set the prompt theme to load.
 # Setting it to 'random' loads a random theme.
 # Auto set to 'off' on dumb terminals.

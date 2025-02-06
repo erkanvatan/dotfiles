@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# ---------------------
-# @file launch-swiftmap
+# ----------------------
+# @file launch-swift-map
 # @author arensonz
 # @date 2025-02-04
 # @brief Launch swift-map and remap keys in keyboard
@@ -10,7 +10,7 @@
 # Put this script in /etc/apm/scripts.d and create a symlink to it
 # in /etc/apm/resume.d using:
 #   sudo ln -s  /etc/apm/scripts.d/launch-swiftmap /etc/apm/resume.d/launch-swiftmap
-# ---------------------
+# ----------------------
 
 # TODO: change keyboard layout to refresh available keys
 if [ -x "$HOME/programs/swift-map/mainloop.py" ]; then

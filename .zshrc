@@ -50,6 +50,7 @@ alias fd='fdfind'
 alias history='fc -l 1'
 alias ip='ip --color=auto'
 alias pip='pip3'
+alias sysinfo='inxi -Fxxxrz'
 alias yt-dlp-audio='yt-dlp --ignore-errors --output "%(title)s.%(ext)s" --extract-audio --audio-format mp3'
 
 # dotfiles bare git repository

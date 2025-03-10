@@ -25,70 +25,39 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
 
-    " ## Plugins shared with Vim
-    Plug 'tpope/vim-repeat' " enable repeating supported plugin maps with "."
-    Plug 'tpope/vim-sensible'
-    Plug '907th/vim-auto-save'
-    Plug 'mhinz/vim-startify' " change default vim starting screen
-    Plug 'tpope/vim-surround' " change surroundings, :h surround
-    Plug 'preservim/nerdcommenter' " comment/uncomment lines
-    Plug 'jiangmiao/auto-pairs' " automatically add matching pairs for quotes, brackets, etc.
-    Plug 'voldikss/vim-floaterm' " floating terminal
-    Plug 'alvan/vim-closetag'  " auto close HTML tags
-    Plug 'michaeljsmith/vim-indent-object' " adds an object to select everything at an indent level
-    Plug 'zef/vim-cycle' " ability to cycle through some group of words, easy edit
-    Plug 'lambdalisue/suda.vim' " suport for sudo in neovim
-    Plug 'itchyny/lightline.vim' " configurable statusline/tabline
-    Plug 'ryanoasis/vim-devicons' " lightline icons
-    Plug 'dracula/vim', { 'as': 'dracula' } " color theme
-    Plug 'vim-python/python-syntax', { 'for': 'python' } " python syntax highlight
-    Plug 'tpope/vim-fugitive'
-    Plug 'cdelledonne/vim-cmake'
-    Plug 'ntpeters/vim-better-whitespace'
-    Plug 'igankevich/mesonic' " meson build system integration
-    Plug 'mbbill/undotree' " the undo history visualizer for VIM
-    Plug 'catppuccin/nvim', { 'as': 'catppuccin' } " color theme
-    Plug 'NoahTheDuke/vim-just' " just command runner support
+" ## Plugins shared with Vim
+source $HOME/.vimrc.plugins
 
-" ## Extra Vim plugins
-Plug 'shime/vim-livedown' " live preview of markdown
-"   run `npm install -g livedown` after installation
-
-Plug 'maximbaz/lightline-ale' " ale integration for lightline
-Plug 'honza/vim-snippets' " compilation of useful snippets
+Plug 'HiPhish/rainbow-delimiters.nvim'
 Plug 'SirVer/ultisnips' " snippet manager
+Plug 'ThePrimeagen/refactoring.nvim'
+Plug 'andrewferrier/debugprint.nvim'
+Plug 'catppuccin/nvim', { 'as': 'catppuccin' } " color theme
+Plug 'cdelledonne/vim-cmake'
 Plug 'dense-analysis/ale' " configurable async linter/fixer for programming languages
-Plug 'neoclide/coc.nvim', { 'branch': 'release' } " load extensions like VSCode and host language servers
-Plug 'junegunn/gv.vim' " git commit browser
-Plug 'lifepillar/pgsql.vim' " support for PostgreSQL
-Plug 'tpope/vim-dadbod' " modern database interface for Vim
+Plug 'honza/vim-snippets' " compilation of useful snippets
+Plug 'inkarkat/vim-SyntaxRange'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " fuzzy file finder
 Plug 'junegunn/fzf.vim'
-Plug 'stsewd/fzf-checkout.vim'
+Plug 'lewis6991/gitsigns.nvim'
+Plug 'lifepillar/pgsql.vim' " support for PostgreSQL
 Plug 'liuchengxu/vista.vim' " tags and lsp symbols viewer
-Plug 'puremourning/vimspector' " A multi-language debugging system for Vim
-
-" ### Web Development
+Plug 'lukas-reineke/indent-blankline.nvim' " add vertical indent guides
 Plug 'mattn/emmet-vim' " good for html tags
+Plug 'maximbaz/lightline-ale' " ale integration for lightline
+Plug 'neoclide/coc.nvim', { 'branch': 'release' } " load extensions like VSCode and host language servers
+Plug 'norcalli/nvim-colorizer.lua' " colorize color names and RGB codes
+Plug 'nvim-neorg/neorg', { 'tag': 'v7.0.0', 'do': ':Neorg sync-parsers'} | Plug 'nvim-lua/plenary.nvim' " Neovim org-like format
+Plug 'nvim-tree/nvim-tree.lua' " tree-like file browser
+Plug 'nvim-tree/nvim-web-devicons' " optional, for file icons
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} " better parsing for syntax highlight
 Plug 'othree/html5.vim', {'for': ['html', 'html5', 'htm']} " html5 syntax highlight
 Plug 'pangloss/vim-javascript' " javascript syntax highlight
-" NOTE: Vim-Jinja2-Syntax conflicts with coc-htmldjango extension
-" Plug 'Glench/Vim-Jinja2-Syntax' " Jinja2 syntax highlight
-Plug 'inkarkat/vim-SyntaxRange'
-" Plug 'HerringtonDarkholme/yats.vim' " typescript syntax highlighting
-
-" ## Neovim only plugins
-Plug 'norcalli/nvim-colorizer.lua' " colorize color names and RGB codes
-Plug 'lukas-reineke/indent-blankline.nvim' " add vertical indent guides
-Plug 'nvim-tree/nvim-web-devicons' " optional, for file icons
-Plug 'nvim-tree/nvim-tree.lua' " tree-like file browser
-Plug 'nvim-neorg/neorg', { 'tag': 'v7.0.0', 'do': ':Neorg sync-parsers'} | Plug 'nvim-lua/plenary.nvim' " Neovim org-like format
-Plug 'andrewferrier/debugprint.nvim'
-Plug 'lewis6991/gitsigns.nvim'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} " better parsing for syntax highlight
-Plug 'ThePrimeagen/refactoring.nvim'
-Plug 'HiPhish/rainbow-delimiters.nvim'
+Plug 'puremourning/vimspector' " A multi-language debugging system for Vim
+Plug 'shime/vim-livedown' " live preview of markdown
+Plug 'stsewd/fzf-checkout.vim'
 Plug 'tadmccorkle/markdown.nvim'
+Plug 'tpope/vim-dadbod' " modern database interface for Vim
 
 call plug#end()
 
@@ -97,38 +66,30 @@ call plug#end()
 " # _PLUGIN_SETTINGS_
 " -------------------
 
-" 01. _catppuccin_
-" 02. _dracula
-" 03. _vim_livedown_
-" 04. _lightline_ale_
-" 05. _vim_snippets_
-" 06. _ultisnips_
-" 07. _ale_
-" 08. _coc_nvim_
-" 09. _gv_vim_
-" 10. _pgsql_vim_
-" 11. _vim_dadbod_
-" 12. _emmet_vim_
-" 13. _html5_vim_
-" 14. _vim_javascript_
-" 15. _vim_jinja2_syntax_
-" 16. _vim_syntaxrange_
-" 17. _yats_vim_
-" 18. _nvim_colorizer_lua_
-" 19. _indent_blankline_nvim_
-" 20. _nvim_web_devicons_
-" 21. _nvim_tree_lua_
-" 22. _neorg_
-" 23. _debugprint_nvim_
-" 24. _gitsigns_nvim_
-" 25. _nvim_treesitter_
-" 26. _refactoring_nvim_
-" 27. _fzf_vim_
-" 28. _fzf_checkout_vim_
-" 29. _vista_vim_
-" 30. _vimspector_
-" 31. _rainbow_delimiters_nvim_
-" 32. _markdown_nvim_
+" ## Contents
+
+" _ale_
+" _catppuccin_
+" _coc_nvim_
+" _debugprint_nvim_
+" _emmet_vim_
+" _fzf_checkout_vim_
+" _fzf_vim_
+" _gitsigns_nvim_
+" _indent_blankline_nvim_
+" _markdown_nvim_
+" _neorg_
+" _nvim_colorizer_lua_
+" _nvim_tree_lua_
+" _nvim_treesitter_
+" _rainbow_delimiters_nvim_
+" _refactoring_nvim_
+" _ultisnips_
+" _vim_dadbod_
+" _vim_livedown_
+" _vimspector_
+" _vista_vim_
+" _vim_cmake_
 
 " ---------------
 " ## _catppuccin_
@@ -203,14 +164,6 @@ let g:livedown_open = 1
 " ### Keybindings
 nmap <leader>tm :LivedownToggle<CR>
 
-" ------------------
-" ## _lightline_ale_
-" ------------------
-
-" -----------------
-" ## _vim_snippets_
-" -----------------
-
 " --------------
 " ## _ultisnips_
 " --------------
@@ -275,36 +228,36 @@ augroup END
 " Set linters by file type
 let g:ale_linters = {
 \   'bitbake': [],
-\   'javascript': [],
-\   'typescript': [],
-\   'python': ['flake8'],
-\   'html': ['tidy'],
-\   'sql': [],
-\   'css': ['stylelint'],
-\   'scss': ['stylelint'],
-\   'rust': ['analyzer'],
-\   'latex': ['chktex'],
-\   'sh': ['shellcheck'],
 \   'c': [],
-\   'cpp': []
+\   'cpp': [],
+\   'css': ['stylelint'],
+\   'html': ['tidy'],
+\   'javascript': [],
+\   'latex': ['chktex'],
+\   'python': ['flake8'],
+\   'rust': ['analyzer'],
+\   'scss': ['stylelint'],
+\   'sh': ['shellcheck'],
+\   'sql': [],
+\   'typescript': []
 \}
 
 " Set fixers by file type
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'javascript': ['eslint'],
-\   'typescript': ['eslint'],
-\   'html': ['html-beautify'],
-\   'css': ['stylelint'],
-\   'scss': ['stylelint'],
-\   'sql': ['pgformatter'],
-\   'python': ['black', 'isort'],
-\   'rust': ['rustfmt'],
-\   'latex': ['chktex'],
-\   'sh': ['shfmt'],
 \   'c': ['clang-format'],
 \   'cpp': ['clang-format'],
-\   'json': ['jq']
+\   'css': ['stylelint'],
+\   'html': ['html-beautify'],
+\   'javascript': ['eslint'],
+\   'json': ['jq'],
+\   'latex': ['chktex'],
+\   'python': ['black', 'isort'],
+\   'rust': ['rustfmt'],
+\   'scss': ['stylelint'],
+\   'sh': ['shfmt'],
+\   'sql': ['pgformatter'],
+\   'typescript': ['eslint']
 \}
 
 " Python
@@ -385,8 +338,8 @@ augroup END
 let g:coc_user_config = {}
 " CoC extensions to install automatically
 let g:coc_global_extensions = [
-    \ 'coc-bootstrap-classname',
     \ 'coc-bitbake',
+    \ 'coc-bootstrap-classname',
     \ 'coc-clang-format-style-options',
     \ 'coc-clangd',
     \ 'coc-cmake',
@@ -546,15 +499,6 @@ vmap <C-j> <Plug>(coc-snippets-select)
 "   Use <leader>x to convert visual selected code to snippet
 xmap <leader>x <Plug>(coc-convert-snippet)
 
-
-" -----------
-" ## _gv_vim_
-" -----------
-
-" --------------
-" ## _pgsql_vim_
-" --------------
-
 " ---------------
 " ## _vim_dadbod_
 " ---------------
@@ -635,36 +579,6 @@ let g:user_emmet_mode='nv' " only enable emmet in normal mode
 
 let g:user_emmet_leader_key=','
 
-" --------------
-" ## _html5_vim_
-" --------------
-
-" -------------------
-" ## _vim_javascript_
-" -------------------
-
-" ----------------------
-" ## _vim_jinja2_syntax_
-" ----------------------
-
-augroup editor_configs_vim_options
-    autocmd!
-    " Set the filetype based on the file extension, overriding any
-    " 'filetype' that has already been set
-    " autocmd BufRead,BufNewFile *.html set filetype=html.javascript.jinja
-
-    " Set partial syntax by file extension
-    " autocmd FileType jinja.html call SyntaxRange#Include('{%', '%}', 'jinja') |
-        " \ call SyntaxRange#Include('{{', '}}', 'jinja')
-augroup END
-" --------------------
-" ## _vim_syntaxrange_
-" --------------------
-
-" -------------
-" ## _yats_vim_
-" -------------
-
 " -----------------------
 " ## _nvim_colorizer_lua_
 " -----------------------
@@ -701,20 +615,11 @@ hooks.register(
 )
 EOF
 
-" ----------------------
-" ## _nvim_web_devicons_
-" ----------------------
-
 " ------------------
 " ## _nvim_tree_lua_
 " ------------------
 
 " ### Settings
-" Fix black background
-if hlexists('DraculaFg')
-    highlight link NvimTreeNormalFloat DraculaBg
-endif
-
 lua << EOF
 -- Disable netrw at the very start of your init.lua (strongly advised)
 -- Disabling netrw also disables scp remote editing capability. You can instead use hijack_netrw option
@@ -750,15 +655,14 @@ require("nvim-tree").setup({
             enable = true,
             quit_on_focus_loss = true,
             open_win_config = {
-                border = "rounded",
-                width = 40, -- in character cells
-                height = 55,
+                border = "solid",
+                width = 30,
+                height = 1000,
                 row = 1,
-                col = 0,
+                col = 1,
             },
         },
-        adaptive_size = false,
-        preserve_window_proportions = false,
+        adaptive_size = true,
     },
     renderer = {
         group_empty = true,
@@ -813,10 +717,6 @@ require('neorg').setup {
         ["core.qol.toc"] = {},
         ["core.dirman"] = {
             config = {
-                workspaces = {
-                    personal_ws = "~/Documents/neorg/personal",
-                    work_ws = "~/Documents/neorg/work"
-                },
                 autochdir = false, -- Automatically change the directory to the current workspace's root every time
                 autodetect = false,
                 index = "", -- The name of the main (root) .norg file
@@ -899,26 +799,26 @@ require'nvim-treesitter.configs'.setup {
     ensure_installed = {
         "bash",
         "c",
-        "css",
         "cmake",
         "comment",
         "cpp",
+        "css",
         "dockerfile",
         "html",
-        "http",
         "htmldjango",
+        "http",
+        "javascript",
         "json",
         "lua",
-        "norg",
         "make",
         "markdown",
         "markdown_inline",
+        "norg",
         "python",
         "regex",
-        "sql",
         "scss",
+        "sql",
         "typescript",
-        "javascript",
         "vim",
         "vimdoc",
         "yaml"
@@ -1057,8 +957,8 @@ nnoremap <leader>fg :Rg!<CR>
 " Git Bindings
 nnoremap <leader>gf :GFiles!?<CR>
 nnoremap <leader>gF :GFiles!<CR>
-nnoremap <leader>gc :BCommits!<CR>
-nnoremap <leader>gC :Commits!<CR>
+nnoremap <leader>gc :GV!<CR>
+nnoremap <leader>gC :GV<CR>
 
 " Change default bindings
 let g:fzf_action = {
@@ -1141,18 +1041,8 @@ let g:rainbow_delimiters = {
     \ ],
 \ }
 
-" Link highlight groups to Dracula colors if Dracula is installed
-if hlexists('DraculaFg')
-    highlight link RainbowDelimiterRed DraculaFg
-    highlight link RainbowDelimiterOrange DraculaOrange
-    highlight link RainbowDelimiterYellow DraculaYellow
-    highlight link RainbowDelimiterCyan DraculaCyan
-    highlight link RainbowDelimiterGreen DraculaGreen
-    highlight link RainbowDelimiterViolet DraculaPink
-    highlight link RainbowDelimiterBlue DraculaCyanItalic
-endif
 " ### Keybindings
-nnoremap <silent> <Leader>tr :call rainbow_delimiters#toggle(0)<CR>
+nnoremap <Leader>tr :call rainbow_delimiters#toggle(0)<CR>
 
 " ------------------
 " ## _markdown_nvim_
@@ -1208,3 +1098,30 @@ augroup markdown_keybindings
     autocmd FileType markdown nnoremap <buffer> <silent> gO :MDToc<CR>
     autocmd FileType markdown nnoremap <buffer> <silent> <localleader>tt :MDTaskToggle<CR>
 augroup END
+
+" --------------
+" ## _vim_cmake_
+" --------------
+
+" ### Settings
+let g:cmake_link_compile_commands = 1
+let g:cmake_root_markers = ['.git', '.svn']
+" let g:cmake_build_options = []
+let g:cmake_generate_options = ["-D CMAKE_C_COMPILER=/usr/bin/gcc-12", "-D CMAKE_CXX_COMPILER=/usr/bin/g++-12"]
+
+augroup vim_cmake_group
+    autocmd!
+    " autoclose vimcmake window after successful build
+    " repeat() function causes soft-wrap into two lines for ENTER prompt to show
+    autocmd User CMakeBuildSucceeded echo "CMake Build Succeeded!" . repeat(" ", &columns) | CMakeClose!
+
+    " Needed for graceful closing of CMake window
+    autocmd FileType vimcmake nnoremap <buffer><silent>qq :CMakeClose!<CR>
+augroup END
+
+" ### Keybindings
+" Create Release config (default is Debug)   :CMakeGenerate build -DCMAKE_BUILD_TYPE=Release
+nnoremap <leader>cg :CMakeGenerate build -DCMAKE_BUILD_TYPE=Debug
+nnoremap <leader>cb :CMakeBuild<CR>
+nnoremap <leader>co :CMakeOpen<CR>
+nnoremap <leader>cr :CMakeRun

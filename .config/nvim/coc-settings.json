@@ -69,14 +69,13 @@
   "htmldjango.djlint.formatCss": true,
   "eslint.enable": true,
   "tsserver.enable": true,
-  "tsserver.npm": "~/.nvm/versions/node/v18.13.0/bin/npm",
   "cmake.lsp.enable": true,
   "rust-analyzer.diagnostics.enable": false,
   "sql.database": "postgresql",
   "clangd.arguments": [
     "--header-insertion=never"
   ],
-  "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/18.1.3/clangd_18.1.3/bin/clangd",
+  "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/19.1.2/clangd_19.1.2/bin/clangd",
   "clangd.compilationDatabaseCandidates": [
     "${workspaceFolder}/debug",
     "${workspaceFolder}/Debug",

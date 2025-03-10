@@ -1,0 +1,24 @@
+" NOTE: This file is sourced by Vim (.vimrc) and Neovim (plugins.vim).
+"       Only add plugins compatible with both.
+
+Plug '907th/vim-auto-save'
+Plug 'NoahTheDuke/vim-just' " just command runner support
+Plug 'alvan/vim-closetag'  " auto close HTML tags
+Plug 'igankevich/mesonic' " meson build system integration
+Plug 'itchyny/lightline.vim' " configurable statusline/tabline
+Plug 'jiangmiao/auto-pairs' " automatically add matching pairs for quotes, brackets, etc.
+Plug 'junegunn/gv.vim' " git commit browser
+Plug 'lambdalisue/suda.vim' " suport for sudo
+Plug 'mbbill/undotree' " the undo history visualizer
+Plug 'mhinz/vim-startify' " change default starting screen
+Plug 'michaeljsmith/vim-indent-object' " adds an object to select everything at an indent level
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'preservim/nerdcommenter' " comment/uncomment lines
+Plug 'romainl/vim-cool' " auto clear search highlight
+Plug 'ryanoasis/vim-devicons' " lightline icons
+Plug 'tpope/vim-fugitive' " git wrapper
+Plug 'tpope/vim-repeat' " repeat supported plugin maps using `.` key
+Plug 'tpope/vim-sensible' " set sensible defaults
+Plug 'tpope/vim-surround' " change surroundings like single quotes, double quotes, etc.
+Plug 'voldikss/vim-floaterm' " floating terminal
+Plug 'zef/vim-cycle' " ability to cycle through some group of words

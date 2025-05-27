@@ -24,6 +24,7 @@ handle_error()
         || exit 1
 }
 
+
 # ---------------
 # _SCRIPT_SOURCE_
 # ---------------
@@ -50,12 +51,16 @@ alias fd='fdfind'
 alias history='fc -l 1'
 alias ip='ip --color=auto'
 alias pip='pip3'
+alias rg='rg -i'
 alias sysinfo='inxi -Fxxxrz'
 alias yt-dlp-audio='yt-dlp --ignore-errors --output "%(title)s.%(ext)s" --extract-audio --audio-format mp3'
 
 # dotfiles bare git repository
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
 alias config-edit="(export GIT_DIR=$HOME/.dotfiles; export GIT_WORK_TREE=$HOME; $EDITOR)"
+
+# devbox
+alias devbox-shell='SHELL=/bin/bash devbox shell'
 
 # docker
 alias dc='docker container'
@@ -129,3 +134,6 @@ command -v pyenv >/dev/null \
 
 # pipx
 command -v register-python-argcomplete >/dev/null && eval "$(register-python-argcomplete pipx)"
+
+# task
+command -v task >/dev/null && eval "$(task --completion zsh)"

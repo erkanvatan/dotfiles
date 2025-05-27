@@ -87,4 +87,5 @@
   "bitbake.pathToBuildFolder": "/space/yocto/builds/lsp-build",
   "bitbake.pathToEnvScript": "/space/yocto/layers/poky/oe-init-build-env",
   "bitbake.parseOnSave": false,
+  "jedi.diagnostics.enable": false,
 }

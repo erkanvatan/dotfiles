@@ -30,10 +30,8 @@ source $HOME/.vimrc.plugins
 
 Plug 'HiPhish/rainbow-delimiters.nvim'
 Plug 'SirVer/ultisnips' " snippet manager
-Plug 'ThePrimeagen/refactoring.nvim'
 Plug 'andrewferrier/debugprint.nvim'
 Plug 'catppuccin/nvim', { 'as': 'catppuccin' } " color theme
-Plug 'cdelledonne/vim-cmake'
 Plug 'dense-analysis/ale' " configurable async linter/fixer for programming languages
 Plug 'honza/vim-snippets' " compilation of useful snippets
 Plug 'inkarkat/vim-SyntaxRange'
@@ -47,17 +45,12 @@ Plug 'mattn/emmet-vim' " good for html tags
 Plug 'maximbaz/lightline-ale' " ale integration for lightline
 Plug 'neoclide/coc.nvim', { 'branch': 'release' } " load extensions like VSCode and host language servers
 Plug 'norcalli/nvim-colorizer.lua' " colorize color names and RGB codes
-Plug 'nvim-neorg/neorg', { 'tag': 'v7.0.0', 'do': ':Neorg sync-parsers'} | Plug 'nvim-lua/plenary.nvim' " Neovim org-like format
 Plug 'nvim-tree/nvim-tree.lua' " tree-like file browser
 Plug 'nvim-tree/nvim-web-devicons' " optional, for file icons
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} " better parsing for syntax highlight
-Plug 'othree/html5.vim', {'for': ['html', 'html5', 'htm']} " html5 syntax highlight
-Plug 'pangloss/vim-javascript' " javascript syntax highlight
 Plug 'puremourning/vimspector' " A multi-language debugging system for Vim
 Plug 'shime/vim-livedown' " live preview of markdown
 Plug 'stsewd/fzf-checkout.vim'
-Plug 'tadmccorkle/markdown.nvim'
-Plug 'tpope/vim-dadbod' " modern database interface for Vim
 
 call plug#end()
 
@@ -78,18 +71,14 @@ call plug#end()
 " _gitsigns_nvim_
 " _indent_blankline_nvim_
 " _markdown_nvim_
-" _neorg_
 " _nvim_colorizer_lua_
 " _nvim_tree_lua_
 " _nvim_treesitter_
 " _rainbow_delimiters_nvim_
-" _refactoring_nvim_
 " _ultisnips_
-" _vim_dadbod_
 " _vim_livedown_
 " _vimspector_
 " _vista_vim_
-" _vim_cmake_
 
 " ---------------
 " ## _catppuccin_
@@ -234,7 +223,7 @@ let g:ale_linters = {
 \   'html': ['tidy'],
 \   'javascript': [],
 \   'latex': ['chktex'],
-\   'python': ['flake8'],
+\   'python': ['ruff'],
 \   'rust': ['analyzer'],
 \   'scss': ['stylelint'],
 \   'sh': ['shellcheck'],
@@ -270,11 +259,17 @@ let g:ale_html_beautify_options = '--indent-size 2 --max-preserve-newlines 2 --w
 let g:ale_html_tidy_options = ""
 
 " C/C++
-let g:ale_c_clangformat_options = "-style='{BasedOnStyle: WebKit, ColumnLimit: 120, BreakBeforeBraces: Stroustrup, IndentWidth: 4, IndentCaseLabels: false, PointerAlignment: Left, SpaceBeforeAssignmentOperators: true, AllowShortBlocksOnASingleLine: Never, AllowShortFunctionsOnASingleLine: InlineOnly, AlwaysBreakTemplateDeclarations: Yes}'"
+let g:ale_c_clangformat_use_local_file = 1
+let g:ale_c_clangformat_style_option = "
+\{
+\ BasedOnStyle:                     Microsoft,
+\ ColumnLimit:                      120,
+\ AllowShortBlocksOnASingleLine:    Never,
+\ AllowShortFunctionsOnASingleLine: Inline,
+\ PointerAlignment:                 Left,
+\ SpaceBeforeCpp11BracedList:       true,
+\}"
 " let g:ale_c_clangformat_options = "--assume-filename=$HOME/.config/.clang-format"
-
-let g:ale_cpp_astyle_project_options = ".astyle.ini"
-let g:ale_c_astyle_project_options = ".astyle.ini"
 
 let g:ale_c_uncrustify_options = "-c .uncrustify.cfg"
 
@@ -499,54 +494,6 @@ vmap <C-j> <Plug>(coc-snippets-select)
 "   Use <leader>x to convert visual selected code to snippet
 xmap <leader>x <Plug>(coc-convert-snippet)
 
-" ---------------
-" ## _vim_dadbod_
-" ---------------
-
-" ### Settings
-" Usage
-"   :DBList
-"   :DBSelect db_id
-
-let g:dadbods = []
-
-command! -nargs=1 DBSelect :call DBSelected(<f-args>)
-command! DBList :call DBListed()
-
-" ### Functions
-function! DBListed()
-    echo "ID | DB Name | URL"
-    echo "------------------"
-    let i = 0
-    for line in g:dadbods
-        echo i'|'line.name "\t|" line.url
-        let i += 1
-    endfor
-endfunction
-
-function! DBSelected(dadbodIndex)
-    let b:db = g:dadbods[a:dadbodIndex].url
-    echomsg 'DB "' . g:dadbods[a:dadbodIndex].name . '" is selected.'
-endfunction
-
-" ### Keybindings
-" Setup:
-"     let b:db = "postgresql://[username[:password]@][host][:port][/dbname]"
-" In visual mode:
-"     select the query and press <leader>db to execute the query
-" In normal mode:
-"     press <leader>dbb to execute query on the line
-"     press <leader>db + text-object to run the queries by specifying text
-"      object
-xnoremap <expr> <Plug>(DBExe)     db#op_exec()
-nnoremap <expr> <Plug>(DBExe)     db#op_exec()
-nnoremap <expr> <Plug>(DBExeLine) db#op_exec() . '_'
-
-xmap <leader>db  <Plug>(DBExe)
-nmap <leader>db  <Plug>(DBExe)
-omap <leader>db  <Plug>(DBExe)
-nmap <leader>dbb <Plug>(DBExeLine)
-
 " --------------
 " ## _emmet_vim_
 " --------------
@@ -680,60 +627,6 @@ EOF
 nnoremap <silent> <C-c> :NvimTreeToggle<CR>
 nnoremap <silent> <leader>pv :NvimTreeFindFile!<CR>
 
-" ----------
-" ## _neorg_
-" ----------
-
-" ### Settings
-augroup neorg_group
-    autocmd!
-    autocmd Bufread,BufNewFile *.norg highlight @neorg.markup.italic gui=italic
-    autocmd Bufread,BufNewFile *.norg highlight @neorg.lists.unordered.1.prefix gui=bold guifg=Yellow
-    autocmd Bufread,BufNewFile *.norg highlight @neorg.lists.unordered.2.prefix gui=bold guifg=Orange
-    autocmd Bufread,BufNewFile *.norg highlight @neorg.lists.unordered.3.prefix gui=bold guifg=SlateBlue
-    autocmd Bufread,BufNewFile *.norg highlight @neorg.lists.unordered.4.prefix gui=bold guifg=Yellow
-    autocmd Bufread,BufNewFile *.norg highlight @neorg.lists.unordered.5.prefix gui=bold guifg=Orange
-    autocmd Bufread,BufNewFile *.norg highlight @neorg.lists.unordered.6.prefix gui=bold guifg=SlateBlue
-augroup END
-
-lua << EOF
-require('neorg').setup {
-    load = {
-        ["core.defaults"] = {},
-        ["core.keybinds"] = {
-            config = {
-                hook = function(keybinds)
-                    keybinds.unmap("norg", "n", "<C-Space>")
-                end,
-            },
-        },
-        ["core.concealer"] = {
-            config = {
-                icon_preset = "diamond",
-            },
-        },
-        ["core.export"] = {},
-        ["core.export.markdown"] = {},
-        ["core.qol.toc"] = {},
-        ["core.dirman"] = {
-            config = {
-                autochdir = false, -- Automatically change the directory to the current workspace's root every time
-                autodetect = false,
-                index = "", -- The name of the main (root) .norg file
-            }
-        },
-    }
-}
-EOF
-
-" ### Keybindings
-augroup neorg_keybindings
-    autocmd!
-    autocmd FileType norg nnoremap <buffer> <silent> <localleader>nm :Neorg inject-metadata<CR>
-    " insert anchor
-    autocmd FileType norg nnoremap <buffer> <silent> <localleader>a i<C-v>{<C-v>}<Esc>h"+p
-augroup END
-
 " --------------------
 " ## _debugprint_nvim_
 " --------------------
@@ -803,7 +696,6 @@ require'nvim-treesitter.configs'.setup {
         "comment",
         "cpp",
         "css",
-        "dockerfile",
         "html",
         "htmldjango",
         "http",
@@ -848,40 +740,6 @@ EOF
 "       :setlocal foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
 
-" ---------------------
-" ## _refactoring_nvim_
-" ---------------------
-
-" ### Settings
-" Usage: `:Refactor e<TAB>`
-lua << EOF
-require('refactoring').setup({
-    -- prompt for return type
-    prompt_func_return_type = {
-        cpp = true,
-        c = true,
-    },
-    -- prompt for function parameters
-    prompt_func_param_type = {
-        cpp = true,
-        c = true,
-    },
-})
-EOF
-
-" ### Keybindings
-" Keybind: `<leader>rr`
-
-lua << EOF
--- prompt for a refactor to apply when the remap is triggered
-vim.keymap.set(
-    {"n", "x"},
-    "<leader>rr",
-    function() require('refactoring').select_refactor() end
-)
--- Note that not all refactor support both normal and visual mode
-EOF
-
 " ------------
 " ## _fzf_vim_
 " ------------
@@ -905,12 +763,16 @@ command! BuffersModified call fzf#run(fzf#wrap({
     \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
 \ }))
 
-" Don't consider filename as a match in :Rg command
-command! -bang -nargs=* Rg call fzf#vim#grep("rg --glob '!.git/**' --glob '!node_modules/**' --hidden --column --line-number --no-heading --color=always --smart-case "
+" Don't consider filename as a match by default
+command! -bang -nargs=* Rg call fzf#vim#grep("rg --glob '!**/.git/**' --glob '!**/node_modules/**' --hidden --no-ignore-vcs --column --line-number --no-heading --color=always --smart-case "
     \ .shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
 
+" :Rg command with file filter option
+command! -bang -nargs=* RgFiles call fzf#vim#grep("rg --glob '!**/.git/**' --glob '!**/node_modules/**' --hidden --no-ignore-vcs --column --line-number --no-heading --color=always --smart-case "
+    \ .shellescape(<q-args>), 1, <bang>0)
+
 " :RG command with --max-depth option given as parameter
-command! -bang -nargs=1 RGd call fzf#vim#grep2("rg --glob '!.git/**' --glob '!node_modules/**' --hidden --column --line-number --no-heading --color=always --smart-case --max-depth "
+command! -bang -nargs=1 RgDepth call fzf#vim#grep2("rg --glob '!**/.git/**' --glob '!**/node_modules/**' --hidden --no-ignore-vcs --column --line-number --no-heading --color=always --smart-case --max-depth "
     \ .(<q-args>), '', {}, <bang>0)
 
 let s:config="/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
@@ -957,8 +819,8 @@ nnoremap <leader>fg :Rg!<CR>
 " Git Bindings
 nnoremap <leader>gf :GFiles!?<CR>
 nnoremap <leader>gF :GFiles!<CR>
-nnoremap <leader>gc :GV!<CR>
-nnoremap <leader>gC :GV<CR>
+nnoremap <leader>gc :GV<CR>
+nnoremap <leader>gC :GV --all<CR>
 
 " Change default bindings
 let g:fzf_action = {
@@ -1043,85 +905,3 @@ let g:rainbow_delimiters = {
 
 " ### Keybindings
 nnoremap <Leader>tr :call rainbow_delimiters#toggle(0)<CR>
-
-" ------------------
-" ## _markdown_nvim_
-" ------------------
-
-" ### Settings
-lua << EOF
-require('markdown').setup({
-    -- Disable all keymaps by setting mappings field to 'false'.
-    -- Selectively disable keymaps by setting corresponding field to 'false'.
-    mappings = {
-        inline_surround_toggle = false, -- (string|boolean) toggle inline style
-        inline_surround_toggle_line = false, -- (string|boolean) line-wise toggle inline style
-        inline_surround_delete = false, -- (string|boolean) delete emphasis surrounding cursor
-        inline_surround_change = false, -- (string|boolean) change emphasis surrounding cursor
-        link_add = "gl", -- (string|boolean) add link
-        link_follow = "gx", -- (string|boolean) follow link
-        go_curr_heading = false, -- (string|boolean) set cursor to current section heading
-        go_parent_heading = false, -- (string|boolean) set cursor to parent section heading
-        go_next_heading = "]]", -- (string|boolean) set cursor to next section heading
-        go_prev_heading = "[[", -- (string|boolean) set cursor to previous section heading
-    },
-    link = {
-        paste = {
-            enable = true, -- whether to convert URLs to links on paste
-        },
-    },
-    toc = {
-        -- Comment text to flag headings/sections for omission in table of contents.
-        omit_heading = "toc omit heading",
-        omit_section = "toc omit section",
-        -- Cycling list markers to use in table of contents.
-        -- Use '.' and ')' for ordered lists.
-        markers = { "-" },
-    },
-    -- Hook functions allow for overriding or extending default behavior.
-    -- Called with a table of options and a fallback function with default behavior.
-    -- Signature: fun(opts: table, fallback: fun())
-    hooks = {
-        -- Called when following links. Provided the following options:
-        -- * 'dest' (string): the link destination
-        -- * 'use_default_app' (boolean|nil): whether to open the destination with default application
-        --   (refer to documentation on <Plug> mappings for explanation of when this option is used)
-        follow_link = nil,
-    },
-    on_attach = nil, -- (fun(bufnr: integer)) callback when plugin attaches to a buffer
-})
-EOF
-" ### Keybindings
-
-augroup markdown_keybindings
-    autocmd!
-    autocmd FileType markdown nnoremap <buffer> <silent> gO :MDToc<CR>
-    autocmd FileType markdown nnoremap <buffer> <silent> <localleader>tt :MDTaskToggle<CR>
-augroup END
-
-" --------------
-" ## _vim_cmake_
-" --------------
-
-" ### Settings
-let g:cmake_link_compile_commands = 1
-let g:cmake_root_markers = ['.git', '.svn']
-" let g:cmake_build_options = []
-let g:cmake_generate_options = ["-D CMAKE_C_COMPILER=/usr/bin/gcc-12", "-D CMAKE_CXX_COMPILER=/usr/bin/g++-12"]
-
-augroup vim_cmake_group
-    autocmd!
-    " autoclose vimcmake window after successful build
-    " repeat() function causes soft-wrap into two lines for ENTER prompt to show
-    autocmd User CMakeBuildSucceeded echo "CMake Build Succeeded!" . repeat(" ", &columns) | CMakeClose!
-
-    " Needed for graceful closing of CMake window
-    autocmd FileType vimcmake nnoremap <buffer><silent>qq :CMakeClose!<CR>
-augroup END
-
-" ### Keybindings
-" Create Release config (default is Debug)   :CMakeGenerate build -DCMAKE_BUILD_TYPE=Release
-nnoremap <leader>cg :CMakeGenerate build -DCMAKE_BUILD_TYPE=Debug
-nnoremap <leader>cb :CMakeBuild<CR>
-nnoremap <leader>co :CMakeOpen<CR>
-nnoremap <leader>cr :CMakeRun

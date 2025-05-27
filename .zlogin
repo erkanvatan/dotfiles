@@ -21,3 +21,4 @@
 if [[ -o INTERACTIVE && -t 2 ]]; then
     : # no-op
 fi >&2
+

@@ -12,15 +12,26 @@ target_include_directories($3 PUBLIC \$\{CMAKE_CURRENT_SOURCE_DIR\}/include)
 endsnippet
 
 snippet cmake_cpp_template "CMakeLists template for C++ language" b
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.28)
 set(CMAKE_CXX_STANDARD ${1:20})
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -pedantic-errors -Werror -Wall -Wextra -Wconversion -Wsign-conversion -Wshadow -Wundef -Wunused-result -Wpointer-arith -Wwrite-strings -Weffc++")
+
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} \
+    -pedantic \
+    -Wall \
+    -Weffc++ \
+    -Werror \
+    -Wextra \
+    -Wno-error=effc++ \
+    -Wno-error=unused-parameter \
+")
 
 project(${2:out} VERSION ${3:1.0})
-file(GLOB TARGET_CPP "${CMAKE_SOURCE_DIR}/*.cpp")
-add_executable(${2} \$\{TARGET_CPP\})
+set(CXX_SOURCES " \
+    src/main.cpp
+")
+add_executable(${2} \$\{CXX_SOURCES\})
 
-target_include_directories($2 PUBLIC \$\{CMAKE_CURRENT_SOURCE_DIR\}/include)
+target_include_directories($2 PUBLIC include)
 endsnippet

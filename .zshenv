@@ -8,7 +8,7 @@ export VISUAL='nvim'
 
 # fzf
 command -v fdfind >/dev/null \
-    && export FZF_DEFAULT_COMMAND='fdfind --type f --hidden --follow --exclude "{node_modules,.git}"' \
+    && export FZF_DEFAULT_COMMAND='fdfind --type f --no-ignore-vcs --hidden --follow --exclude "{node_modules,.git}"' \
     && export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_DEFAULT_OPTS='--layout=reverse'
 

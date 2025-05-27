@@ -65,6 +65,7 @@ set expandtab
 set smartindent
 
 " ## Visual settings
+set textwidth=120
 set showtabline=2 " Always show tab line
 
 " ## Configs recommended by CoC
@@ -109,24 +110,17 @@ endif
 
 augroup lang_indentation_by_filetype
     autocmd!
-    autocmd Filetype css,scss,javascript,typescript,html,json,xml,norg,cmake
+    autocmd Filetype css,scss,javascript,typescript,html,json,xml,norg,cmake,mdx,jsx
         \ setlocal tabstop=2 shiftwidth=2 softtabstop=2
-    autocmd Filetype meson
+    autocmd Filetype meson,dts
         \ setlocal tabstop=4 shiftwidth=4 softtabstop=4
-    autocmd BufRead,BufNewFile *.html setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd BufRead,BufNewFile *.html,*.mdx setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 augroup END
 
 augroup editor_configs_vim_options
     autocmd!
     " Do not continue newlines with comment character
     autocmd FileType * set formatoptions-=cro
-
-    " Set width to break lines
-    autocmd FileType * set textwidth=120
-
-    " Set in which file types should lines auto break
-    autocmd FileType norg setlocal fo+=t
-    autocmd FileType toml setlocal fo-=t
 
     " Set the filetype based on the file extension, overriding any
     " 'filetype' that has already been set
@@ -136,6 +130,8 @@ augroup editor_configs_vim_options
     " inside HTML syntax)
     autocmd BufRead,BufNewFile *.html syntax sync fromstart
 
+    autocmd FileType dts,kconfig setlocal noexpandtab
+    autocmd BufEnter,BufWinEnter * if &textwidth > 0 | let &l:colorcolumn = &textwidth | else | setlocal colorcolumn= | endif
 augroup END
 
 " -------------------
@@ -148,13 +144,12 @@ augroup END
 " _gv_vim_
 " _lightline_vim_
 " _nerdcommenter_
-" _python_syntax_
 " _suda_vim_
 " _undotree_
 " _vim_auto_save_
 " _vim_better_whitespace_
 " _vim_closetag_
-" _vim_cycle_
+" _vim_easy_align_
 " _vim_floaterm_
 " _vim_fugitive_
 " _vim_indent_object_
@@ -274,23 +269,6 @@ let g:closetag_shortcut = '>'
 " <count>ii     Inner Indentation level (no line above).
 " <count>aI     An Indentation level and lines above/below.
 
-" --------------
-" ## _vim_cycle_
-" --------------
-
-" ### Settings
-augroup vim_cycle_group
-    autocmd!
-    autocmd FileType python call AddCycleGroup('python', ['True', 'False'])
-augroup END
-
-" ### Keybindings
-" Move cursor on a word and hit <C-n> or <C-m> to toggle between pair of
-"   words or even increment-decrement a number
-let g:cycle_no_mappings = 1
-nnoremap <C-b> <Plug>CyclePrevious
-nnoremap <C-n> <Plug>CycleNext
-
 " ------------------
 " ## _lightline_vim_
 " ------------------
@@ -338,13 +316,6 @@ let g:lightline = {
       \ }
       \ }
 
-" ------------------
-" ## _python_syntax_
-" ------------------
-
-" ### Settings
-let g:python_highlight_all = 1
-
 " -----------------
 " ## _vim_fugitive_
 " -----------------
@@ -357,7 +328,9 @@ let g:python_highlight_all = 1
 nnoremap <leader>gs :G<CR>
 "   solving merge conflicts
 nnoremap <leader>gj :diffget //3<CR>
+nnoremap <leader>gJ :%diffget //3<CR>
 nnoremap <leader>gf :diffget //2<CR>
+nnoremap <leader>gF :%diffget //2<CR>
 
 "   Diff against any and all direct ancestors (merge conflicts)
 nnoremap <leader>gdf :Gvdiffsplit!<CR>
@@ -377,37 +350,26 @@ autocmd ColorScheme * highlight ExtraWhitespace ctermbg=LightRed ctermfg=white g
 " ### Keybindings
 nnoremap <silent> <M-u> :UndotreeToggle<CR>
 
+" ----------------
+" _vim_easy_align_
+" ----------------
+
+" ### Settings
+let g:easy_align_ignore_groups = []
+
+" ### Keybindings
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
 " -------------
 " # _FUNCTIONS_
 " -------------
 
-" 01. _LongLineHighlightOn_
-" 02. _ToggleBackground_
-" 03. _TermForceCloseAll_
-
-" ------------------------
-" ## _LongLineHighlightOn_
-" ------------------------
-" https://gist.github.com/fgarcia/9704429#file-long_lines-vim
-" https://stackoverflow.com/q/395114
-
-function! LongLineHighlightOn()
-    if exists("w:llh")
-        call matchdelete(w:llh)
-    endif
-
-    highlight OverLength ctermbg=LightBlue ctermfg=black guibg='#89dceb' guifg=black
-    autocmd ColorScheme * highlight OverLength ctermbg=LightBlue ctermfg=black guibg='#89dceb' guifg=black
-    if &ft ==? 'css' || &ft ==? 'scss'
-        let l:length = 90
-        let w:llh = matchadd("OverLength", '\%' . (l:length + 1) . 'v')
-    elseif &ft != 'floaterm' && &ft != 'fzf'
-        let l:length = 120
-        let w:llh = matchadd("OverLength", '\%' . (l:length + 1) . 'v')
-    endif
-endfunction
-
-call LongLineHighlightOn()
+" 01. _ToggleBackground_
+" 02. _TermForceCloseAll_
 
 " ---------------------
 " ## _ToggleBackground_
@@ -541,8 +503,8 @@ if !has('nvim')
 endif
 
 " Move in quickfix list (copen)
-nnoremap <silent> [c :cprevious<CR>
-nnoremap <silent> ]c :cnext<CR>
+nnoremap <silent> [q :cprevious<CR>
+nnoremap <silent> ]q :cnext<CR>
 " Move in location list (lopen)
 nnoremap <silent> [l :lprevious<CR>
 nnoremap <silent> ]l :lnext<CR>

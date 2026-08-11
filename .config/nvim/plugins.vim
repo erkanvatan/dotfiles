@@ -9,48 +9,62 @@
 " # _PLUGINS_
 " -----------
 
-" 1. Download plug.vim and put it in ~/.vim/autoload
-"   curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-"     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-" 2. Download plugins with :PlugInstall
-" 3. Downloaded plugins are located in ~/.vim/plugged
-
 " If plugin manager vim-plug isn't installed, install it automatically
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
-    echo "Downloading junegunn/vim-plug to manage plugins..."
+    echo 'Downloading junegunn/vim-plug to manage plugins...'
     silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-call plug#begin('~/.config/nvim/plugged')
+call plug#begin(stdpath('config') . '/plugged')
 
-" ## Plugins shared with Vim
-source $HOME/.vimrc.plugins
-
+Plug '907th/vim-auto-save'
 Plug 'HiPhish/rainbow-delimiters.nvim'
-Plug 'SirVer/ultisnips' " snippet manager
+Plug 'SirVer/ultisnips'                    " snippet manager
+Plug 'alvan/vim-closetag'
 Plug 'andrewferrier/debugprint.nvim'
-Plug 'catppuccin/nvim', { 'as': 'catppuccin' } " color theme
-Plug 'dense-analysis/ale' " configurable async linter/fixer for programming languages
-Plug 'honza/vim-snippets' " compilation of useful snippets
+Plug 'catppuccin/nvim',                    { 'as': 'catppuccin' } " color theme
+Plug 'dense-analysis/ale'                  " configurable async linter/fixer for programming languages
+Plug 'honza/vim-snippets'                  " compilation of useful snippets
 Plug 'inkarkat/vim-SyntaxRange'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " fuzzy file finder
+Plug 'itchyny/lightline.vim'               " configurable statusline/tabline
+Plug 'jiangmiao/auto-pairs'
+Plug 'junegunn/fzf',                       { 'do': { -> fzf#install() } } " fuzzy file finder
 Plug 'junegunn/fzf.vim'
+Plug 'junegunn/gv.vim'                     " git commit browser
+Plug 'junegunn/vim-easy-align'             " align characters on the same column
+Plug 'lambdalisue/suda.vim'                " suport for sudo
 Plug 'lewis6991/gitsigns.nvim'
-Plug 'lifepillar/pgsql.vim' " support for PostgreSQL
-Plug 'liuchengxu/vista.vim' " tags and lsp symbols viewer
+Plug 'lifepillar/pgsql.vim'                " support for PostgreSQL
+Plug 'liuchengxu/vista.vim'                " tags and lsp symbols viewer
 Plug 'lukas-reineke/indent-blankline.nvim' " add vertical indent guides
-Plug 'mattn/emmet-vim' " good for html tags
-Plug 'maximbaz/lightline-ale' " ale integration for lightline
-Plug 'neoclide/coc.nvim', { 'branch': 'release' } " load extensions like VSCode and host language servers
-Plug 'norcalli/nvim-colorizer.lua' " colorize color names and RGB codes
-Plug 'nvim-tree/nvim-tree.lua' " tree-like file browser
-Plug 'nvim-tree/nvim-web-devicons' " optional, for file icons
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} " better parsing for syntax highlight
-Plug 'puremourning/vimspector' " A multi-language debugging system for Vim
-Plug 'shime/vim-livedown' " live preview of markdown
+Plug 'mattn/emmet-vim'                     " good for html tags
+Plug 'maximbaz/lightline-ale'              " ale integration for lightline
+Plug 'mbbill/undotree'                     " the undo history visualizer
+Plug 'mhinz/vim-startify'                  " change default starting screen
+Plug 'michaeljsmith/vim-indent-object'     " adds an object to select everything at an indent level
+Plug 'neoclide/coc.nvim',                  { 'branch': 'release' } " load extensions like VSCode and host language servers
+Plug 'norcalli/nvim-colorizer.lua'         " colorize color names and RGB codes
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'nvim-tree/nvim-tree.lua'             " tree-like file browser
+Plug 'nvim-tree/nvim-web-devicons'         " optional, for file icons
+Plug 'nvim-treesitter/nvim-treesitter',    { 'branch': 'master', 'do': ':TSUpdate'} " better parsing for syntax highlight
+Plug 'preservim/nerdcommenter'             " comment/uncomment lines
+Plug 'puremourning/vimspector'             " A multi-language debugging system for Vim
+Plug 'romainl/vim-cool'                    " auto clear search highlight
+Plug 'ryanoasis/vim-devicons'              " lightline icons
+Plug 'shime/vim-livedown'                  " live preview of markdown
 Plug 'stsewd/fzf-checkout.vim'
+Plug 'tpope/vim-fugitive'                  " git wrapper
+Plug 'tpope/vim-repeat'                    " repeat supported plugin maps using `.` key
+Plug 'tpope/vim-sensible'                  " set sensible defaults
+Plug 'tpope/vim-surround'                  " change surroundings like single quotes, double quotes, etc.
+Plug 'voldikss/vim-floaterm'               " floating terminal
+Plug 'wuelnerdotexe/vim-astro'             " support for astrojs
+
+Plug 'godlygeek/tabular'      " vim markdown table formatting (NOTE: must come before preservim/vim-markdown)
+Plug 'preservim/vim-markdown' " vim markdown support
 
 call plug#end()
 
@@ -62,6 +76,7 @@ call plug#end()
 " ## Contents
 
 " _ale_
+" _auto_pairs_
 " _catppuccin_
 " _coc_nvim_
 " _debugprint_nvim_
@@ -69,14 +84,28 @@ call plug#end()
 " _fzf_checkout_vim_
 " _fzf_vim_
 " _gitsigns_nvim_
+" _gv_vim_
 " _indent_blankline_nvim_
+" _lightline_vim_
 " _markdown_nvim_
+" _nerdcommenter_
 " _nvim_colorizer_lua_
 " _nvim_tree_lua_
 " _nvim_treesitter_
 " _rainbow_delimiters_nvim_
+" _suda_vim_
 " _ultisnips_
+" _undotree_
+" _vim_auto_save_
+" _vim_better_whitespace_
+" _vim_closetag_
+" _vim_easy_align_
+" _vim_floaterm_
+" _vim_fugitive_
+" _vim_indent_object_
 " _vim_livedown_
+" _vim_startify_
+" _vim_surround_
 " _vimspector_
 " _vista_vim_
 
@@ -89,26 +118,26 @@ let g:latte = luaeval('require("catppuccin.palettes").get_palette "latte"')
 let g:mocha = luaeval('require("catppuccin.palettes").get_palette "mocha"')
 
 lua << EOF
-require("catppuccin").setup({
-    flavour = "auto", -- latte, frappe, macchiato, mocha
+require('catppuccin').setup({
+    flavour = 'auto', -- latte, frappe, macchiato, mocha
     background = { -- :h background
-        light = "latte",
-        dark = "mocha",
+        light = 'latte',
+        dark = 'mocha',
     },
     transparent_background = false, -- disables setting the background color.
     show_end_of_buffer = true, -- shows the '~' characters after the end of buffers
     term_colors = false, -- sets terminal colors (e.g. `g:terminal_color_0`)
     dim_inactive = {
         enabled = true, -- dims the background color of inactive window
-        shade = "dark",
+        shade = 'dark',
         percentage = 0.10, -- percentage of the shade to apply to the inactive window
     },
     no_italic = false, -- Force no italic
     no_bold = false, -- Force no bold
     no_underline = false, -- Force no underline
     styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
-        comments = { "italic" }, -- Change the style of comments
-        conditionals = { "italic" },
+        comments = { 'italic' }, -- Change the style of comments
+        conditionals = { 'italic' },
         loops = {},
         functions = {},
         keywords = {},
@@ -131,7 +160,7 @@ require("catppuccin").setup({
         coc_nvim = true,
         indent_blankline = {
             enabled = true,
-            scope_color = "", -- catppuccin color (eg. `lavender`) Default: text
+            scope_color = '', -- catppuccin color (eg. `lavender`) Default: text
             colored_indent_levels = false,
         },
         markdown = true,
@@ -147,7 +176,7 @@ EOF
 
 " ### Settings
 let g:livedown_port = 8001
-let g:livedown_browser = "xdg-open"
+let g:livedown_browser = 'xdg-open'
 let g:livedown_open = 1
 
 " ### Keybindings
@@ -256,7 +285,7 @@ let g:ale_python_black_options = '--line-length 120 --target-version py310'
 
 " HTML
 let g:ale_html_beautify_options = '--indent-size 2 --max-preserve-newlines 2 --wrap-line-length 120'
-let g:ale_html_tidy_options = ""
+let g:ale_html_tidy_options = ''
 
 " C/C++
 let g:ale_c_clangformat_use_local_file = 1
@@ -271,7 +300,7 @@ let g:ale_c_clangformat_style_option = "
 \}"
 " let g:ale_c_clangformat_options = "--assume-filename=$HOME/.config/.clang-format"
 
-let g:ale_c_uncrustify_options = "-c .uncrustify.cfg"
+let g:ale_c_uncrustify_options = '-c .uncrustify.cfg'
 
 " Rust
 let g:ale_rust_analyzer_executable = "$HOME/.config/coc/extensions/coc-rust-analyzer-data/rust-analyzer"
@@ -333,7 +362,7 @@ augroup END
 let g:coc_user_config = {}
 " CoC extensions to install automatically
 let g:coc_global_extensions = [
-    \ 'coc-bitbake',
+    \ '@yaegassy/coc-astro',
     \ 'coc-bootstrap-classname',
     \ 'coc-clang-format-style-options',
     \ 'coc-clangd',
@@ -360,7 +389,7 @@ let g:coc_global_extensions = [
     \ 'coc-yaml',
     \ ]
 " coc-clangd
-"   Create a file called ".clang-format" at the root of your C project
+"   Create a file called `.clang-format` at the root of your C project
 "   with the following content:
 "   DisableFormat: true
 
@@ -524,7 +553,7 @@ let g:user_emmet_mode='nv' " only enable emmet in normal mode
 " multi class expansion       : .class1.class2
 " ID & class expansion        : #myid.myclass
 
-let g:user_emmet_leader_key=','
+let g:user_emmet_leader_key=","
 
 " -----------------------
 " ## _nvim_colorizer_lua_
@@ -690,6 +719,7 @@ require'nvim-treesitter.configs'.setup {
     -- Additional parsers:
     -- :TSInstall bibtex c_sharp java latex rust
     ensure_installed = {
+        "astro",
         "bash",
         "c",
         "cmake",
@@ -718,7 +748,7 @@ require'nvim-treesitter.configs'.setup {
     -- Install parsers synchronously (only applied to `ensure_installed`)
     sync_install = false,
     -- Automatically install missing parsers when entering buffer
-    auto_install = false,
+    auto_install = true,
     ignore_install = {},
     highlight = {
         enable = true,
@@ -905,3 +935,211 @@ let g:rainbow_delimiters = {
 
 " ### Keybindings
 nnoremap <Leader>tr :call rainbow_delimiters#toggle(0)<CR>
+
+" ------------------
+" ## _vim_auto_save_
+" ------------------
+
+" ### Settings
+let g:auto_save_silent = 1  " do not display the auto-save notification
+let g:auto_save = 0 " auto-save off by default
+let g:auto_save_events = ['InsertLeave', 'TextChanged'] " set events to trigger auto-save
+
+" ### Keybindings
+noremap <M-s> :AutoSaveToggle<CR>
+inoremap <M-s> <ESC>:AutoSaveToggle<CR>a
+
+" -----------------
+" ## _vim_startify_
+" -----------------
+
+" ### Settings
+let g:startify_session_dir = stdpath('config') . '/session'
+let g:startify_session_persistence = 1
+
+" -----------------
+" ## _vim_surround_
+" -----------------
+
+" ### Keybindings
+" Works with parentheses(), brackets [], quotes (double or single), XML tags <q> </q>  and more
+" NOTE: Use vS) instead of vS( to surround without space
+" Example:
+" cs'<q>     : To change 'Hello' to <q>Hello</q>
+" ds'        : To remove delimiters from 'Hello'
+" dst        : To remove the surrounding tag
+" cst<p>     : To change the surrounding tag to <p>
+" vS         : In visual mode, S surrounds the selected (vSt for tag)
+
+" ------------------
+" ## _nerdcommenter_
+" ------------------
+
+" ### Settings
+" Add spaces after comment delimiters by default
+let g:NERDCreateDefaultMappings = 0
+let g:NERDSpaceDelims = 1
+augroup nerdcommenter_group
+    autocmd!
+    autocmd FileType python let g:NERDDefaultAlign = 'left'
+augroup END
+
+" ### Keybindings
+" [count]<leader>cc          : make lines commented
+" [count]<leader>c<space>    : toggle line's comment status (commented/uncommented)
+map <leader>cc <plug>NERDCommenterComment
+map <leader>cu <plug>NERDCommenterUncomment
+map <leader>ct <plug>NERDCommenterToggle
+map <leader>cm <plug>NERDCommenterMinimal
+
+" ---------------
+" ## _auto_pairs_
+" ---------------
+
+" ### Settings
+augroup auto_pairs_group
+    autocmd!
+    autocmd FileType norg let g:AutoPairsMapSpace = 0
+augroup END
+" fix coc-snippets inserting newline when selecting a snippet with enter
+let g:AutoPairsMapCR = 0
+
+" ### Keybindings
+" <M-p> : Toggle auto-pairs
+" <M-e> : Insert () or {} or [] before something then hit <M-e> to fast wrap
+" <M-n> : Jump to next closed pair
+" Use Ctrl-V) to insert paren without trigerring plugin
+" Use x or DEL to delete the character inserted by the plugin
+
+" -----------------
+" ## _vim_floaterm_
+" -----------------
+
+" ### Settings
+" Go back to the NORMAL mode using <C-\><C-N>
+let g:floaterm_gitcommit='floaterm'
+let g:floaterm_width=0.9
+let g:floaterm_height=0.9
+let g:floaterm_autoclose=1
+
+" ### Keybindings
+let g:floaterm_keymap_toggle = "<C-f>"
+
+" -----------------
+" ## _vim_closetag_
+" -----------------
+
+" ### Settings
+" These are the file types where this plugin is enabled.
+let g:closetag_filetypes = 'html,xhtml,phtml,xml'
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.xml'
+let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
+
+" ### Keybindings
+" Shortcut for closing tags, default is '>'
+let g:closetag_shortcut = '>'
+
+" ----------------------
+" ## _vim_indent_object_
+" ----------------------
+
+" ### Keybindings
+" Defines two new text objects to select only current indentation level
+" <count>ai     An Indentation level and line above.
+" <count>ii     Inner Indentation level (no line above).
+" <count>aI     An Indentation level and lines above/below.
+
+" ------------------
+" ## _lightline_vim_
+" ------------------
+
+" ### Settings
+function! CocCurrentFunction()
+    return get(b:, 'coc_current_function', '')
+endfunction
+
+function! GitStatus() abort
+    return get(g:, 'coc_git_status', '')
+endfunction
+
+function! LightlineFilename()
+  let filename = expand('%:t') !=# '' ? expand('%:p:.') : '[No Name]'
+  let modified = &modified ? ' +' : ''
+  return filename . modified
+endfunction
+
+let g:lightline = {
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste', 'readonly' ],
+      \             [ 'gitbranch', 'filename' ],
+      \             [ 'cocstatus' ] ],
+      \   'right': [['percent', 'lineinfo'],
+      \             [ 'filetype', 'fileencoding' ],
+      \             [ 'currentfunction', 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok' ]]
+      \ },
+      \ 'component_function': {
+      \   'cocstatus': 'coc#status',
+      \   'gitbranch': 'GitStatus',
+      \   'currentfunction': 'CocCurrentFunction',
+      \   'filename': 'LightlineFilename',
+      \ },
+      \ 'component_expand': {
+      \  'linter_checking': 'lightline#ale#checking',
+      \  'linter_infos': 'lightline#ale#infos',
+      \  'linter_warnings': 'lightline#ale#warnings',
+      \  'linter_errors': 'lightline#ale#errors',
+      \  'linter_ok': 'lightline#ale#ok',
+      \ },
+      \ 'component_type': {
+      \     'linter_warnings': 'warning',
+      \     'linter_errors': 'error',
+      \ }
+      \ }
+
+" -----------------
+" ## _vim_fugitive_
+" -----------------
+
+" ### Keybindings
+"   Enter :Git and then do g? to checkout all hotkeys
+"   After :Git use cc to enter commit buffer
+"   to add the file under cursor to .gitignore use {anynumber}gI
+"   git status
+nnoremap <leader>gs :G<CR>
+"   solving merge conflicts
+nnoremap <leader>gj :diffget //3<CR>
+nnoremap <leader>gJ :%diffget //3<CR>
+nnoremap <leader>gf :diffget //2<CR>
+nnoremap <leader>gF :%diffget //2<CR>
+
+"   Diff against any and all direct ancestors (merge conflicts)
+nnoremap <leader>gdf :Gvdiffsplit!<CR>
+
+" -----------------------
+" _vim_better_whitespace_
+" -----------------------
+
+" ### Settings
+let g:better_whitespace_enabled=1
+autocmd ColorScheme * highlight ExtraWhitespace ctermbg=LightRed ctermfg=white guibg='#f9e2af' guifg=black
+
+" ----------
+" _undotree_
+" ----------
+
+" ### Keybindings
+nnoremap <silent> <M-u> :UndotreeToggle<CR>
+
+" ----------------
+" _vim_easy_align_
+" ----------------
+
+" ### Settings
+let g:easy_align_ignore_groups = []
+
+" ### Keybindings
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)

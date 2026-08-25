@@ -1,0 +1,116 @@
+#!/usr/bin/env bash
+# ----------------
+# @file config-sync
+# @author arensonz
+# @date 2026-08-11
+# @brief Continuously mirror a dotfiles checkout into $HOME so edits made
+#        there can be tested live against the real bare-repo work-tree. Run
+#        this from the root of the checkout you want to sync (the current
+#        working directory is used as the source). Previews the files that
+#        would change and asks for confirmation before the initial sync;
+#        subsequent re-syncs triggered by file changes run automatically
+#        until interrupted (Ctrl+C). Skips .git and all submodule paths
+#        declared in .gitmodules.
+#
+# @depend rsync
+# @depend entr
+# ----------------
+
+set -E
+
+function handle_err() {
+    echo "An error has occured at line $1, exiting the script..." >&2
+    exit $2
+}
+
+trap 'handle_err $LINENO $?' ERR
+
+readonly SRC="$(pwd)"
+readonly DEST="$HOME"
+
+readonly SKIP_PATHS=(
+    ".git"
+    ".zprezto"
+    ".zprezto-contrib/zsh-z"
+    ".zprezto-contrib/zsh-you-should-use"
+    ".zprezto-contrib/zsh-bat"
+    ".zprezto-contrib/fzf-tab"
+    "programs/swift-map"
+    ".tmux/plugins/tpm"
+)
+
+function run_rsync() {
+    local -a extra_flags=("$@")
+    local -a rsync_excludes=()
+    local path
+
+    for path in "${SKIP_PATHS[@]}"; do
+        rsync_excludes+=(--exclude="$path/")
+    done
+
+    rsync -av "${extra_flags[@]}" "${rsync_excludes[@]}" "$SRC/" "$DEST/"
+}
+
+function preview_sync() {
+    run_rsync --dry-run
+}
+
+function sync_once() {
+    run_rsync
+}
+
+function confirm_sync() {
+    local reply
+
+    echo "The following files would be synced from $SRC to $DEST:"
+    preview_sync
+    echo
+
+    read -r -p "Proceed with sync? [y/N] " reply
+    [[ "$reply" =~ ^[Yy]$ ]]
+}
+
+function watch_list() {
+    local -a find_prune=()
+    local path
+
+    for path in "${SKIP_PATHS[@]}"; do
+        find_prune+=(-path "$SRC/$path" -o)
+    done
+    unset 'find_prune[${#find_prune[@]}-1]' # drop trailing -o
+
+    find "$SRC" \( "${find_prune[@]}" \) -prune -o -type f -print
+}
+
+function main() {
+    # Re-invoked by entr (via "$0 --once") to run a single sync pass
+    if [[ "$1" == "--once" ]]; then
+        sync_once
+        exit 0
+    fi
+
+    if ! confirm_sync; then
+        echo "Aborted."
+        exit 1
+    fi
+
+    echo "Syncing $SRC -> $DEST"
+    sync_once
+
+    echo "Watching for changes... (Ctrl+C to stop)"
+    while true; do
+        # entr exit codes: 0 = user quit (Ctrl+C or q), 2 = a new file was
+        # added under -d (rebuild the list and keep watching), anything
+        # else is a real failure.
+        if watch_list | entr -d "$0" --once; then
+            break
+        fi
+
+        status=$?
+        if [[ $status -ne 2 ]]; then
+            handle_err "$LINENO" "$status"
+        fi
+    done
+}
+
+main "$@"

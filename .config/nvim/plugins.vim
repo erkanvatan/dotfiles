@@ -25,6 +25,7 @@ Plug 'SirVer/ultisnips'                    " snippet manager
 Plug 'alvan/vim-closetag'
 Plug 'andrewferrier/debugprint.nvim'
 Plug 'catppuccin/nvim',                    { 'as': 'catppuccin' } " color theme
+Plug 'coder/claudecode.nvim'               " Claude Code CLI integration (WebSocket bridge to `claude`)
 Plug 'dense-analysis/ale'                  " configurable async linter/fixer for programming languages
 Plug 'honza/vim-snippets'                  " compilation of useful snippets
 Plug 'inkarkat/vim-SyntaxRange'
@@ -78,6 +79,7 @@ call plug#end()
 " _ale_
 " _auto_pairs_
 " _catppuccin_
+" _claudecode_nvim_
 " _coc_nvim_
 " _debugprint_nvim_
 " _emmet_vim_
@@ -169,6 +171,30 @@ require('catppuccin').setup({
     },
 })
 EOF
+
+" --------------------
+" ## _claudecode_nvim_
+" --------------------
+
+" ### Settings
+lua << EOF
+require('claudecode').setup({
+    terminal = {
+        provider = 'native', -- built-in split terminal (no snacks.nvim dependency)
+        split_width_percentage = 0.40, -- kept in sync with the nvim-tree workaround below
+    },
+})
+EOF
+
+" ### Keybindings
+nnoremap <leader>ac :ClaudeCode<CR>
+nnoremap <leader>ar :ClaudeCode --continue<CR>
+nnoremap <leader>aR :ClaudeCode --resume<CR>
+nnoremap <leader>am :ClaudeCodeSelectModel<CR>
+nnoremap <leader>aa :ClaudeCodeAdd %<CR>
+vnoremap <leader>as :ClaudeCodeSend<CR>
+nnoremap <leader>aj :ClaudeCodeDiffAccept<CR>
+nnoremap <leader>af :ClaudeCodeDiffDeny<CR>
 
 " -----------------
 " ## _vim_livedown_
@@ -452,7 +478,7 @@ inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
 "   The triggerCharacters is defined by LS.
 inoremap <silent><expr> <c-M-space> coc#refresh()
 
-" Use `[c` and `]c` to navigate diagnostics
+" Use `[d` and `]d` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
 nmap <silent> [d <Plug>(coc-diagnostic-prev)
 nmap <silent> ]d <Plug>(coc-diagnostic-next)
@@ -472,26 +498,8 @@ nnoremap <silent> K :call ShowDocumentation()<CR>
 nmap <leader>rn <Plug>(coc-rename)
 
 " Formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
-
-" Applying codeAction to the selected region.
-" Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
-
-" Remap keys for applying code actions at the cursor position
-nmap <leader>ac  <Plug>(coc-codeaction-cursor)
-" Remap keys for apply code actions affect whole buffer
-nmap <leader>as  <Plug>(coc-codeaction-source)
-" Apply the most preferred quickfix action to fix diagnostic on the current line
-nmap <leader>qf  <Plug>(coc-fix-current)
-
-" Remap keys for applying refactor code actions
-nmap <silent> <leader>re <Plug>(coc-codeaction-refactor)
-nmap <silent> <leader>ri :CocCommand workspace.inspectEdit<CR>
-xmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
-nmap <silent> <leader>r  <Plug>(coc-codeaction-refactor-selected)
+xmap <leader>ft  <Plug>(coc-format-selected)
+nmap <leader>ft  <Plug>(coc-format-selected)
 
 " Run the Code Lens action on the current line.
 nmap <leader>cl  <Plug>(coc-codelens-action)
@@ -520,8 +528,6 @@ endif
 " coc-snippets
 imap <C-k> <Plug>(coc-snippets-expand-jump)
 vmap <C-j> <Plug>(coc-snippets-select)
-"   Use <leader>x to convert visual selected code to snippet
-xmap <leader>x <Plug>(coc-convert-snippet)
 
 " --------------
 " ## _emmet_vim_
@@ -650,6 +656,39 @@ require("nvim-tree").setup({
         enable = false
     },
 })
+EOF
+
+" Workaround: toggling nvim-tree (even as a floating window) causes
+" claudecode.nvim's native terminal split to get resized to ~50% width.
+" Re-pin it back to its configured percentage after the tree opens/closes.
+lua << EOF
+local nvimtree_ok, nvimtree_api = pcall(require, 'nvim-tree.api')
+if nvimtree_ok then
+    local CLAUDE_TERM_WIDTH_PCT = 0.40 -- must match claudecode's terminal.split_width_percentage
+
+    local function get_claude_term_win()
+        for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+            local buf = vim.api.nvim_win_get_buf(win)
+            if vim.bo[buf].buftype == 'terminal' and vim.api.nvim_buf_get_name(buf):match('claude') then
+                return win
+            end
+        end
+        return nil
+    end
+
+    local function restore_claude_term_width()
+        vim.schedule(function()
+            local win = get_claude_term_win()
+            if win then
+                vim.api.nvim_win_set_width(win, math.floor(vim.o.columns * CLAUDE_TERM_WIDTH_PCT))
+            end
+        end)
+    end
+
+    local Event = nvimtree_api.events.Event
+    nvimtree_api.events.subscribe(Event.TreeOpen, restore_claude_term_width)
+    nvimtree_api.events.subscribe(Event.TreeClose, restore_claude_term_width)
+end
 EOF
 
 " ### Keybindings
@@ -847,8 +886,6 @@ nnoremap <leader>fb :Buffers!<CR>
 nnoremap <leader>fB :BuffersModified<CR>
 nnoremap <leader>fg :Rg!<CR>
 " Git Bindings
-nnoremap <leader>gf :GFiles!?<CR>
-nnoremap <leader>gF :GFiles!<CR>
 nnoremap <leader>gc :GV<CR>
 nnoremap <leader>gC :GV --all<CR>
 

@@ -1,0 +1,100 @@
+version: "3"
+
+# Entry point for machine setup and updates.
+# run `task --list` for every available task.
+#
+# Brand new machine (nothing installed yet):
+#   git clone <your fork's clone URL> /tmp/dotfiles-setup && cd /tmp/dotfiles-setup
+#   bash .config/dotfiles/bootstrap.sh
+#   task utility:bare-install REPO=<your fork's clone URL>
+#   rm -rf /tmp/dotfiles-setup && cd "$HOME"
+#   cp .config/dotfiles/.env.example .config/dotfiles/.env   # fill in values
+#   task setup
+
+dotenv: [".config/dotfiles/.env"]
+
+includes:
+  apt: ./.config/dotfiles/taskfiles/apt.yml
+  appimage: ./.config/dotfiles/taskfiles/appimage.yml
+  lang: ./.config/dotfiles/taskfiles/lang.yml
+  cli: ./.config/dotfiles/taskfiles/cli.yml
+  utility: ./.config/dotfiles/taskfiles/utility.yml
+
+tasks:
+  default:
+    desc: List every available task
+    silent: true
+    cmds:
+      - task --list
+
+  preflight:
+    desc: Check the distro is supported and prime sudo
+    internal: true
+    cmds:
+      - |
+        . /etc/os-release
+        case "${ID}:${ID_LIKE:-}" in
+          ubuntu:*|*:*ubuntu*|linuxmint:*) ;;
+          *)
+            echo "E: unsupported distro (ID=$ID, ID_LIKE=${ID_LIKE:-}) - this Taskfile targets Ubuntu and Ubuntu-based distros" >&2
+            exit 1
+            ;;
+        esac
+        echo "OK: running on $PRETTY_NAME"
+      - sudo -v
+
+  setup:
+    desc: "Fresh machine: everything in `update`, plus one-time installs"
+    cmds:
+      - task: preflight
+      - task: utility:rootfs-install
+      - task: apt:install
+      - task: lang:install
+      - task: cli:keygen
+      - task: cli:install
+      - task: appimage:setup
+      - task: appimage:update
+      - task: doctor
+
+  update:
+    desc: Bring an existing machine up to date (no one-time/install-only steps)
+    cmds:
+      - task: preflight
+      - task: apt:update
+      - task: lang:update
+      - task: cli:update
+      - task: appimage:update
+      - task: doctor
+
+  self-update:
+    desc: Update go-task itself
+    cmds:
+      - sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b "$HOME/.local/bin"
+
+  doctor:
+    desc: Print versions of core tools and flag anything missing
+    silent: true
+    cmds:
+      - |
+        FAIL=0
+        check() {
+          local name="$1"; shift
+          if out=$("$@" 2>&1); then
+            printf '  OK    %-8s %s\n' "$name" "$(head -n1 <<<"$out")"
+          else
+            printf '  MISS  %-8s not found\n' "$name"
+            FAIL=1
+          fi
+        }
+        check task   task --version
+        check nvim   nvim --version
+        check node   bash -c 'shopt -s nullglob; node=("$HOME"/.nvm/versions/node/*/bin/node); [[ ${#node[@]} -gt 0 ]] && "${node[-1]}" --version'
+        check python bash -c '"$HOME/.pyenv/shims/python" --version'
+        check pipx   pipx --version
+        if pgrep -fx appimagelauncherd >/dev/null; then
+          printf '  OK    %-8s daemon running\n' appimagelauncherd
+        else
+          printf '  MISS  %-8s daemon not running\n' appimagelauncherd
+          FAIL=1
+        fi
+        exit $FAIL

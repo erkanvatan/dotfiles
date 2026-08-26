@@ -15,7 +15,10 @@
 	url = https://github.com/Aloxaf/fzf-tab.git
 [submodule "programs/swift-map"]
 	path = programs/swift-map
-	url = https://github.com/arensonzz/swift-map.git
+	url = https://github.com/erkanvatan/swift-map.git
 [submodule ".tmux/plugins/tpm"]
 	path = .tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm.git
+[submodule ".fzf"]
+	path = .fzf
+	url = https://github.com/junegunn/fzf.git

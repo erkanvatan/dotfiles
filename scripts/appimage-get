@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+# ----------------
+# @file appimage-get
+# @author arensonz
+# @date 2026-08-25
+# @brief Fetch the newest release asset matching a glob from a GitHub repo's
+#        AppImage releases, skip the download when the tag hasn't changed,
+#        and drop it into AppImageLauncher's watched directory
+#        (~/Applications by default) so its daemon picks it up and adds a
+#        menu entry. Optionally symlinks the AppImage into ~/.local/bin under
+#        a fixed name, for tools that need to stay on $PATH (e.g. nvim).
+#
+#        usage: appimage-get <name> <owner/repo> <asset-glob> [bin-symlink]
+#
+# @depend curl
+# @depend jq
+# ----------------
+
+set -E
+
+function handle_err() {
+    echo "An error has occured at line $1, exiting the script..." >&2
+    exit $2
+}
+
+trap 'handle_err $LINENO $?' ERR
+
+readonly NAME="$1"
+readonly REPO="$2"
+readonly GLOB="$3"
+readonly BINLINK="${4:-}"
+
+if [[ -z "$NAME" || -z "$REPO" || -z "$GLOB" ]]; then
+    echo "usage: appimage-get <name> <owner/repo> <asset-glob> [bin-symlink]" >&2
+    exit 1
+fi
+
+readonly DEST_DIR="${APPIMAGE_DEST:-$HOME/Applications}"
+readonly STATE_DIR="$HOME/.local/state/dotfiles/appimages"
+readonly STATE_FILE="$STATE_DIR/$NAME.version"
+readonly DEST_FILE="$DEST_DIR/$NAME.AppImage"
+
+mkdir -p "$DEST_DIR" "$STATE_DIR"
+
+readonly API_URL="https://api.github.com/repos/$REPO/releases/latest"
+RESPONSE="$(curl -fsSL "$API_URL")" || {
+    echo "E: failed to reach $API_URL (offline, or rate-limited - GitHub allows 60 unauthenticated requests/hour)" >&2
+    exit 1
+}
+readonly RESPONSE
+
+readonly TAG="$(jq -r '.tag_name // empty' <<<"$RESPONSE")"
+if [[ -z "$TAG" ]]; then
+    readonly API_MSG="$(jq -r '.message // "unknown error"' <<<"$RESPONSE")"
+    echo "E: could not read a release tag for $REPO ($API_MSG)" >&2
+    exit 1
+fi
+
+# Match against the real asset names with bash's own glob rules, rather than
+# hand-rolling glob-to-regex - this is what "*" in the manifest means.
+mapfile -t ASSET_NAMES < <(jq -r '.assets[].name' <<<"$RESPONSE")
+ASSET_NAME=""
+for candidate in "${ASSET_NAMES[@]}"; do
+    if [[ "$candidate" == $GLOB ]]; then
+        ASSET_NAME="$candidate"
+        break
+    fi
+done
+
+if [[ -z "$ASSET_NAME" ]]; then
+    echo "E: no release asset matching '$GLOB' found in $REPO@$TAG" >&2
+    echo "   available assets:" >&2
+    printf '     %s\n' "${ASSET_NAMES[@]}" >&2
+    exit 1
+fi
+
+if [[ -f "$STATE_FILE" && "$(<"$STATE_FILE")" == "$TAG" && -f "$DEST_FILE" ]]; then
+    echo "= $NAME $TAG (up to date)"
+else
+    readonly ASSET_URL="$(jq -r --arg n "$ASSET_NAME" '.assets[] | select(.name == $n) | .browser_download_url' <<<"$RESPONSE")"
+    echo "> $NAME -> $TAG ($ASSET_NAME)"
+    curl -fsSL "$ASSET_URL" -o "$DEST_FILE.tmp"
+    chmod +x "$DEST_FILE.tmp"
+    mv -f "$DEST_FILE.tmp" "$DEST_FILE"
+    echo "$TAG" >"$STATE_FILE"
+fi
+
+if [[ -n "$BINLINK" ]]; then
+    mkdir -p "$HOME/.local/bin"
+    ln -sf "$DEST_FILE" "$HOME/.local/bin/$BINLINK"
+fi

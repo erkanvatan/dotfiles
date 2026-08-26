@@ -94,9 +94,9 @@ alias gph='git push'
 alias gccount='echo "Commit count: " && git shortlog -s | awk '"'"'{ s += $1 } END { print s }'"'"''
 
 # ls
-command -v exa >/dev/null && alias ls='exa -F -ag --group-directories-first'
+command -v eza >/dev/null && alias ls='eza -F -ag --group-directories-first'
 alias ll='ls -l'
-command -v exa >/dev/null && alias lsh='exa -F -g --group-directories-first'
+command -v eza >/dev/null && alias lsh='eza -F -g --group-directories-first'
 alias llh='lsh -l'
 
 # vim

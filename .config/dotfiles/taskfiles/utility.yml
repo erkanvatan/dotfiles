@@ -1,0 +1,37 @@
+version: "3"
+
+vars:
+  ROOTFS_DIR: '{{.ROOT_DIR}}/.config/dotfiles/rootfs'
+
+tasks:
+  bare-install:
+    desc: "One-time: turn $HOME into this repo's bare Git checkout (run from a normal clone: task utility:bare-install REPO=<your fork's clone URL>)"
+    preconditions:
+      - sh: '[ -n "{{.REPO}}" ]'
+        msg: "pass your fork's clone URL, e.g. task utility:bare-install REPO=git@github.com:you/dotfiles.git"
+    status:
+      - test -d "$HOME/.dotfiles"
+    cmds:
+      - git init --bare "$HOME/.dotfiles"
+      - git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" config --local status.showUntrackedFiles no
+      - git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" config --local core.worktree "$HOME"
+      - git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" remote add origin "{{.REPO}}"
+      - git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" pull origin master
+      - git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" submodule update --init --remote --recursive
+      - echo "-> $HOME is now the bare-repo work-tree (the 'config' alias from .zshrc works from your next shell)."
+      - echo "-> cd $HOME, then cp .config/dotfiles/.env.example .config/dotfiles/.env, fill in values, and run task setup"
+
+  rootfs-install:
+    desc: Copy .config/dotfiles/rootfs/ onto the live system (asks first)
+    prompt: This overwrites files under / (lightdm config, backgrounds) - continue?
+    cmds:
+      - |
+        cd "{{.ROOTFS_DIR}}"
+        files=$(find . -type f | sed 's|^\./||')
+        if [[ -z "$files" ]]; then
+          echo "Nothing under {{.ROOTFS_DIR}}, skipping."
+          exit 0
+        fi
+        echo "$files" | while IFS= read -r f; do
+          sudo install -D -m "$(stat -c%a "$f")" "$f" "/$f"
+        done

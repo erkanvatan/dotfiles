@@ -38,45 +38,37 @@ So I can access my dotfiles repo from any directory without the need to `cd` fir
 
 1. Fork the repo.
 
-    1. [Go to fork page.](https://github.com/arensonzz/dotfiles/fork)
+    1. [Go to fork page.](https://github.com/erkanvatan/dotfiles/fork)
 
     2. Copy HTTPS or SSH clone link of your fork.
 
-2. Prepare dotfiles directory.
-
-    1. Initialize bare Git repository.
-
-       ```sh
-       git init --bare $HOME/.dotfiles
-       ```
-
-    2. Add an alias to `.bashrc` or `.zshrc` (if you use Zsh as shell).
-
-       ```sh
-       alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-       alias config-edit="(export GIT_DIR=$HOME/.dotfiles; export GIT_WORK_TREE=$HOME; nvim)"
-       ```
-
-    3. Configure local Git settings for the repository.
-
-       ```sh
-       config config --local status.showUntrackedFiles no
-       config config --local core.worktree $HOME
-       ```
-
-    4. Set your fork as remote repository. I used my repo's HTTPS clone link in this example. 
-       You should use the [link](#Fork-the-repo) you copied.
-
-       ```sh
-       config remote add origin https://github.com/arensonzz/dotfiles.git
-       ```
-
-3. Pull dotfiles from repo
+2. Clone your fork into a throwaway folder and install `task` (go-task) from it.
 
    ```sh
-   config pull origin master
-   config submodule update --init --remote --recursive
+   git clone <your-fork-clone-url> /tmp/dotfiles-setup
+   cd /tmp/dotfiles-setup
+   bash .config/dotfiles/bootstrap.sh
    ```
+
+3. Turn `$HOME` into the bare-repo checkout and pull everything down. This one task
+   replaces the old manual `git init --bare` / alias / `config` / `remote add` / `pull` /
+   `submodule` dance - the `config` alias itself comes from `.zshrc`, which this pulls in.
+
+   ```sh
+   task utility:bare-install REPO=<your-fork-clone-url>
+   rm -rf /tmp/dotfiles-setup
+   ```
+
+4. Provision the machine.
+
+   ```sh
+   cd "$HOME"
+   cp .config/dotfiles/.env.example .config/dotfiles/.env   # fill in values
+   task setup
+   ```
+
+   Once set up, `task update` brings the machine up to date later (apt packages, language
+   runtimes, AppImages, etc.). Run `task --list` to see every available task.
 
 ## Usage
 

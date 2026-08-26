@@ -1,0 +1,69 @@
+version: "3"
+
+# Bump AIL_VERSION/AIL_DEB together after checking
+# https://github.com/TheAssassin/AppImageLauncher/releases.
+vars:
+  AIL_VERSION: v3.0.0-beta-3
+  AIL_DEB: appimagelauncher_3.0.0-beta-2-gha287.96cb937_amd64.deb
+  AIL_URL: 'https://github.com/TheAssassin/AppImageLauncher/releases/download/{{.AIL_VERSION}}/{{.AIL_DEB}}'
+  CONFIG_FILE: '$HOME/.config/appimagelauncher.cfg'
+  DEST_DIR: '$HOME/Applications'
+
+  # AppImages to fetch and integrate: name|owner/repo|asset-glob|optional-bin-symlink
+  # The optional 4th field symlinks the AppImage into ~/.local/bin under that
+  # name, for tools that need to stay on $PATH instead of just showing up in
+  # the app menu.
+  APPS:
+    - neovim|neovim/neovim|nvim-linux-x86_64.appimage|nvim
+
+tasks:
+  setup:
+    desc: Install AppImageLauncher and point it at ~/Applications
+    status:
+      - dpkg -s appimagelauncher >/dev/null 2>&1
+    cmds:
+      - mkdir -p "{{.DEST_DIR}}"
+      - |
+        tmp=$(mktemp -d)
+        trap 'rm -rf "$tmp"' EXIT
+        curl -fsSL "{{.AIL_URL}}" -o "$tmp/appimagelauncher.deb"
+        sudo apt-get install -y "$tmp/appimagelauncher.deb"
+      - task: configure
+
+  configure:
+    internal: true
+    cmds:
+      - |
+        mkdir -p "$(dirname "{{.CONFIG_FILE}}")"
+        cat > "{{.CONFIG_FILE}}" <<EOF
+        [AppImageLauncher]
+        destination = {{.DEST_DIR}}
+        enable_daemon = true
+        EOF
+      - |
+        # appimagelauncherd registers a systemd --user unit on first run.
+        systemctl --user daemon-reload 2>/dev/null || true
+        if ! systemctl --user enable --now appimagelauncherd.service 2>/dev/null; then
+          command -v appimagelauncherd >/dev/null && (appimagelauncherd >/dev/null 2>&1 &)
+          sleep 1
+          systemctl --user daemon-reload 2>/dev/null || true
+          systemctl --user enable --now appimagelauncherd.service 2>/dev/null || true
+        fi
+
+  update:
+    desc: Fetch/refresh every AppImage listed in this file (run `appimage:setup` first for menu integration)
+    cmds:
+      - for: { var: APPS }
+        cmd: |
+          IFS='|' read -r name repo glob binlink <<< "{{.ITEM}}"
+          "{{.ROOT_DIR}}/scripts/appimage-get" "$name" "$repo" "$glob" "$binlink"
+
+  list:
+    desc: Show the installed version of each AppImage in this file
+    silent: true
+    cmds:
+      - for: { var: APPS }
+        cmd: |
+          IFS='|' read -r name _ <<< "{{.ITEM}}"
+          have=$(cat "$HOME/.local/state/dotfiles/appimages/$name.version" 2>/dev/null || echo "not installed")
+          echo "$name: $have"

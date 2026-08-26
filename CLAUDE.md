@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repository is
 
-Personal Linux dotfiles for `arensonzz`, managed as a **Git bare repository** whose work-tree is
+Personal Linux dotfiles for `erkanvatan`, managed as a **Git bare repository** whose work-tree is
 `$HOME` itself. There is no build step, package.json, or test suite — this is a config/scripts repo,
 and the repository root corresponds directly to `$HOME` on the target machine (e.g. `.zshrc` here is
 `~/.zshrc` on disk, `.config/nvim/init.vim` here is `~/.config/nvim/init.vim`, etc.). Keep that mapping
@@ -28,16 +28,47 @@ Submodules are used for third-party plugin frameworks rather than vendoring them
 `.zprezto`, `.zprezto-contrib/{zsh-z,zsh-you-should-use,zsh-bat,fzf-tab}`, `.tmux/plugins/tpm`,
 `programs/swift-map`. After cloning/pulling, submodules need `git submodule update --init --remote --recursive`.
 
-## Machine setup scripts (`.config/dotfiles/install/`)
+## Machine setup and updates (`Taskfile.yml`, go-task)
 
-These are the closest thing to "build/run" commands in this repo — they provision a fresh Ubuntu machine:
+The closest thing to "build/run" commands in this repo is `Taskfile.yml` at the repo root, run via
+the [go-task](https://taskfile.dev) `task` binary (zsh completions for it are already wired up in
+`.zshrc`). It replaced the old `apt_install.sh`/`install.sh` pair — the same steps now live under
+`.config/dotfiles/taskfiles/*.yml` (`apt`, `appimage`, `lang`, `cli`, `utility`), each included
+into the root Taskfile as a namespace (e.g. `task apt:install`, `task lang:update`). Run `task --list`
+for the full task list.
 
-- `apt_install.sh <distro> <email>` — run with `sudo`; installs apt packages, PPAs, and fonts (MesloLGS NF).
-- `install.sh <distro> <email>` — run **without** sudo; clones Prezto/TPM/swift-map, installs nvim/nvm/pyenv/pipx/fzf/cargo tools, sets up SSH keys. Only `UBUNTU` is a supported `$1`.
-- `prepare_offline.sh` / `install_offline.sh` — package up (`prepare_offline.sh main`) and later restore (`install_offline.sh main`) plugin/cache directories (vim/nvim plugins+CoC, tmux plugins, tldr cache, prezto, cargo bins) for machines without internet access. Each supports being called with a single sub-function name (`dotfiles`, `vim`, `tmux`, `tldr`, `prezto`, `cargo`) instead of `main`.
+- **First time on a machine without `task` yet:** `bash .config/dotfiles/bootstrap.sh`, then copy
+  `.config/dotfiles/.env.example` to `.config/dotfiles/.env` (untracked — kept out of the bare repo by
+  `status.showUntrackedFiles no`, not a `.gitignore`) and fill in `GIT_NAME`/`GIT_EMAIL`/
+  `SSH_KEY_PASSPHRASE` — the Taskfile loads it via `dotenv:`.
+- **`task setup`** — fresh machine: apt packages/PPAs/font, the `rootfs/` overlay, language runtimes
+  (nvm/node, pyenv/python, pipx), SSH keygen, per-user CLI tools (git identity/signing, Prezto/TPM
+  submodules + plugins, `~/programs/{swift-map,core}`, fzf, npm/pipx/cargo apps), AppImageLauncher +
+  AppImage manifest, then `task doctor`.
+- **`task update`** — the update-only subset of the same steps (no PPA re-adds, no SSH keygen), plus
+  updating `task` itself first.
+- Package lists live inline as `vars:` in the taskfiles rather than separate files: apt packages/PPAs
+  in `apt.yml` (`PACKAGES`/`PPAS`), and npm/pipx/cargo packages in `cli.yml` (`NPM_PKGS`/`PIPX_PKGS`/
+  `CARGO_PKGS`) — one entry per line, `#` comments allowed. Add or remove software there rather than
+  editing the task logic.
+- Distro support is detected from `/etc/os-release` (Ubuntu and Ubuntu-based distros, including Linux
+  Mint) rather than passed as an argument.
 
-`.config/dotfiles/rootfs/` is a literal filesystem overlay (e.g. `etc/lightdm/...`, `usr/share/backgrounds/...`)
-meant to be copied to `/` on the target system, not sourced by anything automatically.
+### AppImages (`.config/dotfiles/taskfiles/appimage.yml`)
+
+AppImage-only GUI apps are declared in a small manifest (`name|owner/repo|asset-glob|optional-bin-symlink`)
+at the top of `appimage.yml`. `task appimage:update` uses `scripts/appimage-get` to pull the newest
+matching release asset from GitHub into `~/Applications`; [AppImageLauncher](https://github.com/TheAssassin/AppImageLauncher)
+(installed via `task appimage:setup` from a GitHub release .deb, since its PPA is deprecated) watches
+that folder and adds/updates the application-menu entry. `task appimage:list` shows installed versions.
+Before adding an app to the manifest, check its GitHub releases actually ship an `.AppImage` asset —
+several commonly-assumed ones (Anki, Telegram Desktop, sqlectron) do not.
+
+`.config/dotfiles/rootfs/` is a literal filesystem overlay (e.g. `etc/lightdm/...`, `usr/share/backgrounds/...`);
+`task utility:rootfs-install` copies it onto `/` (asks for confirmation first).
+
+There is no offline/no-internet install path anymore — the old `prepare_offline.sh`/`install_offline.sh`
+pair was removed along with the rest of `.config/dotfiles/install/` when this moved to the Taskfile.
 
 ## Shell config structure
 
@@ -60,4 +91,5 @@ action), not part of any install/build pipeline.
 
 ## Development Notes
 
--
+- No need for a .gitignore file as the intended purpose of this repo is to be used as bare repo.
+- Never run task commands without asking first as a bug can break a running system.

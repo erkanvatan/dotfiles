@@ -1,0 +1,69 @@
+version: "3"
+
+# Runtimes and their package managers: nvm/node, pyenv/python, pipx.
+
+tasks:
+  nvm:
+    internal: true
+    status:
+      - test -d "$HOME/.nvm"
+    cmds:
+      - |
+        nvm_version=$(curl -fsSL https://api.github.com/repos/nvm-sh/nvm/releases/latest | jq -r .tag_name)
+        curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/$nvm_version/install.sh" | bash
+
+  node:
+    internal: true
+    deps: [nvm]
+    status:
+      - bash -c 'shopt -s nullglob; node=("$HOME"/.nvm/versions/node/*/bin/node); [[ ${#node[@]} -gt 0 ]]'
+    cmds:
+      - bash -lc '. "$NVM_DIR/nvm.sh"; nvm install --lts; nvm alias default node; nvm use --lts'
+
+  pyenv:
+    internal: true
+    status:
+      - test -d "$HOME/.pyenv"
+    cmds:
+      - curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+      - bash -lc 'export PATH="$HOME/.pyenv/bin:$PATH"; eval "$(pyenv init --path)"; git clone https://github.com/alefpereira/pyenv-pyright.git "$(pyenv root)/plugins/pyenv-pyright"'
+
+  python:
+    internal: true
+    deps: [pyenv]
+    status:
+      - bash -lc 'export PATH="$HOME/.pyenv/bin:$PATH"; pyenv versions --bare | grep -q .'
+    cmds:
+      - |
+        bash -lc '
+          export PATH="$HOME/.pyenv/bin:$PATH"
+          eval "$(pyenv init --path)"
+          eval "$(pyenv init -)"
+          latest_python_version=$(pyenv install --list | grep -E "^\s*[0-9]+\.[0-9]+\.[0-9]+\s*$" | tail -1 | tr -d " ")
+          pyenv install -s "$latest_python_version"
+          pyenv global "$latest_python_version"
+        '
+
+  pipx:
+    internal: true
+    status:
+      - command -v pipx
+    cmds:
+      - '"$HOME/.pyenv/shims/python" -m pip install --user pipx'
+      - '"$HOME/.pyenv/shims/python" -m pipx ensurepath'
+
+  install:
+    desc: Install nvm + latest LTS node, pyenv + latest python, pipx (one-time)
+    cmds:
+      - task: nvm
+      - task: node
+      - task: pyenv
+      - task: python
+      - task: pipx
+
+  update:
+    desc: Update to latest LTS node, latest pyenv + python patch releases, pipx
+    cmds:
+      - bash -lc '. "$NVM_DIR/nvm.sh"; nvm install --lts --reinstall-packages-from=default; nvm alias default node'
+      - bash -lc 'export PATH="$HOME/.pyenv/bin:$PATH"; pyenv update'
+      - '"$HOME/.pyenv/shims/python" -m pip install --user -U pipx'

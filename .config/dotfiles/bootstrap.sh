@@ -24,6 +24,10 @@ sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b "$HOME/.loca
 
 echo
 echo "> task installed to $HOME/.local/bin/task <"
+if ! command -v task >/dev/null; then
+    echo "W: $HOME/.local/bin is not on PATH yet in this shell - run this first:" >&2
+    echo "     export PATH=\"$HOME/.local/bin:\$PATH\"" >&2
+fi
 if [[ -d "$HOME/.dotfiles" ]]; then
     if [[ ! -f "$HOME/.config/dotfiles/.env" ]]; then
         echo "W: $HOME/.config/dotfiles/.env is missing - copy .env.example and fill in values first:" >&2

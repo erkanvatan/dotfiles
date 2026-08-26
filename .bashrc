@@ -12,5 +12,9 @@ if ! shopt -oq posix; then
     fi
 fi
 
+# dotfiles bare git repository
+alias config='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
+alias config-edit="(export GIT_DIR=$HOME/.dotfiles; export GIT_WORK_TREE=$HOME; $EDITOR)"
+
 # Change prompt: show full path for current directory
 export PS1="\[\033[36m\]\w \[\033[1;32m\]$ \[\033[0m\]"

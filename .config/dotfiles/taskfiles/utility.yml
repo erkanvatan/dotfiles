@@ -39,7 +39,7 @@ tasks:
             exit 1
           fi
           printf '%s' "$conflicts" | while IFS= read -r f; do
-            rm -f "$HOME/$f"
+            rm -rf "$HOME/$f"
           done
         fi
 

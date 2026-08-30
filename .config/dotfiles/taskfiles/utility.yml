@@ -47,7 +47,7 @@ tasks:
         fi
 
         git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" merge FETCH_HEAD
-      - git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" submodule update --init --remote --recursive
+      - cd $HOME && git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" submodule update --init --remote --recursive
       - echo "-> $HOME is now the bare-repo work-tree (the 'config' alias from .zshrc works from your next shell)."
       - echo "-> cd $HOME, then cp .config/dotfiles/.env.example .config/dotfiles/.env, fill in values, and run task setup"
 

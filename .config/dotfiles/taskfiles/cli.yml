@@ -55,14 +55,6 @@ tasks:
       - git config --global commit.gpgsign true
       - git config --global tag.gpgsign true
 
-  shell:
-    internal: true
-    status:
-      - test "$(basename "$SHELL")" = "zsh"
-    cmds:
-      - 'echo "W: default shell is not zsh - run chsh -s $(command -v zsh)" >&2'
-      - 'echo "W: log out and back in for the change to take effect." >&2'
-
   font:
     internal: true
     status:
@@ -155,8 +147,8 @@ tasks:
   install:
     desc: One-time per-user setup - git identity, shell, font, prezto/tpm submodules, ~/programs, fzf, npm/pipx/cargo apps
     cmds:
+      - task: keygen
       - task: git-identity
-      - task: shell
       - task: font
       - task: submodules
       - task: tpm

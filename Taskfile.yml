@@ -50,7 +50,6 @@ tasks:
       - task: utility:rootfs-install
       - task: apt:install
       - task: lang:install
-      - task: cli:keygen
       - task: cli:install
       - task: appimage:setup
       - task: appimage:update
@@ -91,6 +90,12 @@ tasks:
         check node   bash -c 'shopt -s nullglob; node=("$HOME"/.nvm/versions/node/*/bin/node); [[ ${#node[@]} -gt 0 ]] && "${node[-1]}" --version'
         check python bash -c '"$HOME/.pyenv/shims/python" --version'
         check pipx   pipx --version
+        if [ "$(basename "$SHELL")" = zsh ]; then
+          printf '  OK    %-8s %s\n' shell "$SHELL"
+        else
+          printf '  MISS  %-8s not zsh - run: chsh -s $(command -v zsh)\n' shell
+          FAIL=1
+        fi
         if pgrep -fx appimagelauncherd >/dev/null; then
           printf '  OK    %-8s daemon running\n' appimagelauncherd
         else

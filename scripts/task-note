@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# -----------------------
+# @file task-note
+# @author arensonz
+# @date 2026-08-30
+# @brief Print a message that stands out from the wall of apt/npm/curl output
+#        Taskfile.yml tasks produce. One line per argument.
+# -----------------------
+
+for msg in "$@"; do
+  printf '\033[1;36m==>\033[0m \033[1m%s\033[0m\n' "$msg"
+done

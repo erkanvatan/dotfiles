@@ -85,13 +85,11 @@ tasks:
 
   tpm:
     internal: true
-    deps: [submodules]
     cmds:
       - "$HOME/.tmux/plugins/tpm/bin/install_plugins"
 
   swift-map:
     internal: true
-    deps: [submodules]
     status:
       - test -x "$HOME/programs/swift-map/mainloop.py"
     cmds:
@@ -112,7 +110,6 @@ tasks:
 
   fzf:
     internal: true
-    deps: [submodules]
     status:
       - test -x "$HOME/.fzf/install"
     cmds:
@@ -120,7 +117,6 @@ tasks:
 
   fzf-update:
     internal: true
-    deps: [submodules]
     cmds:
       - "$HOME/.fzf/install --all --no-update-rc"
 

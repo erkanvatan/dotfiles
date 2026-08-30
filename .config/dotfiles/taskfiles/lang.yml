@@ -14,7 +14,6 @@ tasks:
 
   node:
     internal: true
-    deps: [nvm]
     status:
       - bash -c 'shopt -s nullglob; node=("$HOME"/.nvm/versions/node/*/bin/node); [[ ${#node[@]} -gt 0 ]]'
     cmds:
@@ -30,7 +29,6 @@ tasks:
 
   python:
     internal: true
-    deps: [pyenv]
     status:
       - bash -lc 'export PATH="$HOME/.pyenv/bin:$PATH"; pyenv versions --bare | grep -q .'
     cmds:

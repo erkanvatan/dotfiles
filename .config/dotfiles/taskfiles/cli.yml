@@ -139,10 +139,25 @@ tasks:
         grep -vE '^\s*#|^\s*$' <<< "{{.PIPX_PKGS}}" | xargs -r -n1 pipx install
         pipx upgrade-all
 
+  rustup:
+    internal: true
+    status:
+      - test -x "$HOME/.cargo/bin/rustup"
+    cmds:
+      - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
+
+  rustup-update:
+    internal: true
+    cmds:
+      - |
+        [[ -s "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
+        command -v rustup >/dev/null && rustup update
+
   cargo-apps:
     internal: true
     cmds:
       - |
+        [[ -s "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
         command -v cargo >/dev/null || { echo "W: cargo not found, skipping" >&2; exit 0; }
         grep -vE '^\s*#|^\s*$' <<< "{{.CARGO_PKGS}}" | xargs -r -n1 cargo install --locked
 
@@ -161,6 +176,7 @@ tasks:
       - task: fzf
       - task: npm-globals
       - task: pipx-apps
+      - task: rustup
       - task: cargo-apps
 
   update:
@@ -171,4 +187,5 @@ tasks:
       - task: fzf-update
       - task: npm-globals
       - task: pipx-apps
+      - task: rustup-update
       - task: cargo-apps

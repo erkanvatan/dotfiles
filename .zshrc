@@ -135,5 +135,8 @@ command -v pyenv >/dev/null \
 # pipx
 command -v register-python-argcomplete >/dev/null && eval "$(register-python-argcomplete pipx)"
 
+# rustup/cargo
+[ -s "$HOME/.cargo/env" ] && \. "$HOME/.cargo/env"
+
 # task
 command -v task >/dev/null && eval "$(task --completion zsh)"

@@ -33,14 +33,17 @@ tasks:
         if [[ -n "$conflicts" ]]; then
           echo "These files already exist in $HOME and would be overwritten by the clone:"
           printf '%s' "$conflicts"
-          read -p "Overwrite them? [y/N] " ans
+          read -p "Move them aside and continue? [y/N] " ans
           if [[ "$ans" != "y" && "$ans" != "Y" ]]; then
             echo "Aborted, nothing changed. Move or remove those files yourself and re-run this task."
             exit 1
           fi
+          backup_dir="$HOME/.dotfiles-backup/$(date +%Y%m%d%H%M%S)"
           printf '%s' "$conflicts" | while IFS= read -r f; do
-            rm -rf "$HOME/$f"
+            mkdir -p "$backup_dir/$(dirname "$f")"
+            mv "$HOME/$f" "$backup_dir/$f"
           done
+          echo "Moved conflicting files to $backup_dir"
         fi
 
         git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" merge FETCH_HEAD

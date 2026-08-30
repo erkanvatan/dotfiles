@@ -2,16 +2,10 @@
 
 All of my Linux config files. Easy installation and maintenance with Git bare repository.
 
-<!-- sudo apt install python3-md-toc -->
-<!-- python3 -m md_toc -p -i -s 1 github README.md -->
-<!--TOC-->
-
 - [About](#about)
 - [Themes](#themes)
 - [Installation](#installation)
 - [Usage](#usage)
-
-<!--TOC-->
 
 ## About
 
@@ -31,16 +25,12 @@ Linux CLI tools to my liking. This repository has my config files for the follow
 
 ## Installation
 
-Git has a feature called "bare repository". You can place `git-dir` (contents of .git) and `work-tree` on different 
-paths. I setup a Bare repository in any folder. When I'm working on my dotfiles repo I use an alias which sets 
-`--git-dir` to the bare repository and `--work-tree` to my home directory. 
-So I can access my dotfiles repo from any directory without the need to `cd` first.
+This repo is a Git ["bare repository"](https://www.atlassian.com/git/tutorials/dotfiles): the Git data
+(`--git-dir`) lives separately from the checked-out files (`--work-tree`), and `--work-tree` is set to
+`$HOME`. This lets the dotfiles live directly at their real paths (e.g. `~/.zshrc`) without a symlink
+farm, and lets you manage them with the `config` alias (see [Usage](#usage)) from anywhere.
 
-1. Fork the repo.
-
-    1. [Go to fork page.](https://github.com/erkanvatan/dotfiles/fork)
-
-    2. Copy HTTPS or SSH clone link of your fork.
+1. Fork the repo, then copy your fork's clone URL (HTTPS or SSH).
 
 2. Clone your fork into a throwaway folder and install `task` (go-task) from it.
 
@@ -50,9 +40,7 @@ So I can access my dotfiles repo from any directory without the need to `cd` fir
    bash .config/dotfiles/bootstrap.sh
    ```
 
-3. Turn `$HOME` into the bare-repo checkout and pull everything down. This one task
-   replaces the old manual `git init --bare` / alias / `config` / `remote add` / `pull` /
-   `submodule` dance - the `config` alias itself comes from `.zshrc`, which this pulls in.
+3. Turn `$HOME` into the bare-repo checkout and pull everything down.
 
    ```sh
    task utility:bare-install REPO=<your-fork-clone-url>
@@ -67,28 +55,27 @@ So I can access my dotfiles repo from any directory without the need to `cd` fir
    task setup
    ```
 
-   Once set up, `task update` brings the machine up to date later (apt packages, language
-   runtimes, AppImages, etc.). Run `task --list` to see every available task.
+   Later, `task update` brings the machine up to date (apt packages, language runtimes, AppImages,
+   etc.). Run `task --list` to see every available task.
 
 ## Usage
 
-1. Use `config` alias instead of `git` while working with your dotfiles.
+Use the `config` alias instead of `git` while working with your dotfiles:
 
-   ```sh
-   config status
-   config add ~/.bashrc
-   config commit -m "Modify bash config"
-   config add ~/.zshrc
-   config commit -m "Modify zsh config"
-   config push origin master
-   ```
+```sh
+config status
+config add ~/.zshrc
+config commit -m "Modify zsh config"
+config push origin master
+```
 
-2. You can use the `config-edit` alias which opens up `Neovim` editor with correct Git env variables set so you can
-   use tools like `vim-fugitive` to stash changes, commit, etc.
+Two helper tools build on top of that alias:
 
-3. There is also `config-fzf` script which passes file paths in dotfiles as input to `fzf`. So you can list files,
-   select one or more file and use returned file list with other programs.
+- **`config-edit`** — opens Neovim with the right Git env vars set, so plugins like `vim-fugitive`
+  work against the dotfiles repo instead of your current directory's repo.
+- **`config-fzf`** — an `fzf` picker over files tracked in the dotfiles repo. Pipe its output into
+  other commands, e.g. open the files you pick in Neovim:
 
-   ```sh
-   nvim -O $(config-edit)
-   ```
+  ```sh
+  nvim -O $(config-fzf)
+  ```

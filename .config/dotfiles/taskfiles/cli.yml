@@ -39,7 +39,13 @@ tasks:
     status:
       - test -f "$HOME/.ssh/id_ed25519.pub"
     cmds:
-      - ssh-keygen -t ed25519 -f "$HOME/.ssh/id_ed25519" -C "${GIT_EMAIL:?set GIT_EMAIL in .config/dotfiles/.env}" -N "${SSH_KEY_PASSPHRASE:?set SSH_KEY_PASSPHRASE in .config/dotfiles/.env}"
+      - |
+        SSH_KEY_PASSPHRASE="{{.SSH_KEY_PASSPHRASE}}"
+        if [ -z "$SSH_KEY_PASSPHRASE" ]; then
+          read -s -p "Enter passphrase for new SSH key: " SSH_KEY_PASSPHRASE
+          echo
+        fi
+        ssh-keygen -t ed25519 -f "$HOME/.ssh/id_ed25519" -C "${GIT_EMAIL:?set GIT_EMAIL in .config/dotfiles/.env}" -N "$SSH_KEY_PASSPHRASE"
       - echo "-> register this public key with GitHub as BOTH an Authentication key and a Signing key:"
       - cat "$HOME/.ssh/id_ed25519.pub"
 
@@ -148,6 +154,8 @@ tasks:
     desc: One-time per-user setup - git identity, shell, font, prezto/tpm submodules, ~/programs, fzf, npm/pipx/cargo apps
     cmds:
       - task: keygen
+        vars:
+          SSH_KEY_PASSPHRASE: "{{.SSH_KEY_PASSPHRASE}}"
       - task: git-identity
       - task: font
       - task: submodules

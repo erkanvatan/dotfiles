@@ -45,12 +45,24 @@ tasks:
 
   setup:
     desc: "Fresh machine: everything in `update`, plus one-time installs"
+    vars:
+      SSH_KEY_PASSPHRASE:
+        sh: |
+          if [ -f "$HOME/.ssh/id_ed25519.pub" ]; then
+            echo ""
+          else
+            read -s -p "Enter passphrase for new SSH key: " p < /dev/tty
+            echo >&2
+            echo "$p"
+          fi
     cmds:
       - task: preflight
       - task: utility:rootfs-install
       - task: apt:install
       - task: lang:install
       - task: cli:install
+        vars:
+          SSH_KEY_PASSPHRASE: "{{.SSH_KEY_PASSPHRASE}}"
       - task: appimage:setup
       - task: appimage:update
       - task: doctor

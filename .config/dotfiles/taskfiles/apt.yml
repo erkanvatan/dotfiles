@@ -8,9 +8,6 @@ vars:
   # apt packages for a fresh machine. One package per line, `#` comments allowed.
   # Installed in a single `apt-get install` call by `task apt:install`.
   PACKAGES: |
-    # package managers
-    cargo
-
     # CLI tools
     bat
     apt-file

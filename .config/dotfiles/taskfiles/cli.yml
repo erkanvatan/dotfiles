@@ -46,7 +46,7 @@ tasks:
           echo
         fi
         ssh-keygen -t ed25519 -f "$HOME/.ssh/id_ed25519" -C "${GIT_EMAIL:?set GIT_EMAIL in .config/dotfiles/.env}" -N "$SSH_KEY_PASSPHRASE"
-      - echo "-> register this public key with GitHub as BOTH an Authentication key and a Signing key:"
+      - '"{{.ROOT_DIR}}/scripts/task-note" "register this public key with GitHub as BOTH an Authentication key and a Signing key:"'
       - cat "$HOME/.ssh/id_ed25519.pub"
 
   git-identity:

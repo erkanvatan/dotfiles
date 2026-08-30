@@ -64,9 +64,6 @@ that folder and adds/updates the application-menu entry. `task appimage:list` sh
 Before adding an app to the manifest, check its GitHub releases actually ship an `.AppImage` asset —
 several commonly-assumed ones (Anki, Telegram Desktop, sqlectron) do not.
 
-`.config/dotfiles/rootfs/` is a literal filesystem overlay (e.g. `etc/lightdm/...`, `usr/share/backgrounds/...`);
-`task utility:rootfs-install` copies it onto `/` (asks for confirmation first).
-
 There is no offline/no-internet install path anymore — the old `prepare_offline.sh`/`install_offline.sh`
 pair was removed along with the rest of `.config/dotfiles/install/` when this moved to the Taskfile.
 

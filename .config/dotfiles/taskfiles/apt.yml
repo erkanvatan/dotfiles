@@ -3,7 +3,7 @@ version: "3"
 vars:
   # PPAs needed by packages in PACKAGES. One entry per line, `#` comments allowed.
   PPAS: |
-    ppa:lazka/ppa
+    #
 
   # apt packages for a fresh machine. One package per line, `#` comments allowed.
   # Installed in a single `apt-get install` call by `task apt:install`.
@@ -48,7 +48,6 @@ vars:
     gsmartcontrol
     qbittorrent
     gparted
-    quodlibet
     peek
 
     # pyenv build dependencies

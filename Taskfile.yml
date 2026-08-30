@@ -30,7 +30,6 @@ tasks:
   preflight:
     desc: Check the distro is supported and prime sudo
     internal: true
-    silent: true
     cmds:
       - |
         . /etc/os-release

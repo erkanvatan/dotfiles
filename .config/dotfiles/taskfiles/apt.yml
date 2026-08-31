@@ -1,7 +1,7 @@
 version: "3"
 
 vars:
-  # PPAs needed by packages in PACKAGES. One entry per line, `#` comments allowed.
+  # PPAs needed by packages in APT_PKGS. One entry per line, `#` comments allowed.
   PPAS: |
     #
 

@@ -37,10 +37,10 @@ the [go-task](https://taskfile.dev) `task` binary (zsh completions for it are al
 into the root Taskfile as a namespace (e.g. `task apt:install`, `task lang:update`). Run `task --list`
 for the full task list.
 
-- **First time on a machine without `task` yet:** `bash .config/dotfiles/bootstrap.sh`, then copy
-  `.config/dotfiles/.env.example` to `.config/dotfiles/.env` (untracked — kept out of the bare repo by
-  `status.showUntrackedFiles no`, not a `.gitignore`) and fill in `GIT_NAME`/`GIT_EMAIL`/
-  `SSH_KEY_PASSPHRASE` — the Taskfile loads it via `dotenv:`.
+- **First time on a machine without `task` yet:** `bash .config/dotfiles/bootstrap.sh`, then run
+  `task setup GIT_NAME="Your Name" GIT_EMAIL=you@example.com SSH_KEY_PASSPHRASE=...` — these three
+  are required vars on `setup` (and threaded down to the `cli` taskfile's `keygen`/`git-identity`
+  tasks); missing any of them fails fast before any install steps run.
 - **`task setup`** — fresh machine: apt packages/PPAs/font, the `rootfs/` overlay, language runtimes
   (nvm/node, pyenv/python, pipx), SSH keygen, per-user CLI tools (git identity/signing, Prezto/TPM
   submodules + plugins, `~/programs/{swift-map,core}`, fzf, npm/pipx/cargo apps), AppImageLauncher +

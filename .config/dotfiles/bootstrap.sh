@@ -13,8 +13,12 @@
 
 set -e
 
+note() {
+    printf '\033[1;36m==>\033[0m \033[1m%s\033[0m\n' "$1"
+}
+
 if ! command -v curl >/dev/null; then
-    echo "# INSTALLING CURL #"
+    echo "W: curl dependency is missing, installing via apt"
     sudo apt-get update -qq
     sudo apt-get install -y curl
 fi
@@ -22,18 +26,13 @@ fi
 mkdir -p "$HOME/.local/bin"
 sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b "$HOME/.local/bin"
 
-echo
-echo "> task installed to $HOME/.local/bin/task <"
+echo "task installed to $HOME/.local/bin/task"
 if ! command -v task >/dev/null; then
-    echo "W: $HOME/.local/bin is not on PATH yet in this shell - run this first:" >&2
-    echo "     export PATH=\"$HOME/.local/bin:\$PATH\"" >&2
+    note "$HOME/.local/bin is not on PATH yet in this shell - run this first:" >&2
+    note "    export PATH=\"$HOME/.local/bin:\$PATH\"" >&2
 fi
 if [[ -d "$HOME/.dotfiles" ]]; then
-    if [[ ! -f "$HOME/.config/dotfiles/.env" ]]; then
-        echo "W: $HOME/.config/dotfiles/.env is missing - copy .env.example and fill in values first:" >&2
-        echo "     cp $HOME/.config/dotfiles/.env.example $HOME/.config/dotfiles/.env" >&2
-    fi
-    echo "Now run: task setup"
+    note 'Now run: task setup GIT_NAME="Your Name" GIT_EMAIL=you@example.com SSH_KEY_PASSPHRASE=...'
 else
-    echo "Now run: task utility:bare-install REPO=<your fork's clone URL>"
+    note "Now run: task utility:bare-install"
 fi

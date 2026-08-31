@@ -43,16 +43,14 @@ farm, and lets you manage them with the `config` alias (see [Usage](#usage)) fro
 3. Turn `$HOME` into the bare-repo checkout and pull everything down.
 
    ```sh
-   task utility:bare-install REPO=<your-fork-clone-url>
-   rm -rf /tmp/dotfiles-setup
+   task utility:bare-install
    ```
 
 4. Provision the machine.
 
    ```sh
    cd "$HOME"
-   cp .config/dotfiles/.env.example .config/dotfiles/.env   # fill in values
-   task setup
+   task setup GIT_NAME="Your Name" GIT_EMAIL=you@example.com SSH_KEY_PASSPHRASE=...
    ```
 
    Later, `task update` brings the machine up to date (apt packages, language runtimes, AppImages,

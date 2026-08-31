@@ -8,10 +8,7 @@ version: "3"
 #   bash .config/dotfiles/bootstrap.sh
 #   task utility:bare-install REPO=<your fork's clone URL>
 #   rm -rf /tmp/dotfiles-setup && cd "$HOME"
-#   cp .config/dotfiles/.env.example .config/dotfiles/.env   # fill in values
-#   task setup
-
-dotenv: [".config/dotfiles/.env"]
+#   task setup GIT_NAME="Your Name" GIT_EMAIL=you@example.com SSH_KEY_PASSPHRASE=...
 
 includes:
   apt: ./.config/dotfiles/taskfiles/apt.yml
@@ -45,22 +42,16 @@ tasks:
 
   setup:
     desc: "Fresh machine: everything in `update`, plus one-time installs"
-    vars:
-      SSH_KEY_PASSPHRASE:
-        sh: |
-          if [ -f "$HOME/.ssh/id_ed25519.pub" ]; then
-            echo ""
-          else
-            read -s -p "Enter passphrase for new SSH key: " p < /dev/tty
-            echo >&2
-            echo "$p"
-          fi
+    requires:
+      vars: [GIT_NAME, GIT_EMAIL, SSH_KEY_PASSPHRASE]
     cmds:
       - task: preflight
       - task: apt:install
       - task: lang:install
       - task: cli:install
         vars:
+          GIT_NAME: "{{.GIT_NAME}}"
+          GIT_EMAIL: "{{.GIT_EMAIL}}"
           SSH_KEY_PASSPHRASE: "{{.SSH_KEY_PASSPHRASE}}"
       - task: appimage:setup
       - task: appimage:update

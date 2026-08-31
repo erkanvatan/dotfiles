@@ -36,6 +36,8 @@ vars:
 tasks:
   keygen:
     desc: Generate an SSH key if one doesn't exist yet
+    requires:
+      vars: [GIT_EMAIL]
     status:
       - test -f "$HOME/.ssh/id_ed25519.pub"
     cmds:
@@ -45,15 +47,17 @@ tasks:
           read -s -p "Enter passphrase for new SSH key: " SSH_KEY_PASSPHRASE
           echo
         fi
-        ssh-keygen -t ed25519 -f "$HOME/.ssh/id_ed25519" -C "${GIT_EMAIL:?set GIT_EMAIL in .config/dotfiles/.env}" -N "$SSH_KEY_PASSPHRASE"
+        ssh-keygen -t ed25519 -f "$HOME/.ssh/id_ed25519" -C "{{.GIT_EMAIL}}" -N "$SSH_KEY_PASSPHRASE"
       - '"{{.ROOT_DIR}}/scripts/task-note" "register this public key with GitHub as BOTH an Authentication key and a Signing key:"'
       - cat "$HOME/.ssh/id_ed25519.pub"
 
   git-identity:
     internal: true
+    requires:
+      vars: [GIT_NAME, GIT_EMAIL]
     cmds:
-      - git config --global user.name "${GIT_NAME:-$(whoami)}"
-      - git config --global user.email "${GIT_EMAIL:?set GIT_EMAIL in .config/dotfiles/.env}"
+      - git config --global user.name "{{.GIT_NAME}}"
+      - git config --global user.email "{{.GIT_EMAIL}}"
       - git config --global color.ui true
       - git config --global core.editor vim
       - git config --global gpg.format ssh
@@ -94,9 +98,7 @@ tasks:
       - test -x "$HOME/programs/swift-map/mainloop.py"
     cmds:
       - chmod +x "$HOME/programs/swift-map/mainloop.py"
-      - |
-        echo "Installing swift-map's keyboard layout system-wide"
-        sudo "$HOME/programs/swift-map/mainloop.py" install
+      - sudo "$HOME/programs/swift-map/mainloop.py" install
 
   wmutils:
     internal: true
@@ -166,8 +168,12 @@ tasks:
     cmds:
       - task: keygen
         vars:
+          GIT_EMAIL: "{{.GIT_EMAIL}}"
           SSH_KEY_PASSPHRASE: "{{.SSH_KEY_PASSPHRASE}}"
       - task: git-identity
+        vars:
+          GIT_NAME: "{{.GIT_NAME}}"
+          GIT_EMAIL: "{{.GIT_EMAIL}}"
       - task: font
       - task: submodules
       - task: tpm

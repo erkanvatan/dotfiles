@@ -99,12 +99,10 @@ tasks:
   wmutils:
     internal: true
     status:
-      - command -v wtf
+      - command -v wattr
     cmds:
-      - mkdir -p "$HOME/programs"
-      - test -d "$HOME/programs/core" || git clone https://github.com/wmutils/core.git "$HOME/programs/core"
-      - make -C "$HOME/programs/core"
-      - sudo make -C "$HOME/programs/core" install
+      - make -C "$HOME/programs/wmutils-core"
+      - sudo make -C "$HOME/programs/wmutils-core" install
 
   fzf:
     internal: true

@@ -16,6 +16,9 @@
 [submodule "programs/swift-map"]
 	path = programs/swift-map
 	url = https://github.com/erkanvatan/swift-map.git
+[submodule "programs/wmutils-core"]
+	path = programs/wmutils-core
+	url = https://github.com/wmutils/core.git
 [submodule ".tmux/plugins/tpm"]
 	path = .tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm.git

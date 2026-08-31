@@ -26,6 +26,7 @@ tasks:
 
   preflight:
     desc: Check the distro is supported and prime sudo
+    silent: true
     internal: true
     cmds:
       - |
@@ -56,6 +57,9 @@ tasks:
       - task: appimage:setup
       - task: appimage:update
       - task: doctor
+      - |
+        "{{.ROOT_DIR}}/scripts/task-note" "register this public key with GitHub as BOTH an Authentication key and a Signing key:"
+        cat "$HOME/.ssh/id_ed25519.pub"
 
   update:
     desc: Bring an existing machine up to date (no one-time/install-only steps)
@@ -88,20 +92,23 @@ tasks:
           fi
         }
         check task   task --version
-        check nvim   nvim --version
+        check nvm    bash -c '[ -s "$HOME/.nvm/nvm.sh" ] && . "$HOME/.nvm/nvm.sh" && nvm --version'
         check node   bash -c 'shopt -s nullglob; node=("$HOME"/.nvm/versions/node/*/bin/node); [[ ${#node[@]} -gt 0 ]] && "${node[-1]}" --version'
+        check pyenv  bash -c '"$HOME/.pyenv/bin/pyenv" --version'
         check python bash -c '"$HOME/.pyenv/shims/python" --version'
         check pipx   pipx --version
         if [ "$(basename "$SHELL")" = zsh ]; then
           printf '  OK    %-8s %s\n' shell "$SHELL"
         else
-          printf '  MISS  %-8s not zsh - run: chsh -s $(command -v zsh)\n' shell
+          printf '  MISS  %-8s not zsh - run: chsh -s $(command -v zsh) command and logout-login\n' shell
           FAIL=1
         fi
-        if pgrep -fx appimagelauncherd >/dev/null; then
+        if pgrep -f appimagelauncherd >/dev/null; then
           printf '  OK    %-8s daemon running\n' appimagelauncherd
         else
           printf '  MISS  %-8s daemon not running\n' appimagelauncherd
           FAIL=1
         fi
+        echo '  --- appimages ---'
+        task appimage:list | sed 's/^/  /'
         exit $FAIL

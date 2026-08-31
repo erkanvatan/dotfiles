@@ -90,3 +90,9 @@ action), not part of any install/build pipeline.
 
 - No need for a .gitignore file as the intended purpose of this repo is to be used as bare repo.
 - Never run task commands without asking first as a bug can break a running system.
+
+## Taskfile Development Notes
+
+- Use required Taskfile variables when a user input is needed. Don't take input with bash commands.
+- Use "{{.ROOT_DIR}}/scripts/task-note" script when printing important information for the user.
+- Always keep list of packages alphabetically sorted such as APT_PKGS, NPM_PKGS, etcPACKAGES.

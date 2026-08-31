@@ -7,7 +7,7 @@ vars:
 
   # apt packages for a fresh machine. One package per line, `#` comments allowed.
   # Installed in a single `apt-get install` call by `task apt:install`.
-  PACKAGES: |
+  APT_PKGS: |
     # CLI tools
     bat
     apt-file
@@ -42,6 +42,7 @@ vars:
     jq
     rsync
     entr
+    htop
 
     # GUI apps
     keepassxc
@@ -103,7 +104,7 @@ tasks:
   packages:
     internal: true
     cmds:
-      - sudo apt-get install -y $(grep -vE '^\s*#|^\s*$' <<< "{{.PACKAGES}}" | tr '\n' ' ')
+      - sudo apt-get install -y $(grep -vE '^\s*#|^\s*$' <<< "{{.APT_PKGS}}" | tr '\n' ' ')
 
   install:
     desc: Add PPAs and install every apt package

@@ -40,8 +40,12 @@ tasks:
       vars: [GIT_EMAIL, SSH_KEY_PASSPHRASE]
     status:
       - test -f "$HOME/.ssh/id_ed25519.pub"
+    env:
+      SSH_KEY_PASSPHRASE: "{{.SSH_KEY_PASSPHRASE}}"
     cmds:
-      - ssh-keygen -t ed25519 -f "$HOME/.ssh/id_ed25519" -C "{{.GIT_EMAIL}}" -N "$SSH_KEY_PASSPHRASE"
+      - |
+        [ -n "$SSH_KEY_PASSPHRASE" ] || { echo "E: SSH_KEY_PASSPHRASE is empty" >&2; exit 1; }
+        ssh-keygen -t ed25519 -f "$HOME/.ssh/id_ed25519" -C "{{.GIT_EMAIL}}" -N "$SSH_KEY_PASSPHRASE"
 
   git-identity:
     internal: true
@@ -105,7 +109,7 @@ tasks:
   fzf:
     internal: true
     status:
-      - test -x "$HOME/.fzf/install"
+      - test -f "$HOME/.fzf.zsh"
     cmds:
       - "$HOME/.fzf/install --all --no-update-rc"
 
@@ -118,8 +122,9 @@ tasks:
     internal: true
     cmds:
       - |
+        export NVM_DIR="$HOME/.nvm"
         [[ -s "$NVM_DIR/nvm.sh" ]] && . "$NVM_DIR/nvm.sh"
-        command -v npm >/dev/null || { echo "W: npm not found (install node first), skipping" >&2; exit 0; }
+        command -v npm >/dev/null || { echo "E: npm not found - install node first (task lang:install)" >&2; exit 1; }
         pkgs=$(grep -vE '^\s*#|^\s*$' <<< "{{.NPM_PKGS}}")
         if [[ -n "$pkgs" ]]; then
           echo "$pkgs" | xargs npm i -g --quiet
@@ -146,6 +151,7 @@ tasks:
       - |
         [[ -s "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
         command -v rustup >/dev/null && rustup update
+        exit 0
 
   cargo-apps:
     internal: true

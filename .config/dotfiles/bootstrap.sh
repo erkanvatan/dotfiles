@@ -24,7 +24,7 @@ if ! command -v curl >/dev/null; then
 fi
 
 mkdir -p "$HOME/.local/bin"
-sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b "$HOME/.local/bin"
+sh -c "$(curl --fail --silent --show-error --location https://taskfile.dev/install.sh)" -- -d -b "$HOME/.local/bin"
 
 echo "task installed to $HOME/.local/bin/task"
 if ! command -v task >/dev/null; then

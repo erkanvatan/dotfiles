@@ -64,7 +64,7 @@ tasks:
   font:
     internal: true
     status:
-      - test -d "{{.FONT_DIR}}"
+      - test -f "{{.FONT_DIR}}/MesloLGS-Regular.ttf"
     cmds:
       - |
         tmp=$(mktemp -d)
@@ -99,10 +99,10 @@ tasks:
   wmutils:
     internal: true
     status:
-      - test -d "$HOME/programs/core"
+      - command -v wtf
     cmds:
       - mkdir -p "$HOME/programs"
-      - git clone https://github.com/wmutils/core.git "$HOME/programs/core"
+      - test -d "$HOME/programs/core" || git clone https://github.com/wmutils/core.git "$HOME/programs/core"
       - make -C "$HOME/programs/core"
       - sudo make -C "$HOME/programs/core" install
 
@@ -163,6 +163,9 @@ tasks:
 
   install:
     desc: One-time per-user setup - git identity, shell, font, prezto/tpm submodules, ~/programs, fzf, npm/pipx/cargo apps
+    preconditions:
+      - sh: git --git-dir="$HOME/.dotfiles" rev-parse --verify HEAD >/dev/null 2>&1
+        msg: "run `task utility:bare-install` first — $HOME is not the dotfiles work-tree yet"
     cmds:
       - task: keygen
         vars:
@@ -185,6 +188,9 @@ tasks:
 
   update:
     desc: Update prezto/tpm submodules and plugins, fzf, and all npm/pipx/cargo apps
+    preconditions:
+      - sh: git --git-dir="$HOME/.dotfiles" rev-parse --verify HEAD >/dev/null 2>&1
+        msg: "run `task utility:bare-install` first — $HOME is not the dotfiles work-tree yet"
     cmds:
       - task: submodules
       - task: tpm

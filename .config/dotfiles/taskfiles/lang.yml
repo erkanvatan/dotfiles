@@ -2,6 +2,12 @@ version: "3"
 
 # Runtimes and their package managers: nvm/node, pyenv/python, pipx.
 
+vars:
+  # pyenv-installer has no recent release tags, so this pins a commit instead
+  # of trusting `master`. Bump by checking recent commits at
+  # https://github.com/pyenv/pyenv-installer/commits/master.
+  PYENV_INSTALLER_COMMIT: 63a9e6a216796aeba2535a3bac8e79ba5d95166d
+
 tasks:
   nvm:
     internal: true
@@ -9,8 +15,12 @@ tasks:
       - test -d "$HOME/.nvm"
     cmds:
       - |
-        nvm_version=$(curl -fsSL https://api.github.com/repos/nvm-sh/nvm/releases/latest | jq -r .tag_name)
-        curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/$nvm_version/install.sh" | bash
+        nvm_version=$(curl -fsSL https://api.github.com/repos/nvm-sh/nvm/releases/latest | jq -r '.tag_name // empty')
+        if [[ -z "$nvm_version" ]]; then
+          echo "E: could not resolve latest nvm release (offline, or GitHub API rate-limited - 60 unauthenticated requests/hour)" >&2
+          exit 1
+        fi
+        curl -fsSL "https://raw.githubusercontent.com/nvm-sh/nvm/$nvm_version/install.sh" | bash
 
   node:
     internal: true
@@ -24,7 +34,13 @@ tasks:
     status:
       - test -d "$HOME/.pyenv"
     cmds:
-      - curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+      - curl -fsSL "https://raw.githubusercontent.com/pyenv/pyenv-installer/{{.PYENV_INSTALLER_COMMIT}}/bin/pyenv-installer" | bash
+
+  pyenv-pyright:
+    internal: true
+    status:
+      - test -d "$HOME/.pyenv/plugins/pyenv-pyright"
+    cmds:
       - bash -lc 'export PATH="$HOME/.pyenv/bin:$PATH"; eval "$(pyenv init --path)"; git clone https://github.com/alefpereira/pyenv-pyright.git "$(pyenv root)/plugins/pyenv-pyright"'
 
   python:
@@ -42,6 +58,28 @@ tasks:
           pyenv global "$latest_python_version"
         '
 
+  python-update:
+    internal: true
+    cmds:
+      - |
+        bash -lc '
+          export PATH="$HOME/.pyenv/bin:$PATH"
+          eval "$(pyenv init --path)"
+          eval "$(pyenv init -)"
+          current=$(pyenv global)
+          if [[ "$current" == system ]]; then
+            echo "W: no pyenv global python set, skipping python update (run lang:install first)" >&2
+            exit 0
+          fi
+          series=$(grep -oE "^[0-9]+\.[0-9]+" <<< "$current")
+          latest_patch=$(pyenv install --list | grep -E "^\s*${series//./\\.}\.[0-9]+\s*$" | tail -1 | tr -d " ")
+          if [[ -n "$latest_patch" && "$latest_patch" != "$current" ]]; then
+            echo "> python $current -> $latest_patch"
+            pyenv install -s "$latest_patch"
+            pyenv global "$latest_patch"
+          fi
+        '
+
   pipx:
     internal: true
     status:
@@ -56,6 +94,7 @@ tasks:
       - task: nvm
       - task: node
       - task: pyenv
+      - task: pyenv-pyright
       - task: python
       - task: pipx
 
@@ -64,4 +103,5 @@ tasks:
     cmds:
       - bash -lc '. "$NVM_DIR/nvm.sh"; nvm install --lts --reinstall-packages-from=default; nvm alias default node'
       - bash -lc 'export PATH="$HOME/.pyenv/bin:$PATH"; pyenv update'
+      - task: python-update
       - '"$HOME/.pyenv/shims/python" -m pip install --user -U pipx'

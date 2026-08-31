@@ -57,9 +57,12 @@ tasks:
       - task: appimage:setup
       - task: appimage:update
       - task: doctor
+        ignore_error: true
       - |
-        "{{.ROOT_DIR}}/scripts/task-note" "register this public key with GitHub as BOTH an Authentication key and a Signing key:"
-        cat "$HOME/.ssh/id_ed25519.pub"
+        "{{.ROOT_DIR}}/scripts/task-note" \
+          "register this public key with GitHub as BOTH an Authentication key and a Signing key:" \
+          "$(cat "$HOME/.ssh/id_ed25519.pub")" \
+          "log out and back in, then run 'task doctor' - a fresh shell and the AppImageLauncher daemon need that to show up clean."
 
   update:
     desc: Bring an existing machine up to date (no one-time/install-only steps)
@@ -74,10 +77,10 @@ tasks:
   self-update:
     desc: Update go-task itself
     cmds:
-      - sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b "$HOME/.local/bin"
+      - sh -c "$(curl --fail --silent --show-error --location https://taskfile.dev/install.sh)" -- -d -b "$HOME/.local/bin"
 
   doctor:
-    desc: Print versions of core tools and flag anything missing
+    desc: Print versions of core tools and flag anything missing (exits non-zero on any MISS)
     silent: true
     cmds:
       - |

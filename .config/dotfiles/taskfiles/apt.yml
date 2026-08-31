@@ -104,7 +104,20 @@ tasks:
   packages:
     internal: true
     cmds:
-      - sudo apt-get install -y $(grep -vE '^\s*#|^\s*$' <<< "{{.APT_PKGS}}" | tr '\n' ' ')
+      - |
+        pkgs=$(grep -vE '^\s*#|^\s*$' <<< "{{.APT_PKGS}}")
+        if sudo apt-get install -y $pkgs; then
+          exit 0
+        fi
+        echo "W: bulk apt install failed - retrying one package at a time to isolate the bad one(s)" >&2
+        failed=""
+        while IFS= read -r pkg; do
+          sudo apt-get install -y "$pkg" || failed="$failed $pkg"
+        done <<< "$pkgs"
+        if [[ -n "$failed" ]]; then
+          echo "E: failed to install:$failed" >&2
+          exit 1
+        fi
 
   install:
     desc: Add PPAs and install every apt package

@@ -2,12 +2,6 @@ version: "3"
 
 # Runtimes and their package managers: nvm/node, pyenv/python, pipx.
 
-vars:
-  # pyenv-installer has no recent release tags, so this pins a commit instead
-  # of trusting `master`. Bump by checking recent commits at
-  # https://github.com/pyenv/pyenv-installer/commits/master.
-  PYENV_INSTALLER_COMMIT: 63a9e6a216796aeba2535a3bac8e79ba5d95166d
-
 tasks:
   nvm:
     internal: true
@@ -34,7 +28,7 @@ tasks:
     status:
       - test -d "$HOME/.pyenv"
     cmds:
-      - curl -fsSL "https://raw.githubusercontent.com/pyenv/pyenv-installer/{{.PYENV_INSTALLER_COMMIT}}/bin/pyenv-installer" | bash
+      - curl -fsSL https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
 
   pyenv-pyright:
     internal: true

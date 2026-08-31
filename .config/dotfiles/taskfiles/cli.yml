@@ -37,19 +37,11 @@ tasks:
   keygen:
     desc: Generate an SSH key if one doesn't exist yet
     requires:
-      vars: [GIT_EMAIL]
+      vars: [GIT_EMAIL, SSH_KEY_PASSPHRASE]
     status:
       - test -f "$HOME/.ssh/id_ed25519.pub"
     cmds:
-      - |
-        SSH_KEY_PASSPHRASE="{{.SSH_KEY_PASSPHRASE}}"
-        if [ -z "$SSH_KEY_PASSPHRASE" ]; then
-          read -s -p "Enter passphrase for new SSH key: " SSH_KEY_PASSPHRASE
-          echo
-        fi
-        ssh-keygen -t ed25519 -f "$HOME/.ssh/id_ed25519" -C "{{.GIT_EMAIL}}" -N "$SSH_KEY_PASSPHRASE"
-      - '"{{.ROOT_DIR}}/scripts/task-note" "register this public key with GitHub as BOTH an Authentication key and a Signing key:"'
-      - cat "$HOME/.ssh/id_ed25519.pub"
+      - ssh-keygen -t ed25519 -f "$HOME/.ssh/id_ed25519" -C "{{.GIT_EMAIL}}" -N "$SSH_KEY_PASSPHRASE"
 
   git-identity:
     internal: true

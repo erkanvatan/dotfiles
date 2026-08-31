@@ -49,8 +49,6 @@ for the full task list.
   AppImage manifest, then `task doctor`. `setup`'s closing `doctor` run doesn't fail the whole
   setup — on a brand-new machine the shell and the AppImageLauncher daemon can't show clean until
   you log out and back in, so `setup` prints that note and leaves the real doctor check for after.
-  The `.config/dotfiles/rootfs/` overlay (lightdm greeter/keyboard config, wallpaper) is **not**
-  applied by any task — copy it to `/` by hand if you want it.
 - **`task update`** — the update-only subset of the same steps (no PPA re-adds, no SSH keygen).
   `apt:update` refreshes/upgrades apt as usual; `apt:install`'s own bulk-install falls back to
   installing packages one at a time if the bulk install fails, so one bad/renamed package name

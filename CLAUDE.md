@@ -40,17 +40,27 @@ for the full task list.
 - **First time on a machine without `task` yet:** `bash .config/dotfiles/bootstrap.sh`, then run
   `task setup GIT_NAME="Your Name" GIT_EMAIL=you@example.com SSH_KEY_PASSPHRASE=...` — these three
   are required vars on `setup` (and threaded down to the `cli` taskfile's `keygen`/`git-identity`
-  tasks); missing any of them fails fast before any install steps run.
-- **`task setup`** — fresh machine: apt packages/PPAs/font, the `rootfs/` overlay, language runtimes
-  (nvm/node, pyenv/python, pipx), SSH keygen, per-user CLI tools (git identity/signing, Prezto/TPM
+  tasks); missing any of them fails fast before any install steps run. `cli:install`/`cli:update`
+  also refuse to run until `$HOME` is actually the dotfiles work-tree (i.e. after
+  `task utility:bare-install`), with a message telling you so.
+- **`task setup`** — fresh machine: apt packages/PPAs/font, language runtimes (nvm/node,
+  pyenv/python, pipx), SSH keygen, per-user CLI tools (git identity/signing, Prezto/TPM
   submodules + plugins, `~/programs/{swift-map,core}`, fzf, npm/pipx/cargo apps), AppImageLauncher +
-  AppImage manifest, then `task doctor`.
-- **`task update`** — the update-only subset of the same steps (no PPA re-adds, no SSH keygen), plus
-  updating `task` itself first.
+  AppImage manifest, then `task doctor`. `setup`'s closing `doctor` run doesn't fail the whole
+  setup — on a brand-new machine the shell and the AppImageLauncher daemon can't show clean until
+  you log out and back in, so `setup` prints that note and leaves the real doctor check for after.
+  The `.config/dotfiles/rootfs/` overlay (lightdm greeter/keyboard config, wallpaper) is **not**
+  applied by any task — copy it to `/` by hand if you want it.
+- **`task update`** — the update-only subset of the same steps (no PPA re-adds, no SSH keygen).
+  `apt:update` refreshes/upgrades apt as usual; `apt:install`'s own bulk-install falls back to
+  installing packages one at a time if the bulk install fails, so one bad/renamed package name
+  doesn't block the rest. `lang:update` advances Python to the newest patch within its current
+  major.minor series (see `PYTHON_SERIES` below), not just pyenv/node/pipx themselves. Updating
+  `task` itself is a separate, manual step — `task self-update`.
 - Package lists live inline as `vars:` in the taskfiles rather than separate files: apt packages/PPAs
-  in `apt.yml` (`PACKAGES`/`PPAS`), and npm/pipx/cargo packages in `cli.yml` (`NPM_PKGS`/`PIPX_PKGS`/
-  `CARGO_PKGS`) — one entry per line, `#` comments allowed. Add or remove software there rather than
-  editing the task logic.
+  in `apt.yml` (`APT_PKGS`/`PPAS`), npm/pipx/cargo packages in `cli.yml` (`NPM_PKGS`/`PIPX_PKGS`/
+  `CARGO_PKGS`), and the pyenv version series (`PYTHON_SERIES`) in `lang.yml` — one entry per line,
+  `#` comments allowed. Add or remove software there rather than editing the task logic.
 - Distro support is detected from `/etc/os-release` (Ubuntu and Ubuntu-based distros, including Linux
   Mint) rather than passed as an argument.
 
@@ -95,4 +105,4 @@ action), not part of any install/build pipeline.
 
 - Use required Taskfile variables when a user input is needed. Don't take input with bash commands.
 - Use "{{.ROOT_DIR}}/scripts/task-note" script when printing important information for the user.
-- Always keep list of packages alphabetically sorted such as APT_PKGS, NPM_PKGS, etcPACKAGES.
+- Always keep list of packages alphabetically sorted such as APT_PKGS, NPM_PKGS, etc.

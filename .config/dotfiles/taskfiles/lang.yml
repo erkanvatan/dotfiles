@@ -2,6 +2,12 @@ version: "3"
 
 # Runtimes and their package managers: nvm/node, pyenv/python, pipx.
 
+vars:
+  # Major.minor series `lang:python` installs the newest patch of. Bump this
+  # for a deliberate major jump rather than always taking whatever is newest -
+  # pipx tools like pynvim/jedi-language-server sometimes lag a release.
+  PYTHON_SERIES: "3.12"
+
 tasks:
   nvm:
     internal: true
@@ -47,7 +53,8 @@ tasks:
           export PATH="$HOME/.pyenv/bin:$PATH"
           eval "$(pyenv init --path)"
           eval "$(pyenv init -)"
-          latest_python_version=$(pyenv install --list | grep -E "^\s*[0-9]+\.[0-9]+\.[0-9]+\s*$" | tail -1 | tr -d " ")
+          series="{{.PYTHON_SERIES}}"
+          latest_python_version=$(pyenv install --list | grep -E "^\s*${series//./\\.}\.[0-9]+\s*$" | tail -1 | tr -d " ")
           pyenv install -s "$latest_python_version"
           pyenv global "$latest_python_version"
         '
@@ -79,8 +86,9 @@ tasks:
     status:
       - command -v pipx
     cmds:
+      # no `pipx ensurepath` - .zshenv already puts ~/.local/bin first on PATH,
+      # and ensurepath would write that same line into tracked .bashrc/.zshrc.
       - '"$HOME/.pyenv/shims/python" -m pip install --user pipx'
-      - '"$HOME/.pyenv/shims/python" -m pipx ensurepath'
 
   install:
     desc: Install nvm + latest LTS node, pyenv + latest python, pipx (one-time)

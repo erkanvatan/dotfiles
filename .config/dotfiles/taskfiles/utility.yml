@@ -1,8 +1,5 @@
 version: "3"
 
-vars:
-  ROOTFS_DIR: '{{.ROOT_DIR}}/.config/dotfiles/rootfs'
-
 tasks:
   bare-install:
     desc: "One-time: turn $HOME into this repo's bare Git checkout (run from a normal clone; REPO defaults to that clone's origin URL, or pass REPO=<url> to override)"

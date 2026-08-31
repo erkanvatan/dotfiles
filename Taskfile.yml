@@ -111,4 +111,8 @@ tasks:
         fi
         echo '  --- appimages ---'
         task appimage:list | sed 's/^/  /'
+        echo '  --- npm global packages ---'
+        bash -c '[ -s "$HOME/.nvm/nvm.sh" ] && . "$HOME/.nvm/nvm.sh"; npm ls -g --depth=0 2>/dev/null' | sed 's/^/  /'
+        echo '  --- pipx packages ---'
+        pipx list --short 2>/dev/null | sed 's/^/  /'
         exit $FAIL

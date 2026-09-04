@@ -1,89 +1,90 @@
 version: "3"
 
 vars:
-  # PPAs needed by packages in APT_PKGS. One entry per line, `#` comments allowed.
+  # PPAs needed by packages in APT_PKGS. One per line, `#` comments allowed.
+  # Installed by `task apt:ppas`.
   PPAS: |
     #
 
-  # apt packages for a fresh machine. One package per line, `#` comments allowed.
-  # Installed in a single `apt-get install` call by `task apt:install`.
+  # apt packages for a fresh machine. One per line, `#` comments allowed.
+  # Installed by `task apt:install`.
   APT_PKGS: |
-    # CLI tools
-    bat
+    # CLI
     apt-file
+    bat
+    clang-format
     clangd
+    colordiff
+    cppcheck
     curl
+    debian-goodies
+    entr
+    eza
     fd-find
+    ffmpeg
+    flac
+    gdebi-core
     git
     grep
+    htop
+    hwinfo
+    jq
+    neofetch
+    numlockx
+    picocom
+    python3-argcomplete
+    rar
     ripgrep
+    rsync
     tidy
+    tmux
     unzip
     wget
     xclip
     xdg-utils
-    libgtk-3-dev
-    neofetch
     zsh
-    tmux
-    ffmpeg
-    gdebi-core
-    numlockx
-    flac
-    hwinfo
-    rar
-    clang-format
-    colordiff
-    cppcheck
-    debian-goodies
-    eza
-    picocom
-    python3-argcomplete
-    jq
-    rsync
-    entr
-    htop
 
-    # GUI apps
-    keepassxc
-    gsmartcontrol
-    qbittorrent
+    # GUI
     gparted
+    gsmartcontrol
+    keepassxc
     peek
+    qbittorrent
 
-    # pyenv build dependencies
+    # Build
     build-essential
-    libssl-dev
-    zlib1g-dev
+    cmake
+    libfuse2t64
+    libgtk-3-dev
+    pkg-config
+
+    ## pyenv
     libbz2-dev
-    libreadline-dev
-    libsqlite3-dev
-    llvm
-    libncursesw5-dev
-    xz-utils
-    tk-dev
-    libxml2-dev
-    libxmlsec1-dev
     libffi-dev
     liblzma-dev
+    libncursesw5-dev
+    libreadline-dev
+    libsqlite3-dev
+    libssl-dev
+    libxml2-dev
+    libxmlsec1-dev
+    llvm
+    tk-dev
+    xz-utils
+    zlib1g-dev
 
-    # alacritty build dependencies
-    cmake
-    pkg-config
-    libfreetype6-dev
+    ## alacritty
+    libegl1-mesa-dev
     libfontconfig1-dev
+    libfreetype6-dev
     libxcb-xfixes0-dev
     libxkbcommon-dev
-    libegl1-mesa-dev
 
-    # any-term-dropdown dependencies
+    ## any-term-dropdown
     coreutils
-    xdotool
-    libxcb-util-dev
     libxcb-cursor-dev
-
-    # appimage dependency
-    libfuse2t64
+    libxcb-util-dev
+    xdotool
 
 tasks:
   ppas:
@@ -115,7 +116,7 @@ tasks:
           sudo apt-get install -y "$pkg" || failed="$failed $pkg"
         done <<< "$pkgs"
         if [[ -n "$failed" ]]; then
-          echo "E: failed to install:$failed" >&2
+          echo "E: failed to install: $failed" >&2
           exit 1
         fi
 

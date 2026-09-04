@@ -4,7 +4,7 @@ vars:
   FONT_DIR: /usr/share/fonts/truetype/MesloLGS
 
   # Global npm packages. One per line, `#` comments allowed.
-  # Installed together by `task cli:npm-globals`.
+  # Installed by `task cli:npm-globals`.
   NPM_PKGS: |
     js-beautify
     live-server
@@ -16,7 +16,7 @@ vars:
     tldr
 
   # pipx-installed apps. One per line, `#` comments allowed.
-  # Installed one at a time by `task cli:pipx-apps` (pipx install takes a single spec).
+  # Installed by `task cli:pipx-apps`.
   PIPX_PKGS: |
     black
     flake8
@@ -28,7 +28,7 @@ vars:
     yt-dlp
 
   # cargo-installed binaries. One per line, `#` comments allowed.
-  # Installed one at a time by `task cli:cargo-apps`.
+  # Installed by `task cli:cargo-apps`.
   CARGO_PKGS: |
     alacritty
     neocmakelsp
@@ -77,11 +77,6 @@ tasks:
         sudo mkdir -p "{{.FONT_DIR}}"
         sudo cp "$tmp"/*.ttf "{{.FONT_DIR}}/"
         fc-cache -f "{{.FONT_DIR}}"
-
-  submodules:
-    internal: true
-    cmds:
-      - git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" submodule update --init --remote --recursive
 
   tpm:
     internal: true
@@ -160,10 +155,7 @@ tasks:
         grep -vE '^\s*#|^\s*$' <<< "{{.CARGO_PKGS}}" | xargs -r -n1 cargo install --locked
 
   install:
-    desc: One-time per-user setup - git identity, shell, font, prezto/tpm submodules, ~/programs, fzf, npm/pipx/cargo apps
-    preconditions:
-      - sh: git --git-dir="$HOME/.dotfiles" rev-parse --verify HEAD >/dev/null 2>&1
-        msg: "run `task utility:bare-install` first — $HOME is not the dotfiles work-tree yet"
+    desc: One-time per-user setup - git identity, shell, font, ~/programs, fzf, npm/pipx/cargo apps
     cmds:
       - task: keygen
         vars:
@@ -174,7 +166,6 @@ tasks:
           GIT_NAME: "{{.GIT_NAME}}"
           GIT_EMAIL: "{{.GIT_EMAIL}}"
       - task: font
-      - task: submodules
       - task: tpm
       - task: swift-map
       - task: wmutils
@@ -185,12 +176,8 @@ tasks:
       - task: cargo-apps
 
   update:
-    desc: Update prezto/tpm submodules and plugins, fzf, and all npm/pipx/cargo apps
-    preconditions:
-      - sh: git --git-dir="$HOME/.dotfiles" rev-parse --verify HEAD >/dev/null 2>&1
-        msg: "run `task utility:bare-install` first — $HOME is not the dotfiles work-tree yet"
+    desc: Update fzf, and all npm/pipx/cargo apps
     cmds:
-      - task: submodules
       - task: tpm
       - task: fzf-update
       - task: npm-globals

@@ -48,6 +48,9 @@ tasks:
     desc: "Fresh machine: everything in `update`, plus one-time installs"
     requires:
       vars: [GIT_NAME, GIT_EMAIL, SSH_KEY_PASSPHRASE]
+    preconditions:
+      - sh: git --git-dir="$HOME/.dotfiles" rev-parse --verify HEAD >/dev/null 2>&1
+        msg: "run `task utility:bare-install` first — $HOME is not the dotfiles work-tree yet"
     cmds:
       - task: preflight
       - task: apt:install
@@ -63,19 +66,28 @@ tasks:
         ignore_error: true
       - |
         "{{.ROOT_DIR}}/scripts/task-note" \
-          "register this public key with GitHub as BOTH an Authentication key and a Signing key:" \
+          "Register this public key with GitHub as BOTH an Authentication key and a Signing key:" \
           "$(cat "$HOME/.ssh/id_ed25519.pub")" \
-          "log out and back in, then run 'task doctor' - a fresh shell and the AppImageLauncher daemon need that to show up clean."
+          "Log out and back in, then run 'task doctor' to test the dotfiles setup"
 
   update:
     desc: Bring an existing machine up to date (no one-time/install-only steps)
+    preconditions:
+      - sh: git --git-dir="$HOME/.dotfiles" rev-parse --verify HEAD >/dev/null 2>&1
+        msg: "run `task utility:bare-install` first — $HOME is not the dotfiles work-tree yet"
     cmds:
       - task: preflight
+      - task: submodules
       - task: apt:update
       - task: lang:update
       - task: cli:update
       - task: appimage:update
       - task: doctor
+
+  submodules:
+    internal: true
+    cmds:
+      - git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" submodule update --init --remote --recursive
 
   self-update:
     desc: Update go-task itself

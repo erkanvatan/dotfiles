@@ -68,7 +68,8 @@ tasks:
         "{{.ROOT_DIR}}/scripts/task-note" \
           "Register this public key with GitHub as BOTH an Authentication key and a Signing key:" \
           "$(cat "$HOME/.ssh/id_ed25519.pub")" \
-          "Log out and back in, then run 'task doctor' to test the dotfiles setup"
+          "" \
+          "Setup is done. Log out and back in, then run 'task doctor' to test the dotfiles setup."
 
   update:
     desc: Bring an existing machine up to date (no one-time/install-only steps)

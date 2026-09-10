@@ -91,20 +91,17 @@ tasks:
     internal: true
     cmds:
       - |
-        added=0
         while IFS= read -r ppa; do
           [[ -z "$ppa" || "$ppa" == \#* ]] && continue
           sudo add-apt-repository -y "$ppa"
-          added=1
         done <<< "{{.PPAS}}"
-        # add-apt-repository already refreshes lists itself; only re-run when
-        # nothing was added (e.g. empty PPAS) and the cache might be stale.
-        [[ "$added" -eq 0 ]] && sudo apt-get update -qq
         exit 0
+      - task: apt-update
 
   packages:
     internal: true
     cmds:
+      - task: apt-update
       - |
         pkgs=$(grep -vE '^\s*#|^\s*$' <<< "{{.APT_PKGS}}")
         if sudo apt-get install -y $pkgs; then
@@ -120,6 +117,11 @@ tasks:
           exit 1
         fi
 
+  apt-update:
+    internal: true
+    cmds:
+      - sudo apt-get update -qq
+
   install:
     desc: Add PPAs and install every apt package
     cmds:
@@ -129,6 +131,6 @@ tasks:
   update:
     desc: Refresh package lists, upgrade every apt package, and drop what's no longer needed
     cmds:
-      - sudo apt-get update -qq
+      - task: apt-update
       - sudo apt-get full-upgrade -y
       - sudo apt-get autoremove -y

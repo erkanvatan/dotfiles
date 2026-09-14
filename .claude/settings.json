@@ -1,0 +1,27 @@
+{
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "model": "opusplan",
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.py"
+  },
+  "promptSuggestionEnabled": false,
+  "theme": "dark",
+  "editorMode": "normal",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 ~/.claude/hooks/inject-context.py"
+          }
+        ]
+      }
+    ]
+  },
+  "outputStyle": "ELI5"
+}

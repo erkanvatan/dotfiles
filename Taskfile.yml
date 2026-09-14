@@ -116,6 +116,7 @@ tasks:
         check pyenv  bash -c '"$HOME/.pyenv/bin/pyenv" --version'
         check python bash -c '"$HOME/.pyenv/shims/python" --version'
         check pipx   pipx --version
+        check go     bash -c '"$HOME/.local/bin/go" version'
         if [ "$(basename "$SHELL")" = zsh ]; then
           printf '  OK    %-8s %s\n' shell "$SHELL"
         else

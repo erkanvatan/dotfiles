@@ -1,6 +1,6 @@
 version: "3"
 
-# Runtimes and their package managers: nvm/node, pyenv/python, pipx.
+# Runtimes and their package managers: nvm/node, pyenv/python, pipx, go.
 
 vars:
   # Major.minor series `lang:python` installs the newest patch of. Bump this
@@ -90,8 +90,67 @@ tasks:
       # and ensurepath would write that same line into tracked .bashrc/.zshrc.
       - '"$HOME/.pyenv/shims/python" -m pip install --user pipx'
 
+  go:
+    internal: true
+    status:
+      - test -d "$HOME/programs/go"
+    cmds:
+      - |
+        bash -lc '
+          set -euo pipefail
+          export PATH="$HOME/.local/bin:$PATH"
+          latest=$(curl -fsSL "https://go.dev/VERSION?m=text" | head -1)
+          if [[ -z "$latest" ]]; then
+            echo "E: could not resolve latest go version (offline?)" >&2
+            exit 1
+          fi
+          arch=$(dpkg --print-architecture)
+          tarball="/tmp/${latest}.linux-${arch}.tar.gz"
+          curl -fsSL "https://go.dev/dl/${latest}.linux-${arch}.tar.gz" -o "$tarball"
+          rm -rf "$HOME/programs/go"
+          mkdir -p "$HOME/programs"
+          tar -C "$HOME/programs" -xzf "$tarball"
+          rm "$tarball"
+          ln -sf "$HOME/programs/go/bin/go" "$HOME/.local/bin/go"
+          ln -sf "$HOME/programs/go/bin/gofmt" "$HOME/.local/bin/gofmt"
+          go install golang.org/x/tools/gopls@latest
+          go install golang.org/x/tools/cmd/goimports@latest
+          curl -sSfL https://golangci-lint.run/install.sh | sh -s -- -b $(go env GOPATH)/bin
+        '
+
+  go-update:
+    internal: true
+    cmds:
+      - |
+        bash -lc '
+          set -euo pipefail
+          export PATH="$HOME/.local/bin:$PATH"
+          current=$("$HOME/.local/bin/go" version | grep -oE "go[0-9]+\.[0-9]+(\.[0-9]+)?")
+          latest=$(curl -fsSL "https://go.dev/VERSION?m=text" | head -1)
+          if [[ -z "$latest" ]]; then
+            echo "E: could not resolve latest go version (offline?)" >&2
+            exit 0
+          fi
+          if [[ "$latest" == "$current" ]]; then
+            exit 0
+          fi
+          echo "> go $current -> $latest"
+          arch=$(dpkg --print-architecture)
+          tarball="/tmp/${latest}.linux-${arch}.tar.gz"
+          curl -fsSL "https://go.dev/dl/${latest}.linux-${arch}.tar.gz" -o "$tarball"
+          rm -rf "$HOME/programs/go"
+          mkdir -p "$HOME/programs"
+          tar -C "$HOME/programs" -xzf "$tarball"
+          rm "$tarball"
+          ln -sf "$HOME/programs/go/bin/go" "$HOME/.local/bin/go"
+          ln -sf "$HOME/programs/go/bin/gofmt" "$HOME/.local/bin/gofmt"
+          go install golang.org/x/tools/gopls@latest
+          go install golang.org/x/tools/cmd/goimports@latest
+          curl -sSfL https://golangci-lint.run/install.sh | sh -s -- -b $(go env GOPATH)/bin
+        '
+
   install:
-    desc: Install nvm + latest LTS node, pyenv + latest python, pipx (one-time)
+    desc: Install nvm + latest LTS node, pyenv + latest python, pipx, go (one-time)
     cmds:
       - task: nvm
       - task: node
@@ -99,11 +158,13 @@ tasks:
       - task: pyenv-pyright
       - task: python
       - task: pipx
+      - task: go
 
   update:
-    desc: Update to latest LTS node, latest pyenv + python patch releases, pipx
+    desc: Update to latest LTS node, latest pyenv + python patch releases, pipx, go
     cmds:
       - bash -lc '. "$NVM_DIR/nvm.sh"; nvm install --lts --reinstall-packages-from=default; nvm alias default node'
       - bash -lc 'export PATH="$HOME/.pyenv/bin:$PATH"; pyenv update'
       - task: python-update
       - '"$HOME/.pyenv/shims/python" -m pip install --user -U pipx'
+      - task: go-update

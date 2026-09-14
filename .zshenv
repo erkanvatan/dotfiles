@@ -19,7 +19,7 @@ export GREP_COLORS='mt=0;31'
 export NVM_DIR="$HOME/.nvm"
 
 # path
-export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.pyenv/bin:$HOME/scripts:$PATH"
+export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/go/bin:$HOME/.pyenv/bin:$HOME/scripts:$PATH"
 
 # pipx
 command -v pyenv >/dev/null \

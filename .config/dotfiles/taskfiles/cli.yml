@@ -156,6 +156,8 @@ tasks:
 
   install:
     desc: One-time per-user setup - git identity, shell, font, ~/programs, fzf, npm/pipx/cargo apps
+    requires:
+      vars: [GIT_NAME, GIT_EMAIL]
     cmds:
       - task: keygen
         vars:

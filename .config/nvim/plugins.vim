@@ -35,6 +35,7 @@ Plug 'junegunn/fzf',                       { 'do': { -> fzf#install() } } " fuzz
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/gv.vim'                     " git commit browser
 Plug 'junegunn/vim-easy-align'             " align characters on the same column
+Plug 'klen/nvim-test'                      " run tests from vim
 Plug 'lambdalisue/suda.vim'                " suport for sudo
 Plug 'lewis6991/gitsigns.nvim'
 Plug 'lifepillar/pgsql.vim'                " support for PostgreSQL
@@ -92,6 +93,7 @@ call plug#end()
 " _markdown_nvim_
 " _nerdcommenter_
 " _nvim_colorizer_lua_
+" _nvim_test_
 " _nvim_tree_lua_
 " _nvim_treesitter_
 " _rainbow_delimiters_nvim_
@@ -199,9 +201,6 @@ nnoremap <leader>af :ClaudeCodeDiffDeny<CR>
 let g:livedown_port = 8001
 let g:livedown_browser = 'xdg-open'
 let g:livedown_open = 1
-
-" ### Keybindings
-nmap <leader>tm :LivedownToggle<CR>
 
 " --------------
 " ## _ultisnips_
@@ -577,8 +576,18 @@ require ('colorizer').setup {
 }
 EOF
 
+" --------------
+" ## _nvim_test_
+" --------------
+
+" ### Settings
+lua << EOF
+require('nvim-test').setup()
+EOF
+
 " ### Keybindings
-nnoremap <leader>tc :ColorizerToggle<CR>
+nnoremap <leader>ts :TestSuite<CR>
+nnoremap <leader>tf :TestFile<CR>
 
 "--------------------------
 " ## _indent_blankline_nvim_
@@ -941,9 +950,6 @@ let g:rainbow_delimiters = {
         \ 'vim',
     \ ],
 \ }
-
-" ### Keybindings
-nnoremap <Leader>tr :call rainbow_delimiters#toggle(0)<CR>
 
 " ------------------
 " ## _vim_auto_save_

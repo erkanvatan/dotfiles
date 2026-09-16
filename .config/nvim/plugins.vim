@@ -56,7 +56,6 @@ Plug 'preservim/nerdcommenter'             " comment/uncomment lines
 Plug 'puremourning/vimspector'             " A multi-language debugging system for Vim
 Plug 'romainl/vim-cool'                    " auto clear search highlight
 Plug 'ryanoasis/vim-devicons'              " lightline icons
-Plug 'shime/vim-livedown'                  " live preview of markdown
 Plug 'stsewd/fzf-checkout.vim'
 Plug 'tpope/vim-fugitive'                  " git wrapper
 Plug 'tpope/vim-repeat'                    " repeat supported plugin maps using `.` key
@@ -64,9 +63,6 @@ Plug 'tpope/vim-sensible'                  " set sensible defaults
 Plug 'tpope/vim-surround'                  " change surroundings like single quotes, double quotes, etc.
 Plug 'voldikss/vim-floaterm'               " floating terminal
 Plug 'wuelnerdotexe/vim-astro'             " support for astrojs
-
-Plug 'godlygeek/tabular'      " vim markdown table formatting (NOTE: must come before preservim/vim-markdown)
-Plug 'preservim/vim-markdown' " vim markdown support
 
 call plug#end()
 
@@ -90,7 +86,6 @@ call plug#end()
 " _gv_vim_
 " _indent_blankline_nvim_
 " _lightline_vim_
-" _markdown_nvim_
 " _nerdcommenter_
 " _nvim_colorizer_lua_
 " _nvim_test_
@@ -107,7 +102,6 @@ call plug#end()
 " _vim_floaterm_
 " _vim_fugitive_
 " _vim_indent_object_
-" _vim_livedown_
 " _vim_startify_
 " _vim_surround_
 " _vimspector_
@@ -192,15 +186,6 @@ nnoremap <leader>aa :ClaudeCodeAdd %<CR>
 vnoremap <leader>as :ClaudeCodeSend<CR>
 nnoremap <leader>aj :ClaudeCodeDiffAccept<CR>
 nnoremap <leader>af :ClaudeCodeDiffDeny<CR>
-
-" -----------------
-" ## _vim_livedown_
-" -----------------
-
-" ### Settings
-let g:livedown_port = 8001
-let g:livedown_browser = 'xdg-open'
-let g:livedown_open = 1
 
 " --------------
 " ## _ultisnips_
@@ -753,7 +738,6 @@ require'nvim-treesitter.configs'.setup {
         "json",
         "lua",
         "make",
-        "markdown",
         "markdown_inline",
         "norg",
         "python",
@@ -773,7 +757,7 @@ require'nvim-treesitter.configs'.setup {
     highlight = {
         enable = true,
         -- list of language that will be disabled
-        disable = {"html"},
+        disable = {"html", "markdown"},
         -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
         -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
         -- Using this option may slow down your editor, and you may see some duplicate highlights.
@@ -782,6 +766,14 @@ require'nvim-treesitter.configs'.setup {
     },
 }
 EOF
+
+"   `highlight.disable` above doesn't stop Neovim's own built-in treesitter
+"   highlighter from attaching to markdown buffers, so force-detach it instead.
+augroup nvim_treesitter_markdown
+    autocmd!
+    autocmd FileType markdown lua vim.treesitter.stop()
+augroup END
+
 "   set which filetypes will use treesitter folding
 "   WARNING: This causes slowdown in ALEFix
 " autocmd FileType python,c,cpp,xml,html,xhtml,lua,vim,norg setlocal foldmethod=expr

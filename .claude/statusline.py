@@ -54,16 +54,60 @@ def model_short(display_name, model_id):
     return name
 
 
-def format_cwd(cwd):
-    """Shorten cwd for display, collapsing $HOME to '~'."""
+CWD_MAX_LEN = 40  # keep the cwd pill from blowing up the whole prompt
+
+
+def format_cwd(cwd, max_len=CWD_MAX_LEN):
+    """Shorten cwd for display, collapsing $HOME to '~' and truncating deep paths.
+
+    Once collapsed the path is short-circuited if it already fits. Otherwise
+    intermediate directory components are abbreviated to their first
+    character (fish/p10k style), keeping the leaf directory fully readable,
+    e.g. '~/projects/foo/bar/baz/qux' -> '~/p/f/b/b/qux'. If that's still too
+    long the leaf itself is middle-truncated with an ellipsis.
+    """
     if not cwd:
         return None
     home = os.path.expanduser("~")
     if cwd == home:
         return "~"
     if cwd.startswith(home + os.sep):
-        return "~" + cwd[len(home):]
-    return cwd
+        display = "~" + cwd[len(home):]
+    else:
+        display = cwd
+
+    if len(display) <= max_len:
+        return display
+
+    prefix = ""
+    path = display
+    if path.startswith("~/"):
+        prefix = "~/"
+        path = path[2:]
+    elif path.startswith("/"):
+        prefix = "/"
+        path = path[1:]
+
+    parts = [p for p in path.split("/") if p]
+    if not parts:
+        return display[:max_len]
+
+    leaf = parts[-1]
+    abbreviated = [p[0] for p in parts[:-1]] + [leaf]
+    result = prefix + "/".join(abbreviated)
+
+    if len(result) <= max_len:
+        return result
+
+    # Still too long (e.g. a very long leaf name) — middle-ellipsize the leaf.
+    head_parts = "/".join(abbreviated[:-1])
+    fixed_len = len(prefix) + len(head_parts) + (1 if head_parts else 0)
+    budget = max(3, max_len - fixed_len)
+    if len(leaf) > budget:
+        half = (budget - 1) // 2
+        leaf = leaf[:half] + "…" + leaf[len(leaf) - (budget - 1 - half):]
+    sep = "/" if head_parts else ""
+    return prefix + head_parts + sep + leaf
 
 
 def soonest_reset(*epochs):

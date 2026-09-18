@@ -724,14 +724,12 @@ require'nvim-treesitter.configs'.setup {
     -- :TSInstall bibtex c_sharp java latex rust
     ensure_installed = {
         "astro",
-        "bash",
         "c",
         "cmake",
         "comment",
         "cpp",
         "css",
         "go",
-        "html",
         "htmldjango",
         "http",
         "javascript",
@@ -757,7 +755,7 @@ require'nvim-treesitter.configs'.setup {
     highlight = {
         enable = true,
         -- list of language that will be disabled
-        disable = {"html", "markdown"},
+        disable = {"html", "markdown", "bash"},
         -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
         -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
         -- Using this option may slow down your editor, and you may see some duplicate highlights.
@@ -771,7 +769,7 @@ EOF
 "   highlighter from attaching to markdown buffers, so force-detach it instead.
 augroup nvim_treesitter_markdown
     autocmd!
-    autocmd FileType markdown lua vim.treesitter.stop()
+    autocmd FileType html,markdown,sh,bash lua vim.treesitter.stop()
 augroup END
 
 "   set which filetypes will use treesitter folding

@@ -1,6 +1,5 @@
 {
   "extensions.updateCheck": "weekly",
-  "languageserver": {},
   "suggest.completionItemKindLabels": {
     "text": "t",
     "method": "m",
@@ -63,19 +62,17 @@
     "--indent 2",
     "--max-blank-lines 1",
     "--max-line-length 120",
-    "--profile django",
+    "--profile django"
   ],
   "htmldjango.djlint.formatJs": true,
   "htmldjango.djlint.formatCss": true,
   "eslint.enable": true,
   "tsserver.enable": true,
   "cmake.lsp.enable": true,
-  "rust-analyzer.diagnostics.enable": false,
   "sql.database": "postgresql",
   "clangd.arguments": [
     "--header-insertion=never"
   ],
-  "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/19.1.2/clangd_19.1.2/bin/clangd",
   "clangd.compilationDatabaseCandidates": [
     "${workspaceFolder}/debug",
     "${workspaceFolder}/Debug",
@@ -83,9 +80,5 @@
     "${workspaceFolder}/build",
     "${workspaceFolder}/Build"
   ],
-  "bitbake.pathToBitbakeFolder": "/space/yocto/layers/poky/bitbake",
-  "bitbake.pathToBuildFolder": "/space/yocto/builds/lsp-build",
-  "bitbake.pathToEnvScript": "/space/yocto/layers/poky/oe-init-build-env",
-  "bitbake.parseOnSave": false,
-  "jedi.diagnostics.enable": false,
+  "jedi.diagnostics.enable": false
 }

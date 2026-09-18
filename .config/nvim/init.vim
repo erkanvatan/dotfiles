@@ -22,7 +22,6 @@ let g:omni_sql_no_default_maps = 1
 
 " ## General options
 set novisualbell " Disable screen flashes
-set encoding=UTF-8 " Set character encoding
 set timeoutlen=800 " Shrink the window for time-outable commands
 set nofoldenable " Start with all folds open
 set mouse=nvchr " Enable mouse for all modes except insert mode
@@ -65,9 +64,7 @@ set textwidth=120
 set showtabline=2 " Always show tab line
 
 " ## Configs recommended by CoC
-set hidden
 set updatetime=300
-set nobackup " Disable backup files
 set nowritebackup " Disable backup files
 set shortmess+=c " Disable hit ENTER prompts for completion
 set signcolumn=yes " Always show sign column, otherwise it will shift text
@@ -79,34 +76,27 @@ command! V e $MYVIMRC | cd %:h
 " # _FUNCTIONS_
 " -------------
 
+" _LightlinePalette_
 " _ToggleBackground_
-" _TermForceCloseAll_
 
-" ---------------------
-" ## _ToggleBackground_
-" ---------------------
+" -----------------------
+" ## _LightlinePalette_
+" -----------------------
 
-function! ToggleBackground()
-    if &background =~? 'dark'
-        echo 'Changing to light theme...'
-        echo ''
+function! s:LightlinePaletteLatte() abort
+    return {'inactive': {'right': [['#bcc0cc', '#eff1f5', 146, 231], ['#9ca0b0', '#eff1f5', 145, 231]], 'middle': [['#bcc0cc', '#eff1f5', 146, 231]], 'left': [['#1e66f5', '#eff1f5', 27, 231], ['#9ca0b0', '#eff1f5', 145, 231]]}, 'replace': {'left': [['#e6e9ef', '#d20f39', 189, 161], ['#1e66f5', '#eff1f5', 27, 231]]}, 'normal': {'right': [['#9ca0b0', '#eff1f5', 145, 231], ['#1e66f5', '#ccd0da', 27, 188]], 'middle': [['#1e66f5', '#e6e9ef', 27, 189]], 'warning': [['#e6e9ef', '#df8e1d', 189, 172]], 'left': [['#e6e9ef', '#1e66f5', 189, 27], ['#1e66f5', '#eff1f5', 27, 231]], 'error': [['#e6e9ef', '#d20f39', 189, 161]]}, 'tabline': {'right': [['#bcc0cc', '#eff1f5', 146, 231], ['#9ca0b0', '#eff1f5', 145, 231]], 'middle': [['#bcc0cc', '#eff1f5', 146, 231]], 'left': [['#9ca0b0', '#eff1f5', 145, 231], ['#9ca0b0', '#eff1f5', 145, 231]], 'tabsel': [['#1e66f5', '#bcc0cc', 27, 146], ['#9ca0b0', '#eff1f5', 145, 231]]}, 'visual': {'left': [['#e6e9ef', '#8839ef', 189, 99], ['#1e66f5', '#eff1f5', 27, 231]]}, 'insert': {'left': [['#e6e9ef', '#179299', 189, 30], ['#1e66f5', '#eff1f5', 27, 231]]}}
+endfunction
 
-        colorscheme catppuccin
-        let g:lightline.colorscheme = 'catppuccin'
-        let g:lightline#colorscheme#catppuccin#palette = {'inactive': {'right': [['#bcc0cc', '#eff1f5', 146, 231], ['#9ca0b0', '#eff1f5', 145, 231]], 'middle': [['#bcc0cc', '#eff1f5', 146, 231]], 'left': [['#1e66f5', '#eff1f5', 27, 231], ['#9ca0b0', '#eff1f5', 145, 231]]}, 'replace': {'left': [['e6e9ef', '#d20f39', 189, 161], ['#1e66f5', '#eff1f5', 27, 231]]}, 'normal': {'right': [['#9ca0b0', '#eff1f5', 145, 231], ['#1e66f5', '#ccd0da', 27, 188]], 'middle': [['#1e66f5', '#e6e9ef', 27, 189]], 'warning': [['#e6e9ef', '#df8e1d', 189, 172]], 'left': [['#e6e9ef', '#1e66f5', 189, 27], ['#1e66f5', '#eff1f5', 27, 231]], 'error': [['#e6e9ef', '#d20f39', 189, 161]]}, 'tabline': {'right': [['#bcc0cc', '#eff1f5', 146, 231], ['#9ca0b0', '#eff1f5', 145, 231]], 'middle': [['#bcc0cc', '#eff1f5', 146, 231]], 'left': [['#9ca0b0', '#eff1f5', 145, 231], ['#9ca0b0', '#eff1f5', 145, 231]], 'tabsel': [['#1e66f5', '#bcc0cc', 27, 146], ['#9ca0b0', '#eff1f5', 145, 231]]}, 'visual': {'left': [['#e6e9ef', '#8839ef', 189, 99], ['1e66f5', '#eff1f5', 27, 231]]}, 'insert': {'left': [['#e6e9ef', '#179299', 189, 30], ['#1e66f5', '#eff1f5', 27, 231]]}}
+function! s:LightlinePaletteMocha() abort
+    return {'inactive': {'right': [['#45475a', '#1e1e2e', 59, 16], ['#6c7086', '#1e1e2e', 60, 16]], 'middle': [['#45475a', '#1e1e2e', 59, 16]], 'left': [['#89b4fa', '#1e1e2e', 111, 16], ['#6c7086', '#1e1e2e', 60, 16]]}, 'replace': {'left': [['#181825', '#f38ba8', 16, 211], ['#89b4fa', '#1e1e2e', 111, 16]]}, 'normal': {'right': [['#6c7086', '#1e1e2e', 60, 16], ['#89b4fa', '#313244', 111, 59]], 'middle': [['#89b4fa', '#181825', 111, 16]], 'warning': [['#181825', '#f9e2af', 16, 223]], 'left': [['#181825', '#89b4fa', 16, 111], ['#89b4fa', '#1e1e2e', 111, 16]], 'error': [['#181825', '#f38ba8', 16, 211]]}, 'tabline': {'right': [['#45475a', '#1e1e2e', 59, 16], ['#6c7086', '#1e1e2e', 60, 16]], 'middle': [['#45475a', '#1e1e2e', 59, 16]], 'left': [['#6c7086', '#1e1e2e', 60, 16], ['#6c7086', '#1e1e2e', 60, 16]], 'tabsel': [['#89b4fa', '#45475a', 111, 59], ['#6c7086', '#1e1e2e', 60, 16]]}, 'visual': {'left': [['#181825', '#cba6f7', 16, 183], ['#89b4fa', '#1e1e2e', 111, 16]]}, 'insert': {'left': [['#181825', '#94e2d5', 16, 116], ['#89b4fa', '#1e1e2e', 111, 16]]}}
+endfunction
 
-        set background=light
-    else
-        echo 'Changing to dark theme...'
-        echo ''
-
-        colorscheme catppuccin
-        let g:lightline.colorscheme = 'catppuccin'
-        let g:lightline#colorscheme#catppuccin#palette = {'inactive': {'right': [['#45475a', '#1e1e2e', 59, 16], ['#6c7086', '#1e1e2e', 60, 16]], 'middle': [['#45475a', '#1e1e2e', 59, 16]], 'left': [['#89b4fa', '#1e1e2e', 111, 16], ['#6c7086', '#1e1e2e', 60, 16]]}, 'replace': {'left': [['#181825', '#f38ba8', 16, 211], ['#89b4fa', '#1e1e2e', 111, 16]]}, 'normal': {'right': [['#6c7086', '#1e1e2e', 60, 16], ['#89b4fa', '#313244', 111, 59]], 'middle': [['#89b4fa', '#181825', 111, 16]], 'warning': [['#181825', '#f9e2af', 16, 223]], 'left': [['#181825', '#89b4fa', 16, 111], ['#89b4fa', '#1e1e2e', 111, 16]], 'error': [['#181825', '#f38ba8', 16, 211]]}, 'tabline': {'right': [['#45475a', '#1e1e2e', 59, 16], ['#6c7086', '#1e1e2e', 60, 16]], 'middle': [['#45475a', '#1e1e2e', 59, 16]], 'left': [['#6c7086', '#1e1e2e', 60, 16], ['#6c7086', '#1e1e2e', 60, 16]], 'tabsel': [['#89b4fa', '#45475a', 111, 59], ['#6c7086', '#1e1e2e', 60, 16]]}, 'visual': {'left': [['#181825', '#cba6f7', 16, 183], ['#89b4fa', '#1e1e2e', 111, 16]]}, 'insert': {'left': [['#181825', '#94e2d5', 16, 116], ['#89b4fa', '#1e1e2e', 111, 16]]}}
-
-        set background=dark
-    endif
-
+" Applies the lightline palette matching a:name ('latte' or 'mocha') and
+" refreshes lightline so the change is visible immediately.
+function! s:ApplyLightlinePalette(name) abort
+    let g:lightline.colorscheme = 'catppuccin'
+    let g:lightline#colorscheme#catppuccin#palette =
+        \ a:name ==# 'latte' ? s:LightlinePaletteLatte() : s:LightlinePaletteMocha()
     try
         call lightline#init()
         call lightline#colorscheme()
@@ -115,19 +105,25 @@ function! ToggleBackground()
     endtry
 endfunction
 
-command! ToggleBackground call ToggleBackground()
+" ---------------------
+" ## _ToggleBackground_
+" ---------------------
+" catppuccin's flavour = 'auto' already switches flavour on 'background',
+" so this only needs to flip 'background' and refresh lightline's palette.
 
-" ----------------------
-" ## _TermForceCloseAll_
-" ----------------------
-" https://www.reddit.com/r/vim/comments/fwedfx/comment/fmnwar1
-
-function! s:TermForceCloseAll() abort
-    let term_bufs = filter(range(1, bufnr('$')), 'getbufvar(v:val, "&buftype") == "terminal"')
-    for t in term_bufs
-        execute 'bd! ' t
-    endfor
+function! ToggleBackground()
+    if &background =~? 'dark'
+        echo 'Changing to light theme...'
+        set background=light
+        call s:ApplyLightlinePalette('latte')
+    else
+        echo 'Changing to dark theme...'
+        set background=dark
+        call s:ApplyLightlinePalette('mocha')
+    endif
 endfunction
+
+command! ToggleBackground call ToggleBackground()
 
 " ---------------
 " # _KEYBINDINGS_
@@ -186,18 +182,12 @@ nnoremap <Leader>df :w !diff % -<CR>
 vnoremap < <gv
 vnoremap > >gv
 
-" See buffers
-nnoremap <Leader>fb :Buffers!<CR>
-
 " Move in quickfix list (copen)
 nnoremap <silent> [q :cprevious<CR>
 nnoremap <silent> ]q :cnext<CR>
 " Move in location list (lopen)
 nnoremap <silent> [l :lprevious<CR>
 nnoremap <silent> ]l :lnext<CR>
-
-" Clear highlighting of 'hlsearch' and call :diffupdate
-nnoremap <silent> <leader>h :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><leader>h
 
 " Toggle background theme between light and dark
 nnoremap <M-t> :ToggleBackground<CR>
@@ -213,14 +203,14 @@ execute 'source ' . stdpath('config') . '/plugins.vim'
 
 " ## Import settings not tracked by Git
 if !empty(glob(stdpath('config') . '/gitignore.vim'))
-    source stdpath('config') . '/gitignore.vim'
+    execute 'source ' . stdpath('config') . '/gitignore.vim'
 endif
 
 " ## Autocommands
 
 augroup lang_indentation_by_filetype
     autocmd!
-    autocmd Filetype astro,css,scss,javascript,typescript,html,json,xml,norg,cmake,mdx,jsx
+    autocmd Filetype astro,css,scss,javascript,typescript,html,json,xml,cmake,mdx,jsx
         \ setlocal tabstop=2 shiftwidth=2 softtabstop=2
     autocmd Filetype meson,dts
         \ setlocal tabstop=4 shiftwidth=4 softtabstop=4
@@ -229,8 +219,9 @@ augroup END
 
 augroup editor_configs_vim_options
     autocmd!
-    " Do not continue newlines with comment character
-    autocmd FileType * set formatoptions-=cro
+    " Do not continue newlines with comment character, and do not hard-wrap
+    " text at 'textwidth' while typing (still used for 'colorcolumn' below)
+    autocmd FileType * setlocal formatoptions-=cro formatoptions-=t
 
     " Set the filetype based on the file extension, overriding any
     " 'filetype' that has already been set
@@ -253,5 +244,4 @@ augroup END
 " ## Set colorscheme and trigger highlight groups defined with `autocmd ColorScheme`
 "    (must be on the bottom to trigger autocmds)
 colorscheme catppuccin
-let g:lightline.colorscheme = 'catppuccin'
-let g:lightline#colorscheme#catppuccin#palette = {'inactive': {'right': [['#45475a', '#1e1e2e', 59, 16], ['#6c7086', '#1e1e2e', 60, 16]], 'middle': [['#45475a', '#1e1e2e', 59, 16]], 'left': [['#89b4fa', '#1e1e2e', 111, 16], ['#6c7086', '#1e1e2e', 60, 16]]}, 'replace': {'left': [['#181825', '#f38ba8', 16, 211], ['#89b4fa', '#1e1e2e', 111, 16]]}, 'normal': {'right': [['#6c7086', '#1e1e2e', 60, 16], ['#89b4fa', '#313244', 111, 59]], 'middle': [['#89b4fa', '#181825', 111, 16]], 'warning': [['#181825', '#f9e2af', 16, 223]], 'left': [['#181825', '#89b4fa', 16, 111], ['#89b4fa', '#1e1e2e', 111, 16]], 'error': [['#181825', '#f38ba8', 16, 211]]}, 'tabline': {'right': [['#45475a', '#1e1e2e', 59, 16], ['#6c7086', '#1e1e2e', 60, 16]], 'middle': [['#45475a', '#1e1e2e', 59, 16]], 'left': [['#6c7086', '#1e1e2e', 60, 16], ['#6c7086', '#1e1e2e', 60, 16]], 'tabsel': [['#89b4fa', '#45475a', 111, 59], ['#6c7086', '#1e1e2e', 60, 16]]}, 'visual': {'left': [['#181825', '#cba6f7', 16, 183], ['#89b4fa', '#1e1e2e', 111, 16]]}, 'insert': {'left': [['#181825', '#94e2d5', 16, 116], ['#89b4fa', '#1e1e2e', 111, 16]]}}
+call s:ApplyLightlinePalette(&background =~? 'dark' ? 'mocha' : 'latte')

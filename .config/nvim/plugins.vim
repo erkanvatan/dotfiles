@@ -21,16 +21,12 @@ call plug#begin(stdpath('config') . '/plugged')
 
 Plug '907th/vim-auto-save'
 Plug 'HiPhish/rainbow-delimiters.nvim'
-Plug 'SirVer/ultisnips'                    " snippet manager
 Plug 'alvan/vim-closetag'
 Plug 'andrewferrier/debugprint.nvim'
 Plug 'catppuccin/nvim',                    { 'as': 'catppuccin' } " color theme
 Plug 'coder/claudecode.nvim'               " Claude Code CLI integration (WebSocket bridge to `claude`)
 Plug 'dense-analysis/ale'                  " configurable async linter/fixer for programming languages
-Plug 'honza/vim-snippets'                  " compilation of useful snippets
-Plug 'inkarkat/vim-SyntaxRange'
 Plug 'itchyny/lightline.vim'               " configurable statusline/tabline
-Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/fzf',                       { 'do': { -> fzf#install() } } " fuzzy file finder
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/gv.vim'                     " git commit browser
@@ -41,7 +37,6 @@ Plug 'lewis6991/gitsigns.nvim'
 Plug 'lifepillar/pgsql.vim'                " support for PostgreSQL
 Plug 'liuchengxu/vista.vim'                " tags and lsp symbols viewer
 Plug 'lukas-reineke/indent-blankline.nvim' " add vertical indent guides
-Plug 'mattn/emmet-vim'                     " good for html tags
 Plug 'maximbaz/lightline-ale'              " ale integration for lightline
 Plug 'mbbill/undotree'                     " the undo history visualizer
 Plug 'mhinz/vim-startify'                  " change default starting screen
@@ -52,16 +47,14 @@ Plug 'ntpeters/vim-better-whitespace'
 Plug 'nvim-tree/nvim-tree.lua'             " tree-like file browser
 Plug 'nvim-tree/nvim-web-devicons'         " optional, for file icons
 Plug 'nvim-treesitter/nvim-treesitter',    { 'branch': 'master', 'do': ':TSUpdate'} " better parsing for syntax highlight
-Plug 'preservim/nerdcommenter'             " comment/uncomment lines
 Plug 'puremourning/vimspector'             " A multi-language debugging system for Vim
 Plug 'romainl/vim-cool'                    " auto clear search highlight
-Plug 'ryanoasis/vim-devicons'              " lightline icons
 Plug 'stsewd/fzf-checkout.vim'
 Plug 'tpope/vim-fugitive'                  " git wrapper
 Plug 'tpope/vim-repeat'                    " repeat supported plugin maps using `.` key
-Plug 'tpope/vim-sensible'                  " set sensible defaults
 Plug 'tpope/vim-surround'                  " change surroundings like single quotes, double quotes, etc.
 Plug 'voldikss/vim-floaterm'               " floating terminal
+Plug 'windwp/nvim-autopairs'               " auto-close and auto-delete matching pairs
 Plug 'wuelnerdotexe/vim-astro'             " support for astrojs
 
 call plug#end()
@@ -72,40 +65,34 @@ call plug#end()
 " -------------------
 
 " ## Contents
-
 " _ale_
-" _auto_pairs_
 " _catppuccin_
 " _claudecode_nvim_
 " _coc_nvim_
-" _debugprint_nvim_
-" _emmet_vim_
-" _fzf_checkout_vim_
-" _fzf_vim_
-" _gitsigns_nvim_
-" _gv_vim_
-" _indent_blankline_nvim_
-" _lightline_vim_
-" _nerdcommenter_
 " _nvim_colorizer_lua_
 " _nvim_test_
+" _indent_blankline_nvim_
 " _nvim_tree_lua_
+" _debugprint_nvim_
+" _gitsigns_nvim_
 " _nvim_treesitter_
+" _fzf_vim_
+" _fzf_checkout_vim_
+" _vista_vim_
+" _vimspector_
 " _rainbow_delimiters_nvim_
-" _suda_vim_
-" _ultisnips_
-" _undotree_
 " _vim_auto_save_
-" _vim_better_whitespace_
-" _vim_closetag_
-" _vim_easy_align_
-" _vim_floaterm_
-" _vim_fugitive_
-" _vim_indent_object_
 " _vim_startify_
 " _vim_surround_
-" _vimspector_
-" _vista_vim_
+" _nvim_autopairs_
+" _vim_floaterm_
+" _vim_closetag_
+" _vim_indent_object_
+" _lightline_vim_
+" _vim_fugitive_
+" _vim_better_whitespace_
+" _undotree_
+" _vim_easy_align_
 
 " ---------------
 " ## _catppuccin_
@@ -187,13 +174,6 @@ vnoremap <leader>as :ClaudeCodeSend<CR>
 nnoremap <leader>aj :ClaudeCodeDiffAccept<CR>
 nnoremap <leader>af :ClaudeCodeDiffDeny<CR>
 
-" --------------
-" ## _ultisnips_
-" --------------
-
-" ### Keybindings
-let g:UltiSnipsExpandTrigger="<C-tab>"
-
 " --------
 " ## _ale_
 " --------
@@ -207,21 +187,13 @@ augroup ale_group
     " Ale settings by filetype
     autocmd FileType python let b:ale_warn_about_trailing_whitespace = 0
 
-    " Disable ale_linters by filetype
-    autocmd FileType html.javascript.jinja let b:ale_linters =
-        \ {'html': [], 'css': ['stylelint'], 'scss': ['stylelint'], 'javascript': ['eslint'], 'typescript': ['eslint']}
-
-    " Disable ALE linting for specific files (CoC)
-    autocmd FileType typescript,sql,json,c,cc,c++,cpp let g:ale_lint_on_text_changed = 0
-        \ | let g:ale_lint_on_insert_leave = 0
-        \ | let g:ale_lint_on_save = 0
-        \ | let g:ale_lint_on_enter = 0
+    " Disable ALE linting for specific filetypes that CoC already covers
+    autocmd FileType typescript,sql,json,c,cpp let b:ale_linters = []
 augroup END
 
 let g:ale_fix_on_save = 0
 let g:ale_sign_error = '❌'
 let g:ale_sign_warning = '⚠️'
-let g:ale_fix_on_save = 0
 
 " Show ale signs over gitsigns
 let g:ale_sign_priority=30
@@ -244,8 +216,8 @@ command! ALEEnableFixersBuffer  let b:ale_fix_on_save=1
 augroup ale_highlight
     autocmd!
     autocmd ColorScheme *
-        \ highlight ALEError ctermbg=White ctermfg=DarkRed |
-        \ highlight ALEWarning ctermbg=LightYellow ctermfg=DarkMagenta
+        \ highlight ALEError guibg=#f38ba8 guifg=#1e1e2e |
+        \ highlight ALEWarning guibg=#f9e2af guifg=#1e1e2e
 augroup END
 
 " Set linters by file type
@@ -257,9 +229,7 @@ let g:ale_linters = {
 \   'go': ['gopls', 'golangci-lint'],
 \   'html': ['tidy'],
 \   'javascript': [],
-\   'latex': ['chktex'],
 \   'python': ['ruff'],
-\   'rust': ['analyzer'],
 \   'scss': ['stylelint'],
 \   'sh': ['shellcheck'],
 \   'sql': [],
@@ -276,9 +246,7 @@ let g:ale_fixers = {
 \   'html': ['html-beautify'],
 \   'javascript': ['eslint'],
 \   'json': ['jq'],
-\   'latex': ['chktex'],
 \   'python': ['black', 'isort'],
-\   'rust': ['rustfmt'],
 \   'scss': ['stylelint'],
 \   'sh': ['shfmt'],
 \   'sql': ['pgformatter'],
@@ -289,13 +257,10 @@ let g:ale_fixers = {
 let g:ale_go_golangci_lint_package = 1
 
 " Python
-let g:ale_python_flake8_options = '--max-line-length 120 --ignore=E501'
-let g:ale_python_autopep8_options = '--max-line-length 120'
 let g:ale_python_black_options = '--line-length 120 --target-version py310'
 
 " HTML
 let g:ale_html_beautify_options = '--indent-size 2 --max-preserve-newlines 2 --wrap-line-length 120'
-let g:ale_html_tidy_options = ''
 
 " C/C++
 let g:ale_c_clangformat_use_local_file = 1
@@ -310,18 +275,10 @@ let g:ale_c_clangformat_style_option = "
 \}"
 " let g:ale_c_clangformat_options = "--assume-filename=$HOME/.config/.clang-format"
 
-let g:ale_c_uncrustify_options = '-c .uncrustify.cfg'
-
-" Rust
-let g:ale_rust_analyzer_executable = "$HOME/.config/coc/extensions/coc-rust-analyzer-data/rust-analyzer"
-let g:ale_rust_rustfmt_options = "--config wrap_comments=true,format_code_in_doc_comments=true,overflow_delimited_expr=true"
-
 " Bash/Sh
 let g:ale_sh_shfmt_options = "-i 4 -fn -sr -ci"
 
 " Javascript
-let g:ale_javascript_prettier_use_local_config = 1
-let g:ale_javascript_prettier_executable = './node_modules/.bin/prettier'
 let g:ale_javascript_eslint_executable = './node_modules/.bin/eslint'
 
 " Scss
@@ -357,8 +314,9 @@ augroup coc_nvim_group
     autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
     " Close the preview window when completion is done
     autocmd CompleteDone * if pumvisible() == 0 | pclose | endif
-    " Enable coc-diagnostic by filetype
-    autocmd FileType typescript,sql,json,c,cc,cpp,c++,python call EnableCocDiagnosticBuffer()
+    " Enable coc diagnostics for filetypes where ALE's own diagnostics were
+    " turned off above
+    autocmd FileType typescript,sql,json,c,cpp,python call EnableCocDiagnostic()
     " Setup formatexpr specified filetype(s).
     autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
 augroup END
@@ -369,7 +327,6 @@ augroup coc_fix_on_save
         \ CocCommand htmldjango.djlint.format | endif
 augroup END
 
-let g:coc_user_config = {}
 " CoC extensions to install automatically
 let g:coc_global_extensions = [
     \ '@yaegassy/coc-astro',
@@ -380,9 +337,7 @@ let g:coc_global_extensions = [
     \ 'coc-css',
     \ 'coc-cssmodules',
     \ 'coc-docker',
-    \ 'coc-emmet',
     \ 'coc-eslint',
-    \ 'coc-git',
     \ 'coc-go',
     \ 'coc-html',
     \ 'coc-htmldjango',
@@ -390,7 +345,6 @@ let g:coc_global_extensions = [
     \ 'coc-json',
     \ 'coc-lists',
     \ 'coc-marketplace',
-    \ 'coc-rust-analyzer',
     \ 'coc-sh',
     \ 'coc-snippets',
     \ 'coc-sql',
@@ -414,7 +368,7 @@ command! -nargs=? Fold :call CocAction('fold', <f-args>)
 command! -nargs=0 OR   :call CocActionAsync('runCommand', 'editor.action.organizeImport')
 
 " ### Functions
-function! EnableCocDiagnosticBuffer()
+function! EnableCocDiagnostic()
     call coc#config('diagnostic', { 'enable': v:true })
 endfunction
 
@@ -483,8 +437,9 @@ nnoremap <silent> K :call ShowDocumentation()<CR>
 nmap <leader>rn <Plug>(coc-rename)
 
 " Formatting selected code.
-xmap <leader>ft  <Plug>(coc-format-selected)
-nmap <leader>ft  <Plug>(coc-format-selected)
+" (leader>ft is taken by fzf's :BTags, see _fzf_vim_ below)
+xmap <leader>cf  <Plug>(coc-format-selected)
+nmap <leader>cf  <Plug>(coc-format-selected)
 
 " Run the Code Lens action on the current line.
 nmap <leader>cl  <Plug>(coc-codelens-action)
@@ -515,39 +470,6 @@ endif
 
 " coc-snippets
 imap <C-k> <Plug>(coc-snippets-expand-jump)
-vmap <C-j> <Plug>(coc-snippets-select)
-
-" --------------
-" ## _emmet_vim_
-" --------------
-
-" ### Settings
-let g:user_emmet_mode='nv' " only enable emmet in normal mode
-
-" ### Keybindings
-" All commands and bindings:  https://raw.githubusercontent.com/mattn/emmet-vim/master/TUTORIAL
-" Trigger key ,,      you can also use autocomplete to select abbreviation
-" Example: Write one of the keywords listed below, go to normal mod and
-"          press ,,
-" remove a tag                : <C-y>k
-" update image's size         : <C-y>i
-" make anchor from a URL      : <C-y>a
-" make quoted text from a URL : <C-y>A
-"
-" tag expansion               : div
-" nested tag expansion        : div>div1>div2>div3
-" creating lists              : div#mylist>li*10>{List Item} (list with 10
-"                                                             items)
-" creating lists with indices : div#mylist>li*10>{List Item $}
-" creating sibling tags       : div+h1+h2
-" shortcuts                   : bq, btn, hdr, ftr
-" ID expansion                : tag_name#id_name
-" class expansion             : tag_name.class_name
-" default class expansion     : .class_name (div is assumed as tag)
-" multi class expansion       : .class1.class2
-" ID & class expansion        : #myid.myclass
-
-let g:user_emmet_leader_key=","
 
 " -----------------------
 " ## _nvim_colorizer_lua_
@@ -601,10 +523,9 @@ EOF
 
 " ### Settings
 lua << EOF
--- Disable netrw at the very start of your init.lua (strongly advised)
--- Disabling netrw also disables scp remote editing capability. You can instead use hijack_netrw option
-vim.g.loaded = 1
-vim.g.loaded_netrwPlugin = 1
+-- netrw stays loaded (disable_netrw = false below) so scp:// remote editing
+-- keeps working; hijack_netrw = true lets nvim-tree take over directory
+-- buffers instead of disabling netrw outright.
 
 require("nvim-tree").setup({
     hijack_cursor = true,
@@ -664,43 +585,21 @@ nnoremap <silent> <leader>pv :NvimTreeFindFile!<CR>
 " ## _debugprint_nvim_
 " --------------------
 
-" ### Settings
+" ### Settings + Keybindings
 lua << EOF
-require('debugprint').setup()
-    create_keymaps = false
-EOF
-
-" ### Keybindings
-lua << EOF
-vim.keymap.set("n", "<Leader>dpp", function()
-    return require('debugprint').debugprint()
-end, {
-    expr = true,
-})
-vim.keymap.set("n", "<Leader>dpP", function()
-    return require('debugprint').debugprint({ above = true })
-end, {
-    expr = true,
-})
-vim.keymap.set({"n", "v"}, "<Leader>dpv", function()
-    return require('debugprint').debugprint({ variable = true })
-end, {
-    expr = true,
-})
-vim.keymap.set({"n", "v"}, "<Leader>dpV", function()
-    return require('debugprint').debugprint({ above = true, variable = true })
-end, {
-    expr = true,
-})
-vim.keymap.set("n", "<Leader>dpo", function()
-    return require('debugprint').debugprint({ motion = true })
-end, {
-    expr = true,
-})
-vim.keymap.set("n", "<Leader>dpO", function()
-    return require('debugprint').debugprint({ above = true, motion = true })
-end, {
-    expr = true,
+require('debugprint').setup({
+    keymaps = {
+        normal = {
+            plain_below = "<Leader>dpj",
+            plain_above = "<Leader>dpk",
+            variable_below = "<Leader>dvj",
+            variable_above = "<Leader>dvk",
+        },
+        visual = {
+            variable_below = "<Leader>dvj",
+            variable_above = "<Leader>dvk",
+        },
+    },
 })
 EOF
 
@@ -720,8 +619,6 @@ EOF
 " ### Settings
 lua << EOF
 require'nvim-treesitter.configs'.setup {
-    -- Additional parsers:
-    -- :TSInstall bibtex c_sharp java latex rust
     ensure_installed = {
         "astro",
         "c",
@@ -737,7 +634,6 @@ require'nvim-treesitter.configs'.setup {
         "lua",
         "make",
         "markdown_inline",
-        "norg",
         "python",
         "regex",
         "scss",
@@ -751,7 +647,7 @@ require'nvim-treesitter.configs'.setup {
     sync_install = false,
     -- Automatically install missing parsers when entering buffer
     auto_install = true,
-    ignore_install = {},
+    ignore_install = {"html", "markdown", "bash"},
     highlight = {
         enable = true,
         -- list of language that will be disabled
@@ -766,19 +662,15 @@ require'nvim-treesitter.configs'.setup {
 EOF
 
 "   `highlight.disable` above doesn't stop Neovim's own built-in treesitter
-"   highlighter from attaching to markdown buffers, so force-detach it instead.
-augroup nvim_treesitter_markdown
+"   highlighter from attaching to buffers, so force-detach it instead.
+augroup nvim_treesitter_disable
     autocmd!
-    autocmd FileType html,markdown,sh,bash lua vim.treesitter.stop()
+    autocmd FileType html,markdown,bash lua vim.treesitter.stop()
 augroup END
-
-"   set which filetypes will use treesitter folding
-"   WARNING: This causes slowdown in ALEFix
-" autocmd FileType python,c,cpp,xml,html,xhtml,lua,vim,norg setlocal foldmethod=expr
 
 "   if you want to activate folding for the current filetype call
 "       :setlocal foldmethod=expr
-set foldexpr=nvim_treesitter#foldexpr()
+set foldexpr=v:lua.vim.treesitter.foldexpr()
 
 " ------------
 " ## _fzf_vim_
@@ -786,7 +678,7 @@ set foldexpr=nvim_treesitter#foldexpr()
 
 " ### Settings
 let g:fzf_tags_command = 'ctags -R'
-let g:fzf_layout = {'up':'~80%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5} }
+let g:fzf_layout = {'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5} }
 let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
 
 " FZF Buffer Delete
@@ -882,7 +774,7 @@ nnoremap <leader>gb :GBranches<CR>
 " --------------
 
 " ### Settings
-let g:vista_default_executive = 'coc' " TODO: check other executives
+let g:vista_default_executive = 'coc'
 let g:vista_fzf_preview = ['right:50%']
 let g:vista#renderer#enable_icon = 1
 let g:vista_sidebar_width = 60
@@ -976,45 +868,20 @@ let g:startify_session_persistence = 1
 " cst<p>     : To change the surrounding tag to <p>
 " vS         : In visual mode, S surrounds the selected (vSt for tag)
 
-" ------------------
-" ## _nerdcommenter_
-" ------------------
+" -------------------
+" ## _nvim_autopairs_
+" -------------------
 
 " ### Settings
-" Add spaces after comment delimiters by default
-let g:NERDCreateDefaultMappings = 0
-let g:NERDSpaceDelims = 1
-augroup nerdcommenter_group
-    autocmd!
-    autocmd FileType python let g:NERDDefaultAlign = 'left'
-augroup END
-
-" ### Keybindings
-" [count]<leader>cc          : make lines commented
-" [count]<leader>c<space>    : toggle line's comment status (commented/uncommented)
-map <leader>cc <plug>NERDCommenterComment
-map <leader>cu <plug>NERDCommenterUncomment
-map <leader>ct <plug>NERDCommenterToggle
-map <leader>cm <plug>NERDCommenterMinimal
-
-" ---------------
-" ## _auto_pairs_
-" ---------------
-
-" ### Settings
-augroup auto_pairs_group
-    autocmd!
-    autocmd FileType norg let g:AutoPairsMapSpace = 0
-augroup END
-" fix coc-snippets inserting newline when selecting a snippet with enter
-let g:AutoPairsMapCR = 0
-
-" ### Keybindings
-" <M-p> : Toggle auto-pairs
-" <M-e> : Insert () or {} or [] before something then hit <M-e> to fast wrap
-" <M-n> : Jump to next closed pair
-" Use Ctrl-V) to insert paren without trigerring plugin
-" Use x or DEL to delete the character inserted by the plugin
+lua << EOF
+require('nvim-autopairs').setup({
+    -- coc.nvim owns <CR> (see _coc_nvim_ above); disabling nvim-autopairs'
+    -- own <CR> mapping keeps coc's accept-completion/accept-snippet <CR>
+    -- from getting an extra newline inserted before it, same as the old
+    -- g:AutoPairsMapCR = 0 did for auto-pairs.
+    map_cr = false,
+})
+EOF
 
 " -----------------
 " ## _vim_floaterm_
@@ -1064,7 +931,9 @@ function! CocCurrentFunction()
 endfunction
 
 function! GitStatus() abort
-    return get(g:, 'coc_git_status', '')
+    " gitsigns.nvim sets this buffer-local variable; coc-git (which set
+    " g:coc_git_status) was dropped in favour of gitsigns for hunk signs.
+    return get(b:, 'gitsigns_head', '')
 endfunction
 
 function! LightlineFilename()
@@ -1120,24 +989,27 @@ nnoremap <leader>gF :%diffget //2<CR>
 "   Diff against any and all direct ancestors (merge conflicts)
 nnoremap <leader>gdf :Gvdiffsplit!<CR>
 
-" -----------------------
-" _vim_better_whitespace_
-" -----------------------
+" -------------------------
+" ## _vim_better_whitespace_
+" -------------------------
 
 " ### Settings
 let g:better_whitespace_enabled=1
-autocmd ColorScheme * highlight ExtraWhitespace ctermbg=LightRed ctermfg=white guibg='#f9e2af' guifg=black
+augroup vim_better_whitespace_highlight
+    autocmd!
+    autocmd ColorScheme * highlight ExtraWhitespace guibg=#f9e2af guifg=#000000
+augroup END
 
-" ----------
-" _undotree_
-" ----------
+" -------------
+" ## _undotree_
+" -------------
 
 " ### Keybindings
 nnoremap <silent> <M-u> :UndotreeToggle<CR>
 
-" ----------------
-" _vim_easy_align_
-" ----------------
+" ------------------
+" ## _vim_easy_align_
+" ------------------
 
 " ### Settings
 let g:easy_align_ignore_groups = []

@@ -108,9 +108,15 @@ alias nvim="stty stop '' -ixoff; nvim"
 # _SETTINGS_
 # ----------
 
+# re-enable file creation via `>>`/`>`
+setopt CLOBBER
+
 # activate Bash completions
 autoload -Uz bashcompinit
 bashcompinit
+
+# fix default node not working issue with recent nvm versions
+unsetopt extendedglob
 
 # --------------
 # _PROGRAM_INIT_
@@ -124,7 +130,6 @@ bashcompinit
 [ -f ~/.p10k.zsh ] && source ~/.p10k.zsh
 
 # nvm
-unsetopt extendedglob # fix default node issue
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 autoload -U add-zsh-hook

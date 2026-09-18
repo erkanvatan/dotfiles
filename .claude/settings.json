@@ -8,6 +8,9 @@
     "type": "command",
     "command": "~/.claude/statusline.py"
   },
+  "permissions": {
+    "deny": ["Bash(rm:*)", "Bash(rmdir:*)"]
+  },
   "promptSuggestionEnabled": false,
   "theme": "dark",
   "editorMode": "normal",

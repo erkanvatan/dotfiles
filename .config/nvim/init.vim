@@ -244,6 +244,12 @@ augroup editor_configs_vim_options
     autocmd BufEnter,BufWinEnter * if &textwidth > 0 | let &l:colorcolumn = &textwidth | else | setlocal colorcolumn= | endif
 augroup END
 
+augroup checktime_external_changes
+    autocmd!
+    " Check for file changes made outside vim (e.g. by Claude) and reload
+    autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
+augroup END
+
 " ## Set colorscheme and trigger highlight groups defined with `autocmd ColorScheme`
 "    (must be on the bottom to trigger autocmds)
 colorscheme catppuccin

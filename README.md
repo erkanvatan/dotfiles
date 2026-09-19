@@ -122,8 +122,6 @@ Standalone bash tools in `scripts/`. Run them directly or bind them to a shortcu
 | `appimage-get` | Fetch the newest AppImage from a GitHub repo |
 | `config-fzf` | fzf picker over dotfiles-tracked files |
 | `config-sync` | Mirror a checkout into `$HOME` to test edits live |
-| `launch-alacritty-vm` | Launch Alacritty for VM use |
-| `launch-swift-map` | Launch swift-map |
 | `print-term-colors` | Print the terminal color palette |
 | `setup-ip-forwarding` | Set up IP forwarding |
 | `sub-to-utf8` | Convert subtitle files to UTF-8 |

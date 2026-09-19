@@ -66,7 +66,6 @@
   ],
   "htmldjango.djlint.formatJs": true,
   "htmldjango.djlint.formatCss": true,
-  "eslint.enable": true,
   "tsserver.enable": true,
   "cmake.lsp.enable": true,
   "sql.database": "postgresql",

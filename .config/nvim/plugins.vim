@@ -23,6 +23,7 @@ Plug '907th/vim-auto-save'
 Plug 'HiPhish/rainbow-delimiters.nvim'
 Plug 'alvan/vim-closetag'
 Plug 'andrewferrier/debugprint.nvim'
+Plug 'catgoose/nvim-colorizer.lua'         " colorize color names and RGB codes
 Plug 'catppuccin/nvim',                    { 'as': 'catppuccin' } " color theme
 Plug 'coder/claudecode.nvim'               " Claude Code CLI integration (WebSocket bridge to `claude`)
 Plug 'dense-analysis/ale'                  " configurable async linter/fixer for programming languages
@@ -42,7 +43,6 @@ Plug 'mbbill/undotree'                     " the undo history visualizer
 Plug 'mhinz/vim-startify'                  " change default starting screen
 Plug 'michaeljsmith/vim-indent-object'     " adds an object to select everything at an indent level
 Plug 'neoclide/coc.nvim',                  { 'branch': 'release' } " load extensions like VSCode and host language servers
-Plug 'norcalli/nvim-colorizer.lua'         " colorize color names and RGB codes
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'nvim-tree/nvim-tree.lua'             " tree-like file browser
 Plug 'nvim-tree/nvim-web-devicons'         " optional, for file icons
@@ -480,9 +480,13 @@ xmap <leader>cs <Plug>(coc-convert-snippet)
 
 " ### Settings
 lua << EOF
-require ('colorizer').setup {
-    css = { css = true; }; -- Enable parsing rgb(...) functions in css.
-    html = { names = false; } -- Disable parsing "names" like Blue or Gray
+require('colorizer').setup {
+    options = {
+        parsers = {
+            css = true, -- Enable the css parser (rgb(...), hsl(...), hex, ...).
+            names = { enable = false }, -- Disable parsing "names" like Blue or Gray (overrides the css preset).
+        },
+    },
 }
 EOF
 

@@ -8,6 +8,7 @@ vars:
   NPM_PKGS: |
     js-beautify
     live-server
+    livedown
     neovim
     npm-check-updates
     sass

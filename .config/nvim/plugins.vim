@@ -49,6 +49,7 @@ Plug 'nvim-tree/nvim-web-devicons'         " optional, for file icons
 Plug 'nvim-treesitter/nvim-treesitter',    { 'branch': 'master', 'do': ':TSUpdate'} " better parsing for syntax highlight
 Plug 'puremourning/vimspector'             " A multi-language debugging system for Vim
 Plug 'romainl/vim-cool'                    " auto clear search highlight
+Plug 'shime/vim-livedown'                  " live preview of markdown
 Plug 'stsewd/fzf-checkout.vim'
 Plug 'tpope/vim-fugitive'                  " git wrapper
 Plug 'tpope/vim-repeat'                    " repeat supported plugin maps using `.` key
@@ -88,6 +89,7 @@ call plug#end()
 " _vim_floaterm_
 " _vim_closetag_
 " _vim_indent_object_
+" _vim_livedown_
 " _lightline_vim_
 " _vim_fugitive_
 " _vim_better_whitespace_
@@ -173,6 +175,15 @@ nnoremap <leader>aa :ClaudeCodeAdd %<CR>
 vnoremap <leader>as :ClaudeCodeSend<CR>
 nnoremap <leader>aj :ClaudeCodeDiffAccept<CR>
 nnoremap <leader>af :ClaudeCodeDiffDeny<CR>
+
+" -----------------
+" ## _vim_livedown_
+" -----------------
+
+" ### Settings
+let g:livedown_port = 8001
+let g:livedown_browser = 'xdg-open'
+let g:livedown_open = 1
 
 " --------
 " ## _ale_

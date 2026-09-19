@@ -712,7 +712,7 @@ command! -bang -nargs=1 RgDepth call fzf#vim#grep2("rg --glob '!**/.git/**' --gl
 
 let s:config="/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
 command! ConfigEdit call fzf#run(fzf#wrap({
-    \ 'source': s:config . ' ls-tree --name-only -r --full-name master $HOME',
+    \ 'source': s:config . ' ls-tree --name-only -r --full-name main $HOME',
     \ 'sink': { key -> execute('e ' . $HOME . '/' . key) },
     \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
 \ }))

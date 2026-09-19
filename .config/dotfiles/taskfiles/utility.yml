@@ -18,7 +18,7 @@ tasks:
       - git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" config --local core.worktree "$HOME"
       - git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" remote add origin "{{.REPO}}" 2>/dev/null || git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" remote set-url origin "{{.REPO}}"
       - |
-        git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" fetch origin master
+        git --git-dir="$HOME/.dotfiles" --work-tree="$HOME" fetch origin main
 
         lsfile=$(mktemp)
         git --git-dir="$HOME/.dotfiles" ls-tree -r --name-only FETCH_HEAD > "$lsfile"

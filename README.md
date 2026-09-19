@@ -64,7 +64,7 @@ Use the `config` alias instead of `git` while working with your dotfiles:
 config status
 config add ~/.zshrc
 config commit -m "Modify zsh config"
-config push origin master
+config push origin main
 ```
 
 Two helper tools build on top of that alias:

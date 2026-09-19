@@ -59,6 +59,7 @@ tasks:
       - git config --global user.signingkey "$HOME/.ssh/id_ed25519.pub"
       - git config --global commit.gpgsign true
       - git config --global tag.gpgsign true
+      - git config --global init.defaultBranch main
 
   font:
     internal: true

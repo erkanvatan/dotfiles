@@ -13,7 +13,7 @@
 
 readonly CONFIG="/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
 
-readonly FILES=$($CONFIG ls-tree --name-only -r --full-name master $HOME | sort | fzf --multi)
+readonly FILES=$($CONFIG ls-tree --name-only -r --full-name main $HOME | sort | fzf --multi)
 ABS_FILES=""
 
 while IFS= read -r FILE; do

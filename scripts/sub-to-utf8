@@ -5,6 +5,9 @@
 # @date 2026-09-19
 # @brief Convert subtitle files (.srt etc.) to UTF-8 so Plex shows Turkish characters
 # @usage sub-to-utf8 [-f FROM_ENCODING] FILE...
+#
+# @depend coreutils
+# @depend iconv
 # -------------------------
 
 set -uo pipefail
@@ -12,7 +15,7 @@ set -uo pipefail
 # Turkish subtitles are almost always Windows-1254 (ISO-8859-9 is the close cousin).
 from_enc='CP1254'
 
-usage() {
+function usage() {
     echo "Usage: ${0##*/} [-f FROM_ENCODING] FILE..." >&2
     echo "  -f  source encoding (default: $from_enc). See: iconv -l" >&2
     exit 1
@@ -54,8 +57,14 @@ for file in "$@"; do
         status=1
         continue
     fi
-    cp "$file" "$file.orig" && iconv -f "$from_enc" -t UTF-8 "$file.orig" > "$file" \
-        && echo "converted: $file (backup: $file.orig)"
+
+    # Convert out of the backup, so the original bytes survive a failure here.
+    if cp "$file" "$file.orig" && iconv -f "$from_enc" -t UTF-8 "$file.orig" >"$file"; then
+        echo "converted: $file (backup: $file.orig)"
+    else
+        echo "FAIL (conversion error): $file (original kept at $file.orig)" >&2
+        status=1
+    fi
 done
 
 exit "$status"

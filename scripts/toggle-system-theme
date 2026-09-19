@@ -3,37 +3,92 @@
 # @file toggle-system-theme
 # @author erkanvatan
 # @date 2025-02-04
-# @brief Switch between system wide dark and light mode with each execution
+# @brief Switch between system wide dark and light mode with each execution.
+#        The current mode is read back from the desktop's own settings rather
+#        than a state file, so the toggle can never drift out of sync with
+#        what is actually applied. Desktops that are not installed are
+#        skipped silently.
+#
+# @depend dconf-cli
+# @depend libglib2.0-bin
 # -------------------------
+
+set -uo pipefail
 
 readonly DARK_THEME='Qogir-Dark'
 readonly DARK_THEME_ICONS='Papirus-Dark'
 readonly LIGHT_THEME='Qogir'
 readonly LIGHT_THEME_ICONS='Papirus-Light'
 
-COLOR_VALUE="$(cat /tmp/system_theme_color 2>/dev/null)"
+# Schemas are tried in order; the first one that exists reports the current
+# theme. Cinnamon is the desktop in use, the rest are here so the same script
+# keeps working on a GNOME or MATE session.
+readonly GTK_THEME_SCHEMAS=(
+    org.cinnamon.desktop.interface
+    org.gnome.desktop.interface
+    org.mate.interface
+)
 
-if [[ "$COLOR_VALUE" = "light" ]]; then
-    readonly THEME="$DARK_THEME"
-    readonly THEME_ICONS="$DARK_THEME_ICONS"
-    echo "dark" > /tmp/system_theme_color
-else
+readonly AVAILABLE_SCHEMAS=$'\n'"$(gsettings list-schemas 2>/dev/null)"$'\n'
+
+function has_schema() {
+    [[ "$AVAILABLE_SCHEMAS" == *$'\n'"$1"$'\n'* ]]
+}
+
+function current_gtk_theme() {
+    local schema value
+
+    for schema in "${GTK_THEME_SCHEMAS[@]}"; do
+        if value="$(gsettings get "$schema" gtk-theme 2>/dev/null)"; then
+            # gsettings quotes string values: 'Qogir-Dark' -> Qogir-Dark
+            printf '%s' "${value//\'/}"
+            return 0
+        fi
+    done
+}
+
+# Setting a key on a desktop that is not installed is not an error here, it
+# just means that desktop has nothing to restyle.
+function gset() {
+    local -r schema="$1" key="$2" value="$3"
+
+    has_schema "$schema" || return 0
+    gsettings set "$schema" "$key" "$value" 2>/dev/null
+}
+
+function xfset() {
+    local -r channel="$1" property="$2" value="$3"
+
+    command -v xfconf-query >/dev/null || return 0
+    xfconf-query -c "$channel" -p "$property" -s "$value" 2>/dev/null
+}
+
+command -v gsettings >/dev/null || {
+    echo "[ERROR] gsettings is not installed" >&2
+    exit 1
+}
+
+if [[ "$(current_gtk_theme)" == "$DARK_THEME" ]]; then
     readonly THEME="$LIGHT_THEME"
     readonly THEME_ICONS="$LIGHT_THEME_ICONS"
-    echo "light" > /tmp/system_theme_color
+else
+    readonly THEME="$DARK_THEME"
+    readonly THEME_ICONS="$DARK_THEME_ICONS"
 fi
 
-gsettings set org.cinnamon.theme name "$THEME"
-gsettings set org.cinnamon.desktop.interface gtk-theme "$THEME"
-gsettings set org.cinnamon.desktop.wm.preferences theme "$THEME"
-gsettings set org.cinnamon.desktop.interface icon-theme "$THEME_ICONS"
+gset org.cinnamon.theme name "$THEME"
+gset org.cinnamon.desktop.interface gtk-theme "$THEME"
+gset org.cinnamon.desktop.wm.preferences theme "$THEME"
+gset org.cinnamon.desktop.interface icon-theme "$THEME_ICONS"
 
-gsettings set org.mate.interface gtk-theme "$THEME"
-gsettings set org.mate.interface icon-theme "$THEME_ICONS"
+gset org.mate.interface gtk-theme "$THEME"
+gset org.mate.interface icon-theme "$THEME_ICONS"
 
-gsettings set org.gnome.desktop.interface gtk-theme "$THEME"
-gsettings set org.gnome.desktop.interface icon-theme "$THEME_ICONS"
+gset org.gnome.desktop.interface gtk-theme "$THEME"
+gset org.gnome.desktop.interface icon-theme "$THEME_ICONS"
 
-xfconf-query -c xsettings -p /Net/ThemeName -s "$THEME"
-xfconf-query -c xfwm4 -p /general/theme -s "$THEME"
-xfconf-query -c xsettings -p /Net/IconThemeName -s "$THEME_ICONS"
+xfset xsettings /Net/ThemeName "$THEME"
+xfset xfwm4 /general/theme "$THEME"
+xfset xsettings /Net/IconThemeName "$THEME_ICONS"
+
+echo "switched to $THEME / $THEME_ICONS"

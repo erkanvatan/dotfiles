@@ -16,18 +16,18 @@
 # @depend jq
 # ----------------
 
-set -E
+set -Euo pipefail
 
 function handle_err() {
     echo "An error has occured at line $1, exiting the script..." >&2
-    exit $2
+    exit "$2"
 }
 
 trap 'handle_err $LINENO $?' ERR
 
-readonly NAME="$1"
-readonly REPO="$2"
-readonly GLOB="$3"
+readonly NAME="${1:-}"
+readonly REPO="${2:-}"
+readonly GLOB="${3:-}"
 readonly BINLINK="${4:-}"
 
 if [[ -z "$NAME" || -z "$REPO" || -z "$GLOB" ]]; then
@@ -39,6 +39,11 @@ readonly DEST_DIR="${APPIMAGE_DEST:-$HOME/Applications}"
 readonly STATE_DIR="$HOME/.local/state/dotfiles/appimages"
 readonly STATE_FILE="$STATE_DIR/$NAME.version"
 readonly DEST_FILE="$DEST_DIR/$NAME.AppImage"
+readonly TMP_FILE="$DEST_FILE.tmp"
+
+# A failed or interrupted download must not leave a half-written .tmp behind,
+# or the next run would find stale bytes sitting next to the real AppImage.
+trap 'rm -f "$TMP_FILE"' EXIT
 
 mkdir -p "$DEST_DIR" "$STATE_DIR"
 
@@ -79,9 +84,11 @@ if [[ -f "$STATE_FILE" && "$(<"$STATE_FILE")" == "$TAG" && -f "$DEST_FILE" ]]; t
 else
     readonly ASSET_URL="$(jq -r --arg n "$ASSET_NAME" '.assets[] | select(.name == $n) | .browser_download_url' <<<"$RESPONSE")"
     echo "> $NAME -> $TAG ($ASSET_NAME)"
-    curl -fsSL "$ASSET_URL" -o "$DEST_FILE.tmp"
-    chmod +x "$DEST_FILE.tmp"
-    mv -f "$DEST_FILE.tmp" "$DEST_FILE"
+    curl -fsSL "$ASSET_URL" -o "$TMP_FILE"
+    chmod +x "$TMP_FILE"
+    # deliberate overwrite: the .tmp is swapped in as the new AppImage
+    mv -f "$TMP_FILE" "$DEST_FILE"
+    # only record the tag once the binary is actually in place
     echo "$TAG" >"$STATE_FILE"
 fi
 

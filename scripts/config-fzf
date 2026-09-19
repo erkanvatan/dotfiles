@@ -5,19 +5,26 @@
 # @date 2025-02-04
 # @brief List dotfiles tracked in .dotfiles bare repository using FZF
 #        in multi-select mode. You can select multiple files with <TAB>.
-#        Selected files are printed to stdout.
+#        Selected files are printed to stdout, one absolute path per line.
+#        Prints nothing and exits non-zero when the selection is cancelled.
 #
 # @depend fzf
 # @depend git
 # ----------------
 
-readonly CONFIG="/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
+set -uo pipefail
 
-readonly FILES=$($CONFIG ls-tree --name-only -r --full-name main $HOME | sort | fzf --multi)
-ABS_FILES=""
+readonly GIT_BIN="/usr/bin/git"
+readonly GIT_DIR="$HOME/.dotfiles"
 
-while IFS= read -r FILE; do
-    ABS_FILES="$ABS_FILES$HOME/$FILE "
-done <<< "$FILES"
+if ! selection="$("$GIT_BIN" --git-dir="$GIT_DIR" --work-tree="$HOME" \
+    ls-tree --name-only -r --full-name HEAD | sort | fzf --multi)"; then
+    exit 1
+fi
 
-echo "$ABS_FILES"
+# fzf can succeed with an empty selection, so guard before printing
+[[ -n "$selection" ]] || exit 1
+
+while IFS= read -r file; do
+    printf '%s\n' "$HOME/$file"
+done <<<"$selection"

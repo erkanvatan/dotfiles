@@ -12,15 +12,16 @@
 #        until interrupted (Ctrl+C). Skips .git and all submodule paths
 #        declared in .gitmodules.
 #
-# @depend rsync
 # @depend entr
+# @depend git
+# @depend rsync
 # ----------------
 
-set -E
+set -Euo pipefail
 
 function handle_err() {
     echo "An error has occured at line $1, exiting the script..." >&2
-    exit $2
+    exit "$2"
 }
 
 trap 'handle_err $LINENO $?' ERR
@@ -28,16 +29,23 @@ trap 'handle_err $LINENO $?' ERR
 readonly SRC="$(pwd)"
 readonly DEST="$HOME"
 
-readonly SKIP_PATHS=(
-    ".git"
-    ".zprezto"
-    ".zprezto-contrib/zsh-z"
-    ".zprezto-contrib/zsh-you-should-use"
-    ".zprezto-contrib/zsh-bat"
-    ".zprezto-contrib/fzf-tab"
-    "programs/swift-map"
-    ".tmux/plugins/tpm"
-)
+# entr exit code meaning "a new file appeared under -d": rebuild the watch
+# list and keep going rather than treating it as a failure.
+readonly ENTR_NEW_FILE=2
+
+# Paths never mirrored into $HOME: the repo's own metadata plus every
+# submodule, which is managed by git rather than copied.
+SKIP_PATHS=(".git")
+
+function load_skip_paths() {
+    local path
+
+    [[ -f "$SRC/.gitmodules" ]] || return 0
+
+    while IFS= read -r path; do
+        SKIP_PATHS+=("$path")
+    done < <(git config -f "$SRC/.gitmodules" --get-regexp '^submodule\..*\.path$' | cut -d' ' -f2-)
+}
 
 function run_rsync() {
     local -a extra_flags=("$@")
@@ -51,19 +59,11 @@ function run_rsync() {
     rsync -av "${extra_flags[@]}" "${rsync_excludes[@]}" "$SRC/" "$DEST/"
 }
 
-function preview_sync() {
-    run_rsync --dry-run
-}
-
-function sync_once() {
-    run_rsync
-}
-
 function confirm_sync() {
     local reply
 
     echo "The following files would be synced from $SRC to $DEST:"
-    preview_sync
+    run_rsync --dry-run
     echo
 
     read -r -p "Proceed with sync? [y/N] " reply
@@ -82,10 +82,28 @@ function watch_list() {
     find "$SRC" \( "${find_prune[@]}" \) -prune -o -type f -print
 }
 
+function watch_loop() {
+    local status
+
+    echo "Watching for changes... (Ctrl+C to stop)"
+    while true; do
+        # "|| status=$?" is required: a bare pipeline would fire the ERR trap
+        # before the exit code could be inspected.
+        status=0
+        watch_list | entr -d "$0" --once || status=$?
+
+        # 0 means the user quit entr (Ctrl+C or q)
+        [[ $status -eq 0 ]] && break
+        [[ $status -eq $ENTR_NEW_FILE ]] || handle_err "$LINENO" "$status"
+    done
+}
+
 function main() {
+    load_skip_paths
+
     # Re-invoked by entr (via "$0 --once") to run a single sync pass
-    if [[ "$1" == "--once" ]]; then
-        sync_once
+    if [[ "${1:-}" == "--once" ]]; then
+        run_rsync
         exit 0
     fi
 
@@ -95,22 +113,9 @@ function main() {
     fi
 
     echo "Syncing $SRC -> $DEST"
-    sync_once
+    run_rsync
 
-    echo "Watching for changes... (Ctrl+C to stop)"
-    while true; do
-        # entr exit codes: 0 = user quit (Ctrl+C or q), 2 = a new file was
-        # added under -d (rebuild the list and keep watching), anything
-        # else is a real failure.
-        if watch_list | entr -d "$0" --once; then
-            break
-        fi
-
-        status=$?
-        if [[ $status -ne 2 ]]; then
-            handle_err "$LINENO" "$status"
-        fi
-    done
+    watch_loop
 }
 
 main "$@"

@@ -4,9 +4,22 @@
 # @author erkanvatan
 # @date 2026-08-30
 # @brief Print a message that stands out from the wall of apt/npm/curl output
-#        Taskfile.yml tasks produce. One line per argument.
+#        Taskfile.yml tasks produce. One line per argument. Colors are
+#        dropped when stdout is not a terminal, so piped/CI logs stay clean.
 # -----------------------
 
+set -uo pipefail
+
+if [[ -t 1 ]]; then
+    readonly ARROW=$'\033[1;36m==>\033[0m'
+    readonly BOLD=$'\033[1m'
+    readonly RESET=$'\033[0m'
+else
+    readonly ARROW='==>'
+    readonly BOLD=''
+    readonly RESET=''
+fi
+
 for msg in "$@"; do
-  printf '\033[1;36m==>\033[0m \033[1m%s\033[0m\n' "$msg"
+    printf '%s %s%s%s\n' "$ARROW" "$BOLD" "$msg" "$RESET"
 done

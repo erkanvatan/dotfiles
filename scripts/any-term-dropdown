@@ -6,43 +6,67 @@
 # @brief Turn any terminal into a drop-down (Quake-style) terminal
 #
 # @depend coreutils
+# @depend libnotify-bin
 # @depend xdotool
 # @depend libxcb-util-dev
 # @depend libxcb-cursor-dev
 # @depend wmutils https://github.com/wmutils/core
 # -----------------------
 
+set -uo pipefail
+
 readonly TERM_BIN="alacritty"
 # must set TERM_PATH manually (instead of using `command -v`) for keyboard shortcut to work
 readonly TERM_PATH="$HOME/.cargo/bin/alacritty"
 
-readonly SCRIPT_NAME="$(basename $0)"
+readonly SCRIPT_NAME="${0##*/}"
 
-handle_error()
-{
-    local -r MSG="$1"
-    echo "$MSG"
-    notify-send -u normal "$SCRIPT_NAME" "$MSG"
+# how long to wait for a freshly launched terminal to map its window
+readonly LAUNCH_TIMEOUT_SECS=5
+readonly POLL_INTERVAL_SECS=0.1
+
+function die() {
+    local -r msg="$1"
+    echo "[ERROR] $msg" >&2
+    notify-send -u normal "$SCRIPT_NAME" "$msg"
     exit 1
 }
 
-command -v "$TERM_PATH" >/dev/null || handle_error "[ERROR] $TERM_BIN is not installed"
+# The window we want is the one xdotool reports under both the terminal's
+# name and its class; either search on its own also matches unrelated windows
+# that merely have the terminal's name in their title.
+function find_window_id() {
+    comm -12 \
+        <(xdotool search --name "$TERM_BIN" 2>/dev/null | sort) \
+        <(xdotool search --class "$TERM_BIN" 2>/dev/null | sort) \
+        | head -n 1
+}
 
-# get screen resolution width and height
-readonly ROOT=$(lsw -r)
-readonly WIDTH=$(wattr w "$ROOT")
-readonly HEIGHT=$(wattr h "$ROOT")
+[[ -x "$TERM_PATH" ]] || die "$TERM_BIN is not installed at $TERM_PATH"
 
-pgrep -x "$TERM_BIN" >/dev/null
-if [ "$?" -ne 0 ]; then
+window_id="$(find_window_id)"
+
+# No window yet: launch one and wait for it to appear, otherwise the lookup
+# below races the terminal's startup and finds nothing.
+if [[ -z "$window_id" ]]; then
     "$TERM_PATH" &
+
+    deadline=$((SECONDS + LAUNCH_TIMEOUT_SECS))
+    while [[ -z "$window_id" && $SECONDS -lt $deadline ]]; do
+        sleep "$POLL_INTERVAL_SECS"
+        window_id="$(find_window_id)"
+    done
+
+    [[ -n "$window_id" ]] || die "$TERM_BIN did not open a window within ${LAUNCH_TIMEOUT_SECS}s"
 fi
 
-# get terminal emulator and matching name pid ex: 44040485
-readonly PID=$(comm -12 <(xdotool search --name "$TERM_BIN" | sort) <(xdotool search --class "$TERM_BIN" | sort))
+# wmutils speaks hex window ids, xdotool prints decimal ex: 44040485 -> 0x2a00125
+readonly WID="$(printf '0x%x' "$window_id")"
 
-# get windows id from pid ex: 0x2a00125%
-readonly WID=$(printf 0x%x "$PID")
+# get screen resolution width and height
+readonly ROOT="$(lsw -r)"
+readonly WIDTH="$(wattr w "$ROOT")"
+readonly HEIGHT="$(wattr h "$ROOT")"
 
 # maximize terminal emulator
 wrs "$WIDTH" "$HEIGHT" "$WID"

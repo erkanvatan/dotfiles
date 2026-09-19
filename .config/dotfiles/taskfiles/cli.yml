@@ -101,13 +101,6 @@ tasks:
 
   fzf:
     internal: true
-    status:
-      - test -f "$HOME/.fzf.zsh"
-    cmds:
-      - "$HOME/.fzf/install --all --no-update-rc"
-
-  fzf-update:
-    internal: true
     cmds:
       - "$HOME/.fzf/install --all --no-update-rc"
 
@@ -181,7 +174,7 @@ tasks:
     desc: Update fzf, and all npm/pipx/cargo apps
     cmds:
       - task: tpm
-      - task: fzf-update
+      - task: fzf
       - task: npm-globals
       - task: pipx-apps
       - task: rustup-update

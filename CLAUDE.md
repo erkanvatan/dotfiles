@@ -41,7 +41,7 @@ Submodules are used for third-party frameworks rather than vendoring them: `.zpr
 
 The closest thing to "build/run" commands is `Taskfile.yml` at the repo root, run via the
 [go-task](https://taskfile.dev) `task` binary (zsh completions are wired up in `.zshrc`). The real steps
-live under `.config/dotfiles/taskfiles/*.yml` (`apt`, `appimage`, `lang`, `cli`, `utility`), each
+live under `.config/dotfiles/taskfiles/*.yml` (`apt`, `appimage`, `lang`, `cli`, `theme`, `utility`), each
 included into the root Taskfile as a namespace (e.g. `task apt:install`, `task lang:update`). Run
 `task --list` for the full list.
 
@@ -53,12 +53,12 @@ included into the root Taskfile as a namespace (e.g. `task apt:install`, `task l
   missing any of them fails fast before any install step runs.
 - Both `setup` and `update` have a **precondition** that `$HOME/.dotfiles` is a real bare repo — i.e.
   `task utility:bare-install` must have happened first — and say so in the failure message.
-- **`task setup`** — fresh machine: `preflight` (distro check + sudo prime), apt packages/PPAs, language
-  runtimes, per-user CLI tools, AppImageLauncher + AppImages, then `doctor`. That closing `doctor` runs
-  with `ignore_error: true`: on a brand-new machine the shell and the AppImageLauncher daemon can't show
-  clean until you log out and back in, so `setup` prints that note and leaves the real check for after.
-  It also prints the new SSH public key to register with GitHub as *both* an authentication and a
-  signing key.
+- **`task setup`** — fresh machine: `preflight` (distro check + sudo prime), apt packages/PPAs,
+  language runtimes, per-user CLI tools, the Qogir GTK theme, AppImageLauncher + AppImages, then
+  `doctor`. That closing `doctor` runs with `ignore_error: true`: on a brand-new machine the shell and
+  the AppImageLauncher daemon can't show clean until you log out and back in, so `setup` prints that
+  note and leaves the real check for after. It also prints the new SSH public key to register with
+  GitHub as *both* an authentication and a signing key.
 - **`task update`** — the update-only subset (no PPA re-adds, no SSH keygen), plus `submodules`.
   `apt:install`'s bulk install falls back to installing packages one at a time if the bulk call fails,
   so one bad/renamed package name doesn't block the rest. `lang:update` advances Python to the newest
@@ -73,6 +73,16 @@ included into the root Taskfile as a namespace (e.g. `task apt:install`, `task l
   per line, `#` comments allowed. Add or remove software there rather than editing task logic.
 - Distro support is detected from `/etc/os-release` by the `preflight` task (Ubuntu and Ubuntu-based,
   including Linux Mint) rather than passed as an argument.
+
+### GTK theme (`.config/dotfiles/taskfiles/theme.yml`)
+
+`task theme:install` clones [Qogir-theme](https://github.com/vinceliuice/Qogir-theme) shallowly into a
+temp dir and runs its `install.sh` into `~/.themes` with `--color standard dark --tweaks image square`,
+producing exactly the `Qogir`/`Qogir-Dark` names `scripts/toggle-system-theme` switches between. It needs
+`sassc` (and `gtk2-engines-murrine` for GTK2 apps), both in `APT_PKGS`. `theme:update` rebuilds from the
+newest upstream commit; `theme:list` shows what's in `~/.themes`. Icons come from Papirus instead
+of Qogir-icon-theme: `papirus-icon-theme` in `APT_PKGS`, from the `ppa:papirus/papirus` PPA in
+`PPAS`, so apt keeps it current.
 
 ### AppImages (`.config/dotfiles/taskfiles/appimage.yml`)
 
@@ -98,7 +108,8 @@ rather than appending ad hoc — these files are hand-curated and the banners ar
 Neovim plugins are declared separately in `.config/nvim/plugins.vim` (vim-plug), loaded from `init.vim`;
 language snippets live under `.config/nvim/UltiSnips/*.snippets` (one file per filetype). Theme switching
 is shared across programs: `init.vim`'s `_ToggleBackground_`/`_LightlinePalette_` functions flip Catppuccin
-flavour inside Neovim, while `scripts/toggle-system-theme` flips the Qogir GTK/icon theme system-wide.
+flavour inside Neovim, while `scripts/toggle-system-theme` flips the Qogir GTK theme and the Papirus
+icon theme system-wide.
 
 ## Custom scripts (`scripts/`)
 
@@ -117,6 +128,7 @@ skills live in `.claude/skills/`: `git-commit` (conventional-commit staging and 
 
 ## Development Notes
 
+- Use Linux line-endings for all files.
 - No need for a .gitignore file as the intended purpose of this repo is to be used as bare repo.
 - Never run task commands without asking first as a bug can break a running system.
 

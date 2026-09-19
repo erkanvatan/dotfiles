@@ -7,9 +7,9 @@
 # -------------------------
 
 readonly DARK_THEME='Qogir-Dark'
-readonly DARK_THEME_ICONS='Qogir-Dark'
+readonly DARK_THEME_ICONS='Papirus-Dark'
 readonly LIGHT_THEME='Qogir'
-readonly LIGHT_THEME_ICONS='Qogir'
+readonly LIGHT_THEME_ICONS='Papirus-Light'
 
 COLOR_VALUE="$(cat /tmp/system_theme_color 2>/dev/null)"
 

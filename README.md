@@ -19,14 +19,15 @@ live at their real paths (`.zshrc` is `~/.zshrc`). No symlinks, no stow.
 | Program | Setup |
 | --- | --- |
 | **Zsh** | [Prezto](https://github.com/sorin-ionescu/prezto) + [Powerlevel10k](https://github.com/romkatv/powerlevel10k), plus `zsh-z`, `zsh-you-should-use`, `zsh-bat`, `fzf-tab` |
-| **Alacritty** | Catppuccin (Mocha, Latte) theme |
-| **Tmux** | [TPM](https://github.com/tmux-plugins/tpm) with Catppuccin (Mocha), `tmux-sensible`, `tmux-resurrect`, `tmux-yank` |
-| **Neovim** | [vim-plug](https://github.com/junegunn/vim-plug), coc.nvim, ALE, fzf, and more |
+| **Alacritty** | Catppuccin (Mocha, Latte) |
+| **Tmux** | [TPM](https://github.com/tmux-plugins/tpm) with Catppuccin (Mocha), `tmux-sensible`, `tmux-resurrect` and `tmux-yank` |
+| **Neovim** | [vim-plug](https://github.com/junegunn/vim-plug) with Catppuccin (Mocha, Latte), coc.nvim, ALE, fzf, and more goodies |
 
 Themes:
 - [Catppuccin](https://catppuccin.com/) color theme for Alacritty, Tmux and Neovim
-- [Qogir](https://github.com/vinceliuice/Qogir-theme) GTK and icon theme, dark/light mode switch by `toggle-system-theme` 
-   script (install it yourself, the Taskfile doesn't)
+- [Qogir](https://github.com/vinceliuice/Qogir-theme) GTK theme and
+   [Papirus](https://github.com/PapirusDevelopmentTeam/papirus-icon-theme) icons, dark/light mode
+   switch by `toggle-system-theme` script
 
 Third-party plugin frameworks are Git submodules, not copies.
 
@@ -126,4 +127,4 @@ Standalone bash tools in `scripts/`. Run them directly or bind them to a shortcu
 | `setup-ip-forwarding` | Set up IP forwarding |
 | `sub-to-utf8` | Convert subtitle files to UTF-8 |
 | `task-note` | Print a highlighted note from tasks |
-| `toggle-system-theme` | Flip between Qogir dark and light |
+| `toggle-system-theme` | Flip Qogir/Papirus between dark and light |

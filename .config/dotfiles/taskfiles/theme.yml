@@ -1,0 +1,47 @@
+version: "3"
+
+# GTK theme from https://github.com/vinceliuice/Qogir-theme, installed per-user
+# into ~/.themes. Produces the `Qogir` (light) and `Qogir-Dark` theme names that
+# scripts/toggle-system-theme switches between.
+vars:
+  QOGIR_REPO: https://github.com/vinceliuice/Qogir-theme.git
+  QOGIR_DEST: '$HOME/.themes'
+
+  # install.sh --tweaks:
+  #   image  - background image in the Nautilus/Nemo sidebar
+  #   square - Windows-10 style square titlebar buttons
+  QOGIR_TWEAKS: image square
+
+tasks:
+  qogir:
+    internal: true
+    cmds:
+      - |
+        command -v sassc >/dev/null || { echo "E: sassc not found - run 'task apt:install' first" >&2; exit 1; }
+        tmp=$(mktemp -d)
+        trap 'rm -rf "$tmp"' EXIT
+        git clone --depth 1 "{{.QOGIR_REPO}}" "$tmp/Qogir-theme"
+        mkdir -p "{{.QOGIR_DEST}}"
+        "$tmp/Qogir-theme/install.sh" \
+          --dest "{{.QOGIR_DEST}}" \
+          --tweaks {{.QOGIR_TWEAKS}}
+
+  install:
+    desc: Install the Qogir GTK theme into ~/.themes (skipped if already there)
+    status:
+      - test -d "$HOME/.themes/Qogir" && test -d "$HOME/.themes/Qogir-Dark"
+    cmds:
+      - task: qogir
+
+  update:
+    desc: Rebuild the Qogir GTK theme from the latest upstream commit
+    cmds:
+      - task: qogir
+
+  list:
+    desc: Show which Qogir theme variants are installed in ~/.themes
+    silent: true
+    cmds:
+      - |
+        found=$(ls -d "$HOME"/.themes/Qogir* 2>/dev/null | xargs -r -n1 basename)
+        echo "${found:-not installed}"

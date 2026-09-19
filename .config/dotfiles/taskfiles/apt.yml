@@ -4,7 +4,7 @@ vars:
   # PPAs needed by packages in APT_PKGS. One per line, `#` comments allowed.
   # Installed by `task apt:ppas`.
   PPAS: |
-    #
+    ppa:papirus/papirus
 
   # apt packages for a fresh machine. One per line, `#` comments allowed.
   # Installed by `task apt:install`.
@@ -48,6 +48,7 @@ vars:
     gparted
     gsmartcontrol
     keepassxc
+    papirus-icon-theme
     peek
     qbittorrent
 
@@ -85,6 +86,10 @@ vars:
     libxcb-cursor-dev
     libxcb-util-dev
     xdotool
+
+    ## Qogir-theme
+    gtk2-engines-murrine
+    sassc
 
 tasks:
   ppas:

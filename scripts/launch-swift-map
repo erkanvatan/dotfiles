@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ----------------------
 # @file launch-swift-map
-# @author arensonz
+# @author erkanvatan
 # @date 2025-02-04
 # @brief Launch swift-map and remap keys in keyboard
 #

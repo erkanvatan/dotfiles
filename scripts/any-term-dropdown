@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # -----------------------
 # @file any-term-dropdown
-# @author arensonz
+# @author erkanvatan
 # @date 2025-02-04
 # @brief Turn any terminal into a drop-down (Quake-style) terminal
 #

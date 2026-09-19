@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # -------------------------
 # @file sub-to-utf8
-# @author arensonz
+# @author erkanvatan
 # @date 2026-09-19
 # @brief Convert subtitle files (.srt etc.) to UTF-8 so Plex shows Turkish characters
 # @usage sub-to-utf8 [-f FROM_ENCODING] FILE...

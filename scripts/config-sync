@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ----------------
 # @file config-sync
-# @author arensonz
+# @author erkanvatan
 # @date 2026-08-11
 # @brief Continuously mirror a dotfiles checkout into $HOME so edits made
 #        there can be tested live against the real bare-repo work-tree. Run

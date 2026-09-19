@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ----------------
 # @file appimage-get
-# @author arensonz
+# @author erkanvatan
 # @date 2026-08-25
 # @brief Fetch the newest release asset matching a glob from a GitHub repo's
 #        AppImage releases, skip the download when the tag hasn't changed,

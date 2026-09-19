@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # -------------------------
 # @file toggle-system-theme
-# @author arensonz
+# @author erkanvatan
 # @date 2025-02-04
 # @brief Switch between system wide dark and light mode with each execution
 # -------------------------

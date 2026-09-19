@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ----------------
 # @file bootstrap.sh
-# @author arensonz
+# @author erkanvatan
 # @date 2026-08-25
 # @brief One-time entry point for a machine that doesn't have `task` (go-task)
 #        yet. Installs it into ~/.local/bin, which is already first on $PATH

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # -----------------------
 # @file print-term-colors
-# @author arensonz
+# @author erkanvatan
 # @date 2025-02-04
 # @brief Print color palette of terminal
 # -----------------------

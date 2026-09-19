@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # -----------------------
 # @file task-note
-# @author arensonz
+# @author erkanvatan
 # @date 2026-08-30
 # @brief Print a message that stands out from the wall of apt/npm/curl output
 #        Taskfile.yml tasks produce. One line per argument.

@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+# -------------------------
+# @file sub-to-utf8
+# @author arensonz
+# @date 2026-09-19
+# @brief Convert subtitle files (.srt etc.) to UTF-8 so Plex shows Turkish characters
+# @usage sub-to-utf8 [-f FROM_ENCODING] FILE...
+# -------------------------
+
+set -uo pipefail
+
+# Turkish subtitles are almost always Windows-1254 (ISO-8859-9 is the close cousin).
+from_enc='CP1254'
+
+usage() {
+    echo "Usage: ${0##*/} [-f FROM_ENCODING] FILE..." >&2
+    echo "  -f  source encoding (default: $from_enc). See: iconv -l" >&2
+    exit 1
+}
+
+while getopts ':f:h' opt; do
+    case "$opt" in
+        f) from_enc="$OPTARG" ;;
+        *) usage ;;
+    esac
+done
+shift $((OPTIND - 1))
+[[ $# -eq 0 ]] && usage
+
+status=0
+for file in "$@"; do
+    if [[ ! -f "$file" ]]; then
+        echo "skip (not a file): $file" >&2
+        status=1
+        continue
+    fi
+
+    # Already valid UTF-8 (this includes plain ASCII): nothing to do.
+    if iconv -f UTF-8 -t UTF-8 "$file" >/dev/null 2>&1; then
+        echo "skip (already UTF-8): $file"
+        continue
+    fi
+
+    # Dry run first, so a wrong encoding never touches the file.
+    if ! iconv -f "$from_enc" -t UTF-8 "$file" >/dev/null 2>&1; then
+        echo "FAIL (not $from_enc?): $file" >&2
+        status=1
+        continue
+    fi
+
+    # Keep the original next to it, refuse if a backup already exists.
+    if [[ -e "$file.orig" ]]; then
+        echo "FAIL (backup exists): $file.orig" >&2
+        status=1
+        continue
+    fi
+    cp "$file" "$file.orig" && iconv -f "$from_enc" -t UTF-8 "$file.orig" > "$file" \
+        && echo "converted: $file (backup: $file.orig)"
+done
+
+exit "$status"

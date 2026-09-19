@@ -471,6 +471,9 @@ endif
 " coc-snippets
 imap <C-k> <Plug>(coc-snippets-expand-jump)
 
+" Convert the visual selection into a snippet.
+xmap <leader>cs <Plug>(coc-convert-snippet)
+
 " -----------------------
 " ## _nvim_colorizer_lua_
 " -----------------------

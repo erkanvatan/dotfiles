@@ -1,64 +1,79 @@
 # Dotfiles
 
-All of my Linux config files. Easy installation and maintenance with Git bare repository.
+My Linux setup in one Git repo: shell, terminal, editor, themes, and a [go-task](https://taskfile.dev) Taskfile that
+builds a fresh machine from zero.
 
-- [About](#about)
-- [Themes](#themes)
-- [Installation](#installation)
-- [Usage](#usage)
+The repo is a Git [bare repository](https://www.atlassian.com/git/tutorials/dotfiles) whose work-tree is `$HOME`. Files
+live at their real paths (`.zshrc` is `~/.zshrc`). No symlinks, no stow.
 
-## About
+![Desktop Showcase](.config/dotfiles/images/screenshot.png)
 
-I use Linux distributions daily for both personal and work related things. Over the years I have customized
-Linux CLI tools to my liking. This repository has my config files for the following programs:
+- [What's inside](#whats-inside)
+- [Install](#install)
+- [Daily use](#daily-use)
+- [Tasks](#tasks)
+- [Scripts](#scripts)
 
-- **Alacritty**
-- **Zsh** with Prezto configuration framework and Powerlevel10k prompt
-- **Tmux** with TPM plugin manager
-- **Neovim** / **Vim** with vim-plug plugin manager
+## What's inside
 
-## Themes
+| Program | Setup |
+| --- | --- |
+| **Zsh** | [Prezto](https://github.com/sorin-ionescu/prezto) + [Powerlevel10k](https://github.com/romkatv/powerlevel10k), plus `zsh-z`, `zsh-you-should-use`, `zsh-bat`, `fzf-tab` |
+| **Alacritty** | Catppuccin (Mocha, Latte) theme |
+| **Tmux** | [TPM](https://github.com/tmux-plugins/tpm) with Catppuccin (Mocha), `tmux-sensible`, `tmux-resurrect`, `tmux-yank` |
+| **Neovim** | [vim-plug](https://github.com/junegunn/vim-plug), coc.nvim, ALE, fzf, and more |
 
-- [Catppuccin](https://catppuccin.com/): Alacritty, Tmux, Neovim
-- [Qogir](https://github.com/vinceliuice/Qogir-theme.git): GTK desktop environment
-- [Qogir Icon](https://github.com/vinceliuice/Qogir-icon-theme.git): Desktop environment icons
+Themes:
+- [Catppuccin](https://catppuccin.com/) color theme for Alacritty, Tmux and Neovim
+- [Qogir](https://github.com/vinceliuice/Qogir-theme) GTK and icon theme, dark/light mode switch by `toggle-system-theme` 
+   script (install it yourself, the Taskfile doesn't)
 
-## Installation
+Third-party plugin frameworks are Git submodules, not copies.
 
-This repo is a Git ["bare repository"](https://www.atlassian.com/git/tutorials/dotfiles): the Git data
-(`--git-dir`) lives separately from the checked-out files (`--work-tree`), and `--work-tree` is set to
-`$HOME`. This lets the dotfiles live directly at their real paths (e.g. `~/.zshrc`) without a symlink
-farm, and lets you manage them with the `config` alias (see [Usage](#usage)) from anywhere.
+## Install
 
-1. Fork the repo, then copy your fork's clone URL (HTTPS or SSH).
+> [!NOTE]
+> Ubuntu and Ubuntu-based distros only.
 
-2. Clone your fork into a throwaway folder and install `task` (go-task) from it.
+1. Fork the repo. Copy your fork's clone URL.
+
+2. Clone it to a throwaway folder and install `task`.
 
    ```sh
    git clone <your-fork-clone-url> /tmp/dotfiles-setup
    cd /tmp/dotfiles-setup
    bash .config/dotfiles/bootstrap.sh
+   export PATH="$HOME/.local/bin:$PATH"   # if `task` isn't found yet
    ```
 
-3. Turn `$HOME` into the bare-repo checkout and pull everything down.
+3. Turn `$HOME` into the checkout.
 
    ```sh
    task utility:bare-install
    ```
 
-4. Provision the machine.
+   If files in `$HOME` would be overwritten, it asks first. Say yes and they move to `~/.dotfiles-backup/<timestamp>/`.
+
+4. Set up the machine.
 
    ```sh
    cd "$HOME"
+   rm -rf /tmp/dotfiles-setup
    task setup GIT_NAME="Your Name" GIT_EMAIL=you@example.com SSH_KEY_PASSPHRASE=...
    ```
 
-   Later, `task update` brings the machine up to date (apt packages, language runtimes, AppImages,
-   etc.). Run `task --list` to see every available task.
+   Put a space before `task setup` so the passphrase stays out of your shell history.
 
-## Usage
+`setup` installs apt packages, language runtimes (nvm/node, pyenv/python, pipx, go), an SSH key, Git identity and
+signing, shell plugins, fonts, fzf, npm/pipx/cargo apps, and AppImages. It prints your new public key at the end. Add it
+to GitHub as both an authentication key and a signing key.
 
-Use the `config` alias instead of `git` while working with your dotfiles:
+> [!TIP]
+> Log out and back in after `setup`, then run `task doctor` to check everything.
+
+## Daily use
+
+Use the `config` alias in place of `git`:
 
 ```sh
 config status
@@ -67,13 +82,50 @@ config commit -m "Modify zsh config"
 config push origin main
 ```
 
-Two helper tools build on top of that alias:
+`config status` only lists tracked files. Untracked files are hidden, or it would list all of `$HOME`. So a new file
+won't show up until you `config add` it.
 
-- **`config-edit`** — opens Neovim with the right Git env vars set, so plugins like `vim-fugitive`
-  work against the dotfiles repo instead of your current directory's repo.
-- **`config-fzf`** — an `fzf` picker over files tracked in the dotfiles repo. Pipe its output into
-  other commands, e.g. open the files you pick in Neovim:
+- **`config-edit`** opens your editor with the right Git env vars, so plugins like `vim-fugitive` see the dotfiles repo.
+- **`config-fzf`** is an fzf picker over tracked files:
 
   ```sh
   nvim -O $(config-fzf)
   ```
+
+## Tasks
+
+Run `task --list` for the full list. The main ones:
+
+| Task | What it does |
+| --- | --- |
+| `task setup` | Fresh machine. Everything in `update`, plus one-time installs |
+| `task update` | Update submodules, apt, runtimes, CLI tools, and AppImages |
+| `task self-update` | Update `task` itself |
+| `task doctor` | Show tool versions. Exit non-zero if anything is missing |
+
+Namespaces: `apt`, `lang`, `cli`, `appimage`, `utility`. Package lists are plain `vars:` at the top of each taskfile in
+`.config/dotfiles/taskfiles/`. Add software there, not in the task logic.
+
+> [!WARNING]
+> Tasks change a running system. Read a task before you run it.
+
+AppImage-only apps are listed in `appimage.yml` and pulled from GitHub releases into `~/Applications`, where
+[AppImageLauncher](https://github.com/TheAssassin/AppImageLauncher) adds menu entries.
+
+## Scripts
+
+Standalone bash tools in `scripts/`. Run them directly or bind them to a shortcut.
+
+| Script | Purpose |
+| --- | --- |
+| `any-term-dropdown` | Drop-down terminal toggle |
+| `appimage-get` | Fetch the newest AppImage from a GitHub repo |
+| `config-fzf` | fzf picker over dotfiles-tracked files |
+| `config-sync` | Mirror a checkout into `$HOME` to test edits live |
+| `launch-alacritty-vm` | Launch Alacritty for VM use |
+| `launch-swift-map` | Launch swift-map |
+| `print-term-colors` | Print the terminal color palette |
+| `setup-ip-forwarding` | Set up IP forwarding |
+| `sub-to-utf8` | Convert subtitle files to UTF-8 |
+| `task-note` | Print a highlighted note from tasks |
+| `toggle-system-theme` | Flip between Qogir dark and light |

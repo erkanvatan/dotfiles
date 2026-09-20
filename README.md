@@ -20,7 +20,7 @@ live at their real paths (`.zshrc` is `~/.zshrc`). No symlinks, no stow.
 | --- | --- |
 | **Zsh** | [Prezto](https://github.com/sorin-ionescu/prezto) + [Powerlevel10k](https://github.com/romkatv/powerlevel10k), plus `zsh-z`, `zsh-you-should-use`, `zsh-bat`, `fzf-tab` |
 | **Alacritty** | Catppuccin (Mocha, Latte) |
-| **Tmux** | [TPM](https://github.com/tmux-plugins/tpm) with Catppuccin (Mocha), `tmux-sensible`, `tmux-resurrect` and `tmux-yank` |
+| **Tmux** | [TPM](https://github.com/tmux-plugins/tpm) with Catppuccin (Mocha, Latte), `tmux-sensible`, `tmux-resurrect` and `tmux-yank` |
 | **Neovim** | [vim-plug](https://github.com/junegunn/vim-plug) with Catppuccin (Mocha, Latte), coc.nvim, ALE, fzf, and more goodies |
 
 Themes:
@@ -30,6 +30,26 @@ Themes:
    switch by `toggle-system-theme` script
 
 Third-party plugin frameworks are Git submodules, not copies.
+
+### Neovim: LSP, linter, formatter
+
+Neovim loads both coc.nvim and ALE, and they do different jobs.
+
+**coc.nvim is the language server client.** For every filetype it owns completion, go-to-definition, hover, rename,
+signature help, snippets and inlay hints.
+
+**ALE draws every diagnostic.** coc hands its own diagnostics to ALE (`diagnostic.displayByAle`), so the sign column,
+the location list and the lightline counters are always ALE's, whoever found the problem.
+
+**Who finds the problems depends on the filetype.** By default ALE runs external linters. For some filetypes the
+language server is better, so `g:ale_linters` is empty there and coc's diagnostics are switched back on for exactly
+those filetypes.
+
+**Formatting is ALE's job**, through its fixers, and only on save while `g:ale_fix_on_save` is on. It starts off;
+`<M-a>` toggles it.
+
+The two lists live in `.config/nvim/plugins.vim` (`g:ale_linters`, `g:ale_fixers`) and must stay in sync with the
+`diagnostic.enable` section of `.config/nvim/coc-settings.json`.
 
 ## Install
 
@@ -104,8 +124,8 @@ Run `task --list` for the full list. The main ones:
 | `task self-update` | Update `task` itself |
 | `task doctor` | Show tool versions. Exit non-zero if anything is missing |
 
-Namespaces: `apt`, `lang`, `cli`, `appimage`, `utility`. Package lists are plain `vars:` at the top of each taskfile in
-`.config/dotfiles/taskfiles/`. Add software there, not in the task logic.
+Namespaces: `apt`, `lang`, `cli`, `appimage`, `theme`, `utility`. Package lists are plain `vars:` at the top of each
+taskfile in `.config/dotfiles/taskfiles/`. Add software there, not in the task logic.
 
 > [!WARNING]
 > Tasks change a running system. Read a task before you run it.

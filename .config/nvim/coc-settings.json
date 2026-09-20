@@ -31,8 +31,16 @@
   "suggest.autoTrigger": "always",
   "suggest.minTriggerInputLength": 3,
   "suggest.noselect": false,
+  // coc and ALE split the work; ALE draws every diagnostic, so coc hands its
+  // LSP diagnostics over to ALE instead of drawing its own signs.
   "diagnostic.displayByAle": true,
+  // Off by default: most filetypes get their diagnostics from an ALE linter.
+  // The language-scoped section below turns coc back on for the filetypes
+  // whose g:ale_linters entry is an empty list.
   "diagnostic.enable": false,
+  "[c][cpp][javascript][json][sql][typescript]": {
+    "diagnostic.enable": true
+  },
   "diagnostic.checkCurrentLine": true,
   "diagnostic.messageTarget": "echo",
   "diagnostic.signPriority": 9999999,
@@ -44,6 +52,7 @@
   "snippets.loadFromExtensions": true,
   "inlayHint.enable": true,
   "inlayHint.enableParameter": false,
+  // ALE formats html with html-beautify, so the language server must not.
   "html.format.enable": false,
   "html.filetypes": [
     "html",
@@ -57,6 +66,7 @@
   "html.validate.styles": false,
   "html.validate.scripts": false,
   "html.autoClosingTags": false,
+  // htmldjango has no ALE fixer; coc runs djlint on save (see coc_fix_on_save).
   "htmldjango.formatting.provider": "djlint",
   "htmldjango.djlint.addFormatterArgs": [
     "--indent 2",
@@ -79,6 +89,5 @@
     "${workspaceFolder}/build",
     "${workspaceFolder}/Build"
   ],
-  "jedi.diagnostics.enable": false,
   "go.checkForUpdates": "disabled"
 }

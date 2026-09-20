@@ -66,6 +66,7 @@ call plug#end()
 " -------------------
 
 " ## Contents
+" - How coc.nvim and ALE split the work
 " _ale_
 " _catppuccin_
 " _claudecode_nvim_
@@ -95,6 +96,38 @@ call plug#end()
 " _vim_better_whitespace_
 " _undotree_
 " _vim_easy_align_
+
+" ---------------------------------------------------------------------------
+" ## How coc.nvim and ALE split the work
+" ---------------------------------------------------------------------------
+" Both plugins are loaded and they have separate jobs. Read this before
+" touching g:ale_linters, g:ale_fixers or the coc config.
+"
+"   coc.nvim  is the LSP client. It always owns completion, go-to-definition,
+"             hover, rename, signature help, snippets and inlay hints, for
+"             every filetype. That part is never shared with ALE.
+"
+"   ALE       is the one that *draws* every diagnostic. coc-settings.json sets
+"             "diagnostic.displayByAle": true, so coc hands its LSP
+"             diagnostics to ALE instead of drawing its own signs, and
+"             "diagnostic.enable": false keeps coc quiet by default. So the
+"             sign column, the loclist and the lightline indicators are always
+"             ALE's, no matter who found the problem.
+"
+" Who *produces* the diagnostics depends on the filetype:
+"
+"   Default
+"     ALE runs its own external linters from g:ale_linters below, coc stays silent.
+"
+"   Some filetypes
+"     The language server is better than the external linters here, so these
+"     get an empty list in g:ale_linters below, and coc-settings.json turns
+"     "diagnostic.enable" back on for exactly these filetypes through its
+"     language-scoped section. coc finds the problems, ALE still draws them.
+"
+" Formatting is ALE's job too, through g:ale_fixers below, and it only runs on
+" save when g:ale_fix_on_save is 1. That is 0 at startup; <M-a> toggles it.
+" Two filetypes are formatted by coc instead, see coc_fix_on_save.
 
 " ---------------
 " ## _catppuccin_
@@ -185,6 +218,7 @@ let g:livedown_port = 8001
 let g:livedown_browser = 'xdg-open'
 let g:livedown_open = 1
 
+
 " --------
 " ## _ale_
 " --------
@@ -197,11 +231,9 @@ augroup ale_group
 
     " Ale settings by filetype
     autocmd FileType python let b:ale_warn_about_trailing_whitespace = 0
-
-    " Disable ALE linting for specific filetypes that CoC already covers
-    autocmd FileType typescript,sql,json,c,cpp let b:ale_linters = []
 augroup END
 
+" Formatting is off by default. <M-a> (AleAutofixToggle) turns it on.
 let g:ale_fix_on_save = 0
 let g:ale_sign_error = '❌'
 let g:ale_sign_warning = '⚠️'
@@ -231,15 +263,17 @@ augroup ale_highlight
         \ highlight ALEWarning guibg=#f9e2af guifg=#1e1e2e
 augroup END
 
-" Set linters by file type
+" Linters, i.e. who finds the problems. An empty list means coc's language
+" server finds them instead; keep those entries in sync with the
+" diagnostic.enable section of coc-settings.json.
 let g:ale_linters = {
-\   'bitbake': [],
 \   'c': [],
 \   'cpp': [],
 \   'css': ['stylelint'],
 \   'go': ['gopls', 'golangci-lint'],
 \   'html': ['tidy'],
 \   'javascript': [],
+\   'json': [],
 \   'python': ['ruff'],
 \   'scss': ['stylelint'],
 \   'sh': ['shellcheck'],
@@ -247,7 +281,8 @@ let g:ale_linters = {
 \   'typescript': []
 \}
 
-" Set fixers by file type
+" Fixers, i.e. who formats the file. These run on save only while
+" g:ale_fix_on_save is 1. (see also coc_fix_on_save).
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \   'c': ['clang-format'],
@@ -325,10 +360,8 @@ augroup coc_nvim_group
     autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
     " Close the preview window when completion is done
     autocmd CompleteDone * if pumvisible() == 0 | pclose | endif
-    " Enable coc diagnostics for filetypes where ALE's own diagnostics were
-    " turned off above
-    autocmd FileType typescript,sql,json,c,cpp,python call EnableCocDiagnostic()
-    " Setup formatexpr specified filetype(s).
+    " Let the gq operator format through the language server for these
+    " two. Their ALE fixers (eslint, jq) still run on save.
     autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
 augroup END
 
@@ -379,10 +412,6 @@ command! -nargs=? Fold :call CocAction('fold', <f-args>)
 command! -nargs=0 OR   :call CocActionAsync('runCommand', 'editor.action.organizeImport')
 
 " ### Functions
-function! EnableCocDiagnostic()
-    call coc#config('diagnostic', { 'enable': v:true })
-endfunction
-
 function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'

@@ -79,5 +79,6 @@
     "${workspaceFolder}/build",
     "${workspaceFolder}/Build"
   ],
-  "jedi.diagnostics.enable": false
+  "jedi.diagnostics.enable": false,
+  "go.checkForUpdates": "disabled"
 }

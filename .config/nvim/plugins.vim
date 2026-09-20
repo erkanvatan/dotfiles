@@ -898,6 +898,7 @@ require('nvim-autopairs').setup({
     -- from getting an extra newline inserted before it, same as the old
     -- g:AutoPairsMapCR = 0 did for auto-pairs.
     map_cr = false,
+    fast_wrap = {},
 })
 EOF
 

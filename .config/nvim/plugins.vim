@@ -213,10 +213,44 @@ nnoremap <leader>af :ClaudeCodeDiffDeny<CR>
 " ## _vim_livedown_
 " -----------------
 
+" ### Functions
+" Ask the OS for a free port by binding one as an RPC listener and immediately
+" releasing it, so every Neovim instance previews on a port of its own.
+function! LivedownFreePort() abort
+    try
+        let l:address = serverstart('127.0.0.1:0')
+    catch
+        return 8001
+    endtry
+
+    call serverstop(l:address)
+    return str2nr(matchstr(l:address, ':\zs\d\+$'))
+endfunction
+
+" vim-livedown spawns the server with a trailing '&', so the shell orphans it
+" and it outlives Neovim. Stop it on exit, but only when something is actually
+" listening on this instance's port -- otherwise every quit pays a needless
+" node startup, and quitting one instance would kill another one's preview.
+function! LivedownStopOnExit() abort
+    try
+        let l:sock = sockconnect('tcp', 'localhost:' . g:livedown_port, {})
+    catch
+        return
+    endtry
+
+    call chanclose(l:sock)
+    call system(g:livedown_command . ' stop --port ' . g:livedown_port)
+endfunction
+
 " ### Settings
-let g:livedown_port = 8001
+let g:livedown_port = LivedownFreePort()
 let g:livedown_browser = 'xdg-open'
 let g:livedown_open = 1
+
+augroup livedown_group
+    autocmd!
+    autocmd VimLeavePre * call LivedownStopOnExit()
+augroup END
 
 
 " --------

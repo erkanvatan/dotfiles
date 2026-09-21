@@ -1030,7 +1030,7 @@ let g:lightline = {
       \             [ 'gitbranch', 'filename' ],
       \             [ 'cocstatus' ] ],
       \   'right': [['percent', 'lineinfo'],
-      \             [ 'filetype', 'fileencoding' ],
+      \             [ 'filetype', 'fileformat', 'fileencoding' ],
       \             [ 'currentfunction', 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok' ]]
       \ },
       \ 'component_function': {

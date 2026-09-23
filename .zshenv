@@ -6,6 +6,10 @@ export BROWSER='firefox'
 export EDITOR='nvim'
 export VISUAL='nvim'
 
+# bat
+export BAT_THEME_DARK='Catppuccin Mocha'
+export BAT_THEME_LIGHT='Catppuccin Latte'
+
 # fzf
 command -v fdfind >/dev/null \
     && export FZF_DEFAULT_COMMAND='fdfind --type f --no-ignore-vcs --hidden --follow --exclude "{node_modules,.git}"' \

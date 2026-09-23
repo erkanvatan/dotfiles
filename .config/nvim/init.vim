@@ -46,6 +46,13 @@ let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum" " set foreground color
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum" " set background color
 set background=dark
 
+" Keep bat theme in sync with 'background'.
+let $BAT_THEME = &background
+augroup bat_theme
+    autocmd!
+    autocmd OptionSet background let $BAT_THEME = v:option_new
+augroup END
+
 " ## Line numbers
 set relativenumber
 set number

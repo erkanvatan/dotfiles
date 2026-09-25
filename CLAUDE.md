@@ -11,8 +11,20 @@ and the repository root corresponds directly to `$HOME` on the target machine (e
 mind: paths in scripts/configs are written relative to `$HOME`, not relative to this repo checked out
 elsewhere.
 
-Covers: Alacritty, Zsh (Prezto + Powerlevel10k), Tmux (TPM), Neovim/Vim (vim-plug), plus Catppuccin/Qogir
-theming and a handful of custom shell utilities.
+Covers: Alacritty, Zsh (Prezto + Powerlevel10k), Tmux (TPM), Neovim/Vim (vim-plug), clangd, Claude Code,
+plus Catppuccin/Qogir theming and a handful of custom shell utilities.
+
+## Rules
+
+- Never run `task` commands or `scripts/config-sync` without asking first. Both change the live
+  machine, and a bug can break a running system.
+- Use Linux (LF) line endings for all files.
+- No `.gitignore`. The repo is used as a bare repo over `$HOME`, which hides untracked files instead.
+- Taskfiles:
+  - When a task needs user input, use a `requires:` var. Never read input with bash (`read` etc.).
+  - Print anything the user must see or act on with `"{{.ROOT_DIR}}/scripts/task-note"`.
+  - Keep every package list (`APT_PKGS`, `NPM_PKGS`, `PIPX_PKGS`, `CARGO_PKGS`, …) alphabetically sorted.
+- Commit with the `git-commit` skill (conventional commits) rather than hand-rolled commit commands.
 
 ## Working with this repo
 
@@ -23,8 +35,9 @@ alias config='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
 alias config-edit="(export GIT_DIR=$HOME/.dotfiles; export GIT_WORK_TREE=$HOME; $EDITOR)"
 ```
 
-`config status` only lists *tracked* files — untracked ones are hidden, or it would list all of `$HOME`.
-A new file therefore does not appear until `config add`.
+`config status` only lists *tracked* files (`task utility:bare-install` sets
+`status.showUntrackedFiles no`), or it would list all of `$HOME`. A new file therefore does not appear
+until `config add`.
 
 A normal clone elsewhere (e.g. `~/projects/personal/dotfiles`) works fine for editing, but edits there
 are not live. To test them against the real `$HOME` work-tree, run `scripts/config-sync` **from the root
@@ -39,63 +52,64 @@ Submodules are used for third-party frameworks rather than vendoring them: `.zpr
 
 ## Machine setup and updates (`Taskfile.yml`, go-task)
 
-The closest thing to "build/run" commands is `Taskfile.yml` at the repo root, run via the
-[go-task](https://taskfile.dev) `task` binary (zsh completions are wired up in `.zshrc`). The real steps
-live under `.config/dotfiles/taskfiles/*.yml` (`apt`, `appimage`, `lang`, `cli`, `theme`, `utility`), each
-included into the root Taskfile as a namespace (e.g. `task apt:install`, `task lang:update`). Run
-`task --list` for the full list.
+`Taskfile.yml` at the repo root is the closest thing to "build/run", run with the
+[go-task](https://taskfile.dev) `task` binary. The real steps live in `.config/dotfiles/taskfiles/*.yml`
+(`apt`, `appimage`, `lang`, `cli`, `theme`, `utility`), each included as a namespace (e.g.
+`task apt:install`). `task --list` shows everything.
 
 - **Brand-new machine, no `task` yet:** clone to a throwaway folder, `bash .config/dotfiles/bootstrap.sh`,
-  `task utility:bare-install` (turns `$HOME` into the checkout; `REPO` defaults to that clone's own
-  origin URL), then from `$HOME`:
+  `task utility:bare-install` (turns `$HOME` into the checkout; `REPO` defaults to that clone's origin
+  URL), then from `$HOME`:
   `task setup GIT_NAME="Your Name" GIT_EMAIL=you@example.com SSH_KEY_PASSPHRASE=...`.
-  Those three vars are `requires:`d on `setup` and threaded down to `cli:keygen`/`cli:git-identity`;
-  missing any of them fails fast before any install step runs.
-- Both `setup` and `update` have a **precondition** that `$HOME/.dotfiles` is a real bare repo — i.e.
-  `task utility:bare-install` must have happened first — and say so in the failure message.
-- **`task setup`** — fresh machine: `preflight` (distro check + sudo prime), apt packages/PPAs,
-  language runtimes, per-user CLI tools, the Qogir GTK theme, AppImageLauncher + AppImages, then
-  `doctor`. That closing `doctor` runs with `ignore_error: true`: on a brand-new machine the shell and
-  the AppImageLauncher daemon can't show clean until you log out and back in, so `setup` prints that
-  note and leaves the real check for after. It also prints the new SSH public key to register with
-  GitHub as *both* an authentication and a signing key.
-- **`task update`** — the update-only subset (no PPA re-adds, no SSH keygen), plus `submodules`.
-  `apt:install`'s bulk install falls back to installing packages one at a time if the bulk call fails,
-  so one bad/renamed package name doesn't block the rest. `lang:update` advances Python to the newest
-  patch inside its current major.minor series (`PYTHON_SERIES`), not just pyenv/node/pipx/go themselves.
-- **`task self-update`** updates `task` itself — deliberately separate and manual.
-- **`task doctor`** prints versions of task/nvm/node/pyenv/python/pipx/go, checks the login shell is zsh
-  and `appimagelauncherd` is running, then lists AppImages, npm globals and pipx packages. It exits
-  non-zero if anything is missing.
-- Package lists live inline as `vars:` at the top of each taskfile, not in separate files: apt packages
-  and PPAs in `apt.yml` (`APT_PKGS`/`PPAS`), npm/pipx/cargo packages in `cli.yml`
-  (`NPM_PKGS`/`PIPX_PKGS`/`CARGO_PKGS`), the pyenv series (`PYTHON_SERIES`) in `lang.yml` — one entry
-  per line, `#` comments allowed. Add or remove software there rather than editing task logic.
-- Distro support is detected from `/etc/os-release` by the `preflight` task (Ubuntu and Ubuntu-based,
-  including Linux Mint) rather than passed as an argument.
+  All three vars are `requires:`d on `setup` and threaded down to `cli:keygen`/`cli:git-identity`, so a
+  missing one fails before anything installs.
+- `setup` and `update` both have a precondition that `$HOME/.dotfiles` is a real bare repo, i.e.
+  `task utility:bare-install` ran first.
+- **`task setup`** — `preflight`, apt packages/PPAs, language runtimes, per-user CLI tools, the Qogir GTK
+  theme, AppImageLauncher + AppImages, then `doctor`. That `doctor` has `ignore_error: true`: the login
+  shell and the AppImageLauncher daemon only show clean after a log out/in. It ends by printing the new
+  SSH public key to add on GitHub as *both* an authentication and a signing key.
+- **`task update`** — the repeatable subset (no PPA re-adds, no SSH keygen), plus `submodules`.
+- **`task self-update`** — updates `task` itself. Deliberately separate from `update`.
+- **`task doctor`** — checks core tool versions, that the login shell is zsh and `appimagelauncherd` is
+  running, and lists installed AppImages/npm globals/pipx apps. Exits non-zero if anything is missing.
+- **`preflight`** (internal) — reads `/etc/os-release` and only allows Ubuntu and Ubuntu-based distros
+  (including Linux Mint). The distro is never passed as an argument.
+
+Behaviour that isn't obvious from task names:
+
+- `apt:install` falls back to one-package-at-a-time if the bulk install fails, so one bad or renamed
+  package name doesn't block the rest.
+- `lang:update` moves Python to the newest patch inside `PYTHON_SERIES` (major.minor), never to a new
+  minor. Bump `PYTHON_SERIES` in `lang.yml` for that.
+- Package lists live inline as `vars:` at the top of each taskfile, one entry per line, `#` comments
+  allowed: `APT_PKGS`/`PPAS` in `apt.yml`, `NPM_PKGS`/`PIPX_PKGS`/`CARGO_PKGS` in `cli.yml`, `APPS` in
+  `appimage.yml`. Add or remove software there rather than editing task logic.
 
 ### GTK theme (`.config/dotfiles/taskfiles/theme.yml`)
 
-`task theme:install` clones [Qogir-theme](https://github.com/vinceliuice/Qogir-theme) shallowly into a
-temp dir and runs its `install.sh` into `~/.themes` with `--color standard dark --tweaks image square`,
-producing exactly the `Qogir`/`Qogir-Dark` names `scripts/toggle-system-theme` switches between. It needs
+`task theme:install` shallow-clones [Qogir-theme](https://github.com/vinceliuice/Qogir-theme) into a temp
+dir and runs its `install.sh` into `~/.themes` with `--color standard dark --tweaks image square`. That
+produces exactly the `Qogir`/`Qogir-Dark` names `scripts/toggle-system-theme` switches between. It needs
 `sassc` (and `gtk2-engines-murrine` for GTK2 apps), both in `APT_PKGS`. `theme:update` rebuilds from the
-newest upstream commit; `theme:list` shows what's in `~/.themes`. Icons come from Papirus instead
-of Qogir-icon-theme: `papirus-icon-theme` in `APT_PKGS`, from the `ppa:papirus/papirus` PPA in
-`PPAS`, so apt keeps it current.
+newest upstream commit. Icons are Papirus, not Qogir-icon-theme: `papirus-icon-theme` from the
+`ppa:papirus/papirus` PPA, so apt keeps it current.
 
 ### AppImages (`.config/dotfiles/taskfiles/appimage.yml`)
 
-AppImage-only GUI apps are declared in a small manifest (`name|owner/repo|asset-glob|optional-bin-symlink`)
-in that file's `APPS` var. `task appimage:update` uses `scripts/appimage-get` to pull the newest matching
-release asset from GitHub into `~/Applications`; [AppImageLauncher](https://github.com/TheAssassin/AppImageLauncher)
-(installed by `task appimage:setup` from a pinned GitHub release .deb, since its PPA is deprecated)
-watches that folder and adds/updates the menu entry. `task appimage:list` shows installed versions.
-Before adding an app, check its GitHub releases actually ship an `.AppImage` asset — several commonly
-assumed ones (Anki, Telegram Desktop, sqlectron) do not.
+AppImage-only apps are declared in the `APPS` manifest (`name|owner/repo|asset-glob|optional-bin-symlink`).
+`task appimage:update` uses `scripts/appimage-get` to pull the newest matching GitHub release asset into
+`~/Applications`. [AppImageLauncher](https://github.com/TheAssassin/AppImageLauncher) watches that folder
+and manages menu entries; `task appimage:setup` installs it from a pinned release .deb (`AIL_VERSION` and
+`AIL_DEB` must be bumped together) since its PPA is deprecated.
 
-There is no offline/no-internet install path — the old `prepare_offline.sh`/`install_offline.sh` pair
-was removed along with the rest of `.config/dotfiles/install/` when this moved to the Taskfile.
+- **Neovim itself comes from here**, not apt: the `neovim` entry symlinks the AppImage to
+  `~/.local/bin/nvim`.
+- Before adding an app, check its GitHub releases actually ship an `.AppImage` asset — several commonly
+  assumed ones (Anki, Telegram Desktop, sqlectron) do not.
+
+There is no offline install path. The old `.config/dotfiles/install/` scripts were removed when this
+moved to the Taskfile.
 
 ## Shell and editor config structure
 
@@ -113,27 +127,26 @@ icon theme system-wide.
 
 ## Custom scripts (`scripts/`)
 
-Standalone bash utilities (not sourced by `.zshrc`), each with a `@file`/`@author`/`@date`/`@brief` header
-and `@depend` lines for external commands: `any-term-dropdown`, `appimage-get`, `config-fzf`,
+Standalone bash utilities (not sourced by `.zshrc`): `any-term-dropdown`, `appimage-get`, `config-fzf`,
 `config-sync`, `print-term-colors`, `setup-ip-forwarding`, `sub-to-utf8`, `task-note`,
 `toggle-system-theme`. They're invoked directly (bound to a keyboard shortcut or window-manager action, or
-called from a task), not part of any build pipeline. Follow that header style for new scripts.
+called from a task), not part of any build pipeline.
 
-## Claude Code config in this repo (`.claude/`)
+New scripts copy the existing header: a `# ----------------` block with `@file`, `@author`, `@date`,
+`@brief`, and one `@depend` line per external command (package name, e.g. `libnotify-bin`).
 
-`.claude/settings.json` is itself tracked here: it denies `Bash(rm:*)`/`Bash(rmdir:*)`, sets an empty
-commit/PR attribution, and runs `~/.claude/hooks/inject-context.py` on every prompt submit. Two repo-local
-skills live in `.claude/skills/`: `git-commit` (conventional-commit staging and message generation) and
-`create-readme`. Prefer the `git-commit` skill over hand-rolled commit commands.
+## Claude Code config (`.claude/`)
 
-## Development Notes
+`.claude/` here is `~/.claude/` on the machine. That makes it the **user-level** Claude Code config for
+every project, not just this repo — a change here changes every session.
 
-- Use Linux line-endings for all files.
-- No need for a .gitignore file as the intended purpose of this repo is to be used as bare repo.
-- Never run task commands without asking first as a bug can break a running system.
-
-## Taskfile Development Notes
-
-- Use required Taskfile variables when a user input is needed. Don't take input with bash commands.
-- Use "{{.ROOT_DIR}}/scripts/task-note" script when printing important information for the user.
-- Always keep list of packages alphabetically sorted such as APT_PKGS, NPM_PKGS, etc.
+- `settings.json` — empty commit/PR attribution (no co-author trailers), denies `Bash(rm:*)` and
+  `Bash(rmdir:*)`, wires up the status line and the hook below. `claudeMdExcludes: ["/home/*/CLAUDE.md"]`
+  exists because this file lands at `~/CLAUDE.md`, which would otherwise load in every project under
+  `$HOME`.
+- `hooks/inject-context.py` — `UserPromptSubmit` hook that injects the global working rules (DRY/YAGNI/
+  KISS, halt after plans, `trash` instead of `rm`, `mv -n`). Change those rules there, not in a
+  CLAUDE.md.
+- `statusline.py` — powerline-style status line in Catppuccin Mocha colours.
+- `output-styles/eli5.md` — the ELI5 output style (set as default in `settings.json`).
+- `skills/` — `git-commit` and `create-readme`.

@@ -26,5 +26,6 @@
       }
     ]
   },
-  "outputStyle": "ELI5"
+  "outputStyle": "ELI5",
+  "claudeMdExcludes": ["/home/*/CLAUDE.md"]
 }

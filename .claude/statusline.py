@@ -2,7 +2,7 @@
 """Claude Code status line — powerline-style pill segments.
 
 Layout (chevron-separated pills, matching the reference design):
-  [ ~/.claude ] > [ Opus 5 ] > [ 5h 17% ] > [ 7d 14% ] > [ ctx 5% ] > [ (cycle) 16:15 ] >
+  [ ~/.claude ] > [ Opus 5 (high) ] > [ 5h 17% ] > [ 7d 14% ] > [ ctx 5% ] > [ (cycle) 16:15 ] >
        blue        surface1     sapphire       mauve       yellow          green
 
 Pill colors are the Catppuccin Mocha palette (https://catppuccin.com/palette),
@@ -139,6 +139,9 @@ def build_segments(data):
 
     model_info = data.get("model") or {}
     model = model_short(model_info.get("display_name"), model_info.get("id"))
+    effort = (data.get("effort") or {}).get("level")
+    if effort:
+        model += f" ({effort})"
 
     segments = []
     if cwd_disp:
